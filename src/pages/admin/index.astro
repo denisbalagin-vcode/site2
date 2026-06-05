@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { asset } from '../../utils/asset';
+
+/**
+ * Заглушка будущей панели управления статьями.
+ *
+ * Пока сайт статический, статьи добавляются как Markdown-файлы в репозитории
+ * (`src/content/articles/*.md`). После переезда на бэкенд + БД эта страница
+ * станет полноценной админ-панелью: авторизация сотрудника и форма создания/
+ * редактирования статей, работающая через слой `src/lib/articles.ts`.
+ */
+const steps = [
+  {
+    title: '1. Создайте файл статьи',
+    text: 'Добавьте Markdown-файл в src/content/articles/ с заполненным фронтматтером (title, description, author, publishedAt, tags).',
+  },
+  {
+    title: '2. Напишите текст',
+    text: 'Используйте обычный Markdown: заголовки, списки, цитаты, ссылки и изображения.',
+  },
+  {
+    title: '3. Откройте Pull Request',
+    text: 'Закоммитьте изменения и создайте PR. После слияния в main сайт автоматически пересоберётся и опубликует статью.',
+  },
+];
+---
+
+<Layout
+  title="Управление статьями | Formit"
+  description="Панель управления статьями Formit."
+>
+  <Header showSectionNav={false} />
+
+  <main>
+    <section class="section admin">
+      <div class="container admin__container">
+        <p class="admin__badge">Скоро</p>
+        <h1 class="admin__title h2">Панель управления статьями</h1>
+        <p class="admin__lead">
+          Визуальная админ-панель появится после подключения бэкенда. Пока новые
+          статьи добавляются через репозиторий — порядок ниже.
+        </p>
+
+        <ol class="admin__steps">
+          {steps.map((step) => (
+            <li class="admin__step card card--soft">
+              <h2 class="admin__step-title">{step.title}</h2>
+              <p class="admin__step-text">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+
+        <a class="admin__link" href={asset('/articles')}>← Перейти к разделу статей</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .admin__container {
+    max-width: 760px;
+  }
+
+  .admin__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .admin__title {
+    margin-top: var(--space-4);
+  }
+
+  .admin__lead {
+    margin-top: var(--space-4);
+    max-width: 60ch;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-loose);
+    color: var(--color-text-secondary);
+  }
+
+  .admin__steps {
+    margin-top: var(--space-8);
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+  }
+
+  .admin__step-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .admin__step-text {
+    margin-top: var(--space-2);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  .admin__link {
+    display: inline-block;
+    margin-top: var(--space-8);
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .admin__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

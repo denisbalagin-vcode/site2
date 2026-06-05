@@ -1,0 +1,310 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Chip from '../../components/ui/Chip.astro';
+import Button from '../../components/ui/Button.astro';
+import { asset } from '../../utils/asset';
+import { accountUrl } from '../../data/contacts';
+import { getAllArticles, formatDate } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await getAllArticles();
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article.entry);
+
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : '';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.title,
+  description: article.description,
+  author: { '@type': 'Person', name: article.author },
+  publisher: { '@type': 'Organization', name: 'Formit' },
+  datePublished: article.publishedAt.toISOString(),
+  ...(article.updatedAt && { dateModified: article.updatedAt.toISOString() }),
+  ...(canonicalUrl && { mainEntityOfPage: canonicalUrl }),
+};
+---
+
+<Layout
+  title={`${article.title} | Formit`}
+  description={article.description}
+  ogImage={article.cover ?? '/images/insolatedBuilding.BsJLrvJH.webp'}
+>
+  <Header showSectionNav={false} />
+
+  <main>
+    <article class="section article">
+      <div class="container article__container">
+        <a class="article__back" href={asset('/articles')}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" />
+          </svg>
+          <span>Все статьи</span>
+        </a>
+
+        <header class="article__header">
+          {article.tags.length > 0 && (
+            <div class="article__tags">
+              {article.tags.map((tag) => <Chip>{tag}</Chip>)}
+            </div>
+          )}
+
+          <h1 class="article__title h2">{article.title}</h1>
+          <p class="article__lead">{article.description}</p>
+
+          <div class="article__meta">
+            <span class="article__author">{article.author}</span>
+            {article.authorRole && <span class="article__role">{article.authorRole}</span>}
+            <time class="article__date" datetime={article.publishedAt.toISOString()}>
+              {formatDate(article.publishedAt)}
+            </time>
+          </div>
+        </header>
+
+        {article.cover && (
+          <div class="article__cover">
+            <img src={asset(article.cover)} alt="" decoding="async" />
+          </div>
+        )}
+
+        <div class="article__body prose">
+          <Content />
+        </div>
+
+        <aside class="article__cta">
+          <div class="article__cta-text">
+            <h2 class="article__cta-title">Попробуйте Formit на своём проекте</h2>
+            <p class="article__cta-desc">
+              Загрузите Revit-модель и&nbsp;получите готовый расчёт инсоляции и&nbsp;КЕО.
+            </p>
+          </div>
+          <div class="article__cta-actions">
+            <Button variant="filled" href={accountUrl} target="_blank" rel="noopener noreferrer">
+              Войти в аккаунт
+            </Button>
+            <Button variant="outlined" href={asset('/demo')}>
+              Открыть демо
+            </Button>
+          </div>
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline slot="head" />
+</Layout>
+
+<style>
+  .article__container {
+    max-width: 760px;
+  }
+
+  .article__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .article__back:hover {
+    color: var(--color-accent-primary);
+  }
+
+  .article__header {
+    margin-top: var(--space-6);
+  }
+
+  .article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .article__lead {
+    margin-top: var(--space-4);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-loose);
+    color: var(--color-text-secondary);
+  }
+
+  .article__meta {
+    margin-top: var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .article__author {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .article__role::before,
+  .article__date::before {
+    content: '·';
+    margin-right: var(--space-4);
+    color: var(--color-border-strong);
+  }
+
+  .article__cover {
+    margin-top: var(--space-8);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .article__cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Типографика тела статьи ──────────────────────────────── */
+  .prose {
+    margin-top: var(--space-8);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-loose);
+    color: var(--color-text-primary);
+  }
+
+  .prose :global(h2) {
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+  }
+
+  .prose :global(h3) {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: var(--space-5);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--space-6);
+  }
+
+  .prose :global(li) {
+    margin-bottom: var(--space-2);
+  }
+
+  .prose :global(a) {
+    color: var(--color-accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(blockquote) {
+    margin: var(--space-6) 0;
+    padding: var(--space-4) var(--space-6);
+    border-left: 3px solid var(--color-accent-primary);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+  }
+
+  .prose :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(code) {
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-secondary);
+    font-size: 0.9em;
+  }
+
+  .prose :global(pre) {
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── CTA в конце статьи ───────────────────────────────────── */
+  .article__cta {
+    margin-top: var(--space-16);
+    padding: clamp(var(--space-6), 4vw, var(--space-10));
+    border-radius: var(--radius-xl);
+    background: var(--gradient-primary);
+    color: var(--color-text-inverse);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .article__cta-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+  }
+
+  .article__cta-desc {
+    margin-top: var(--space-2);
+    color: color-mix(in srgb, var(--color-white) 88%, transparent);
+    font-size: var(--font-size-sm);
+  }
+
+  .article__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  /* Кнопки на градиентном фоне */
+  .article__cta-actions :global(.btn--filled) {
+    background: var(--color-white);
+    color: var(--color-accent-primary);
+  }
+
+  .article__cta-actions :global(.btn--filled:hover) {
+    opacity: 0.9;
+  }
+
+  .article__cta-actions :global(.btn--outlined) {
+    color: var(--color-text-inverse);
+    border-color: color-mix(in srgb, var(--color-white) 50%, transparent);
+  }
+
+  .article__cta-actions :global(.btn--outlined:hover) {
+    border-color: var(--color-white);
+    color: var(--color-white);
+    background: color-mix(in srgb, var(--color-white) 12%, transparent);
+  }
+</style>
