@@ -35,4 +35,12 @@ export const docs = {
   changelog: 'https://docs.formit.pro/docs/changelog/latest',
 } as const;
 
+/**
+ * Веб-сервис продукта (личный кабинет).
+ * Кнопка «Войти» ведёт сюда. Адрес можно переопределить переменной
+ * окружения PUBLIC_ACCOUNT_URL (в духе остальных PUBLIC_* настроек).
+ */
+export const accountUrl =
+  (import.meta.env.PUBLIC_ACCOUNT_URL as string | undefined) ?? 'https://account.formit.pro/';
+
 export const mailtoEmail = `mailto:${email}`;

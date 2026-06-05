@@ -1,13 +1,14 @@
 ---
 import Logo from './ui/Logo.astro';
 import { asset } from '../utils/asset';
-import { email, phones as contactPhones, telegram, address, docs } from '../data/contacts';
+import { email, phones as contactPhones, telegram, address, docs, accountUrl } from '../data/contacts';
 
 // Навигация по разделам страницы
 const sectionLinks = [
   { label: 'Кому подойдёт',  href: '#audience' },
   { label: 'Этапы',          href: '#stages' },
   { label: 'Видео',          href: '#video' },
+  { label: 'Статьи',         href: asset('/articles') },
   { label: 'Демо продукта',  href: asset('/demo') },
   { label: 'Экспертизы',     href: '#expertises' },
   { label: 'Отзывы',         href: '#reviews' },
@@ -41,6 +42,18 @@ const currentYear = new Date().getFullYear();
         <p class="footer__tagline">
           Web-сервис для&nbsp;расчёта инсоляции и&nbsp;КЕО по&nbsp;Revit-модели
         </p>
+        <a
+          class="footer__login"
+          href={accountUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span>Войти в аккаунт</span>
+        </a>
         <div class="footer__social">
           <a
             class="footer__social-link"
@@ -178,6 +191,29 @@ const currentYear = new Date().getFullYear();
     font-size: var(--font-size-sm);
     line-height: var(--line-height-loose);
     color: var(--color-text-secondary);
+  }
+
+  .footer__login {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-strong);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .footer__login svg {
+    color: var(--color-accent-primary);
+  }
+
+  .footer__login:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+    background: var(--color-accent-soft);
   }
 
   .footer__social {

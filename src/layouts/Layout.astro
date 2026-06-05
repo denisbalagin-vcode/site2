@@ -105,6 +105,9 @@ const plausibleSrc =
     {plausibleDomain && (
       <script is:inline defer data-domain={plausibleDomain} src={plausibleSrc}></script>
     )}
+
+    <!-- Доп. теги в <head> для отдельных страниц (например, JSON-LD статьи). -->
+    <slot name="head" />
   </head>
   <body>
     <slot />

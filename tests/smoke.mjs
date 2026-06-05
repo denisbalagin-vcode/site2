@@ -112,6 +112,22 @@ try {
     check('клик по шагу выделяет его', selected === 'true');
   }
 
+  // --- Статьи ---
+  console.log('Раздел статей:');
+  await page.goto(`${BASE}/articles`, { waitUntil: 'networkidle0' });
+  const cards = await page.$$('.article-card');
+  check('список статей рендерит карточки', cards.length >= 2);
+  check('черновик не опубликован', !(await page.$('[data-tags*="Служебное"]')));
+  check('кнопка входа есть в хедере', !!(await page.$('.header__login')));
+  const articleHref = await page.$eval('.article-card__link', (el) => el.getAttribute('href'));
+  await page.goto(`${BASE}${articleHref.replace(BASE, '')}`, { waitUntil: 'networkidle0' });
+  check('страница статьи рендерит тело', !!(await page.$('.article__body.prose')));
+  check('у статьи есть JSON-LD Article', await page.evaluate(() =>
+    Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((s) =>
+      s.textContent.includes('"@type":"Article"')
+    )
+  ));
+
   // --- 404 ---
   console.log('Страница 404:');
   const res404 = await page.goto(`${BASE}/nope-${Date.now()}`, { waitUntil: 'networkidle0' });

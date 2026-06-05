@@ -1,0 +1,128 @@
+---
+import Chip from '../ui/Chip.astro';
+import { asset } from '../../utils/asset';
+import { formatDate, type Article } from '../../lib/articles';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const href = asset(`/articles/${article.slug}`);
+---
+
+<article class="article-card card card--interactive">
+  <a class="article-card__link" href={href} aria-label={article.title}>
+    {article.cover && (
+      <div class="article-card__cover">
+        <img src={asset(article.cover)} alt="" loading="lazy" decoding="async" />
+      </div>
+    )}
+
+    <div class="article-card__body">
+      {article.tags.length > 0 && (
+        <div class="article-card__tags">
+          {article.tags.slice(0, 2).map((tag) => (
+            <Chip class="article-card__tag">{tag}</Chip>
+          ))}
+        </div>
+      )}
+
+      <h3 class="article-card__title">{article.title}</h3>
+      <p class="article-card__desc">{article.description}</p>
+
+      <footer class="article-card__meta">
+        <span class="article-card__author">{article.author}</span>
+        <time datetime={article.publishedAt.toISOString()}>
+          {formatDate(article.publishedAt)}
+        </time>
+      </footer>
+    </div>
+  </a>
+</article>
+
+<style>
+  .article-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .article-card__link {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: inherit;
+  }
+
+  .article-card__cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .article-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-normal);
+  }
+
+  .article-card:hover .article-card__cover img {
+    transform: scale(1.04);
+  }
+
+  .article-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    flex: 1;
+  }
+
+  .article-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Чипы внутри карточки — некликабельные сами по себе (вся карточка-ссылка) */
+  .article-card__tag {
+    pointer-events: none;
+    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .article-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+  }
+
+  .article-card__desc {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-card__meta {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .article-card__author {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+</style>

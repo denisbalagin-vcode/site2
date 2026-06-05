@@ -4,14 +4,16 @@ interface Props {
   showSectionNav?: boolean;
   /** Скрыть ссылку на демо на самой странице демо. */
   showDemoLink?: boolean;
+  /** Скрыть ссылку на раздел статей. */
+  showArticlesLink?: boolean;
 }
 
-const { showSectionNav = true, showDemoLink = true } = Astro.props;
+const { showSectionNav = true, showDemoLink = true, showArticlesLink = true } = Astro.props;
 
 import Logo from './ui/Logo.astro';
 import FormSubmission from './FormSubmission.tsx';
 import { asset } from '../utils/asset';
-import { docs } from '../data/contacts';
+import { docs, accountUrl } from '../data/contacts';
 
 // Якорные ссылки на разделы страницы (pill-навигация).
 // «Этапы» и «Экспертизы» убраны — перегружали панель на ноутбуках.
@@ -114,14 +116,33 @@ const docLinks = [
         </div>
       </div>
 
+      {showArticlesLink && (
+        <a class="header__link" href={asset('/articles')}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          <span>Статьи</span>
+        </a>
+      )}
+
       {showDemoLink && (
-        <a class="header__demo" href={asset('/demo')}>
+        <a class="header__link header__demo" href={asset('/demo')}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.78-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" fill="currentColor" stroke="none" />
           </svg>
           <span>Демо</span>
         </a>
       )}
+
+      <!-- Вход в веб-сервис (личный кабинет) -->
+      <a class="header__login" href={accountUrl} target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <span>Войти</span>
+      </a>
 
       <FormSubmission client:load buttonText="Попробовать сервис" variant="filled" size="small" />
     </div>
@@ -183,18 +204,34 @@ const docLinks = [
 
     {showSectionNav && <div class="mobile-menu__divider"></div>}
 
-    {showDemoLink && (
-      <>
-        <a class="mobile-menu__link mobile-menu__link--demo" href={asset('/demo')} data-mobile-close>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.78-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
-          </svg>
-          Демо продукта
-        </a>
-
-        <div class="mobile-menu__divider"></div>
-      </>
+    {showArticlesLink && (
+      <a class="mobile-menu__link mobile-menu__link--demo" href={asset('/articles')} data-mobile-close>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+        Статьи
+      </a>
     )}
+
+    {showDemoLink && (
+      <a class="mobile-menu__link mobile-menu__link--demo" href={asset('/demo')} data-mobile-close>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.78-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+        </svg>
+        Демо продукта
+      </a>
+    )}
+
+    <a class="mobile-menu__link mobile-menu__link--demo" href={accountUrl} target="_blank" rel="noopener noreferrer" data-mobile-close>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+      Войти в аккаунт
+    </a>
+
+    <div class="mobile-menu__divider"></div>
 
     <p class="mobile-menu__label">Документация</p>
     <div class="mobile-menu__group">
@@ -314,8 +351,8 @@ const docLinks = [
     justify-self: end;
   }
 
-  /* Ссылка-кнопка «Демо» */
-  .header__demo {
+  /* Ссылки-кнопки в правом блоке (Статьи, Демо) */
+  .header__link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
@@ -328,15 +365,33 @@ const docLinks = [
     transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
   }
 
-  .header__demo svg {
+  .header__link svg {
     color: var(--color-accent-primary);
     transition: color var(--transition-fast);
   }
 
-  .header__demo:hover {
+  .header__link:hover {
     border-color: var(--color-accent-primary);
     color: var(--color-accent-primary);
     background: var(--color-accent-soft);
+  }
+
+  /* Кнопка входа в аккаунт — спокойный ghost, чтобы не спорить с filled-CTA */
+  .header__login {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .header__login:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
   }
 
   /* Переключатель темы */
