@@ -1,0 +1,290 @@
+---
+import Button from '../ui/Button.astro';
+import Chip from '../ui/Chip.astro';
+import { asset } from '../../utils/asset';
+import { mailtoEmail } from '../../data/contacts';
+
+const stats = [
+  { value: '1000',   unit: 'светопроёмов', label: 'за минуту расчёта',     isLabel: false },
+  { value: '40',     unit: 'минут',        label: 'на освоение сервиса',    isLabel: false },
+  { value: 'Revit',  unit: 'модель',       label: 'всё, что нужно для старта', isLabel: true },
+];
+---
+
+<section id="hero" class="hero">
+  <div class="container hero__inner">
+
+    <!-- Eyebrow badge -->
+    <div class="hero__eyebrow" aria-label="Категория">
+      <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+      Web-сервис для расчёта инсоляции и КЕО
+    </div>
+
+    <!-- Headline -->
+    <h1 class="hero__title">
+      Инсоляция и&nbsp;КЕО —<br />
+      <span class="hero__title-accent">точно и&nbsp;быстро</span>
+    </h1>
+
+    <!-- Description -->
+    <p class="hero__desc">
+      Загрузите Revit-модель и получите полный расчёт со&nbsp;всеми нормами
+      и&nbsp;готовым отчётом. Без лишних шагов.
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="hero__buttons">
+      <Button variant="filled" size="normal" href={mailtoEmail}>
+        Попробовать сервис
+      </Button>
+      <Button variant="outlined" size="normal" href={mailtoEmail}>
+        Получить консультацию
+      </Button>
+    </div>
+
+    <!-- Hashtag chips -->
+    <div class="hero__chips">
+      <Chip>#Рассчитать инсоляцию</Chip>
+      <Chip>#Рассчитать КЕО</Chip>
+      <Chip>#Сформировать отчёт</Chip>
+    </div>
+
+    <!-- Visual card -->
+    <div class="hero__visual" aria-hidden="true">
+      <!-- Decorative gradient background, replace inner content with real screenshot -->
+      <div class="hero__visual-inner">
+        <div class="hero__visual-circle hero__visual-circle--1"></div>
+        <div class="hero__visual-circle hero__visual-circle--2"></div>
+        <div class="hero__visual-circle hero__visual-circle--3"></div>
+        <img src={asset('/images/insolatedBuilding.BsJLrvJH.webp')} alt="Интерфейс Formit с результатами расчёта инсоляции" class="hero__visual-img" decoding="async" />
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <ul class="hero__stats" role="list">
+      {stats.map(s => (
+        <li class="hero__stat">
+          <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
+          <span class="hero__stat-unit">{s.unit}</span>
+          <span class="hero__stat-label">{s.label}</span>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+
+  /* --- Eyebrow --- */
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+
+  .hero__eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  /* --- Title --- */
+  .hero__title {
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    max-width: 18ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+
+  .hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* --- Description --- */
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+
+  /* --- Buttons --- */
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  /* --- Chips --- */
+  .hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  /* --- Visual card --- */
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+
+  .hero__visual-inner {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__visual-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero__visual-circle--1 {
+    width: 60%;
+    aspect-ratio: 1;
+    top: -20%;
+    right: -10%;
+    background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%);
+  }
+
+  .hero__visual-circle--2 {
+    width: 40%;
+    aspect-ratio: 1;
+    bottom: -15%;
+    left: 5%;
+    background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%);
+  }
+
+  .hero__visual-circle--3 {
+    width: 25%;
+    aspect-ratio: 1;
+    bottom: 10%;
+    right: 15%;
+    background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%);
+  }
+
+  .hero__visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* --- Stats --- */
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .hero__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-6);
+  }
+
+  .hero__stat:not(:first-child) {
+    border-left: 1px solid var(--color-border);
+  }
+
+  .hero__stat-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--color-accent-primary);
+  }
+
+  .hero__stat-value--label {
+    color: var(--color-text-primary);
+  }
+
+  .hero__stat-unit {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .hero__stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: var(--line-height-normal);
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 640px) {
+    .hero__title {
+      max-width: 100%;
+    }
+
+    .hero__stats {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+    }
+
+    .hero__stat {
+      flex-direction: row;
+      gap: var(--space-3);
+      text-align: left;
+    }
+
+    .hero__stat-value {
+      font-size: var(--font-size-xl);
+    }
+
+    .hero__stat-label {
+      text-align: left;
+    }
+  }
+</style>

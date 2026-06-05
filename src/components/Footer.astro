@@ -1,0 +1,318 @@
+---
+import Logo from './ui/Logo.astro';
+import { asset } from '../utils/asset';
+import { email, phones as contactPhones, telegram, address, docs } from '../data/contacts';
+
+// Навигация по разделам страницы
+const sectionLinks = [
+  { label: 'Кому подойдёт',  href: '#audience' },
+  { label: 'Этапы',          href: '#stages' },
+  { label: 'Видео',          href: '#video' },
+  { label: 'Демо продукта',  href: asset('/demo') },
+  { label: 'Экспертизы',     href: '#expertises' },
+  { label: 'Отзывы',         href: '#reviews' },
+  { label: 'Стоимость',      href: '#pricing' },
+  { label: 'Контакты',       href: '#contacts' },
+];
+
+// Документы
+const docLinks = [
+  { label: 'Руководство пользователя', href: docs.manual },
+  { label: 'Методические указания',    href: docs.guidelines },
+  { label: 'Что нового',               href: docs.changelog },
+  { label: 'Публичная оферта',         href: asset('/documents/Публичная оферта (Formit).pdf') },
+];
+
+// Контакты
+const phones = contactPhones.map((p) => ({ label: p.label, href: `tel:${p.tel}` }));
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <!-- Верхняя часть — колонки -->
+    <div class="footer__top">
+      <!-- Колонка бренда -->
+      <div class="footer__brand">
+        <a href={asset('/')} class="footer__logo" aria-label="Formit — на главную">
+          <Logo />
+        </a>
+        <p class="footer__tagline">
+          Web-сервис для&nbsp;расчёта инсоляции и&nbsp;КЕО по&nbsp;Revit-модели
+        </p>
+        <div class="footer__social">
+          <a
+            class="footer__social-link"
+            href={telegram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Telegram"
+            title="Telegram"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.9-.903-1.056-.692-1.653-1.123-2.678-1.796-1.185-.779-.417-1.208.258-1.908.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.346-.479.328-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.1-.001.324.023.468.14.121.098.155.23.171.322.016.093.035.303.019.468z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Колонка: навигация -->
+      <nav class="footer__col" aria-label="Разделы">
+        <h2 class="footer__col-title">Разделы</h2>
+        <ul class="footer__list">
+          {sectionLinks.map(link => (
+            <li><a class="footer__link" href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Колонка: документы -->
+      <nav class="footer__col" aria-label="Документы">
+        <h2 class="footer__col-title">Документы</h2>
+        <ul class="footer__list">
+          {docLinks.map(link => (
+            <li>
+              <a
+                class="footer__link"
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Колонка: контакты -->
+      <address class="footer__col footer__contacts">
+        <h2 class="footer__col-title">Контакты</h2>
+        <ul class="footer__list">
+          {phones.map(phone => (
+            <li>
+              <a class="footer__link footer__contact" href={phone.href}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>{phone.label}</span>
+              </a>
+            </li>
+          ))}
+          <li>
+            <a class="footer__link footer__contact" href={`mailto:${email}`}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              <span>{email}</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__link footer__contact footer__contact--address"
+              href={address.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span set:html={address.html} />
+            </a>
+          </li>
+        </ul>
+      </address>
+    </div>
+
+    <!-- Нижняя полоса -->
+    <div class="footer__bottom">
+      <p class="footer__copy">© {currentYear} Formit. Все права защищены.</p>
+      <div class="footer__legal">
+        <a
+          href={asset('/documents/Публичная оферта (Formit).pdf')}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Публичная оферта
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border-navbar);
+    background: var(--color-bg-primary);
+    padding-block: var(--space-16) var(--space-6);
+  }
+
+  /* ============================================================
+     ВЕРХНЯЯ ЧАСТЬ — КОЛОНКИ
+     ============================================================ */
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    gap: var(--space-10);
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* --- Колонка бренда --- */
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .footer__logo {
+    display: inline-flex;
+  }
+
+  .footer__tagline {
+    max-width: 32ch;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-loose);
+    color: var(--color-text-secondary);
+  }
+
+  .footer__social {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+
+  .footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .footer__social-link:hover {
+    color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    transform: translateY(-2px);
+  }
+
+  /* --- Колонки-списки --- */
+  .footer__col {
+    font-style: normal;
+  }
+
+  .footer__col-title {
+    margin-bottom: var(--space-5);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .footer__link {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .footer__link:hover {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Иконка для ссылок, открывающихся в новой вкладке */
+  .footer__link[target='_blank']::after {
+    content: ' ↗';
+    font-size: 0.7em;
+    opacity: 0.6;
+  }
+
+  .footer__contact {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .footer__contact svg {
+    margin-top: 0.2em;
+    flex-shrink: 0;
+  }
+
+  .footer__contact--address {
+    align-items: flex-start;
+  }
+
+  /* ============================================================
+     НИЖНЯЯ ПОЛОСА
+     ============================================================ */
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .footer__copy {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-dimmed);
+  }
+
+  .footer__legal {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .footer__legal a {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-dimmed);
+    transition: color var(--transition-fast);
+  }
+
+  .footer__legal a:hover {
+    color: var(--color-text-primary);
+  }
+
+  /* ============================================================
+     АДАПТИВНОСТЬ
+     ============================================================ */
+  @media (max-width: 960px) {
+    .footer__top {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
