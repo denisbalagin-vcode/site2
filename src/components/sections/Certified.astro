@@ -30,7 +30,7 @@ const standards = [
     <h2 class="section-title h2">Сервис сертифицирован</h2>
 
     <div class="certified__cards">
-      <!-- Сертификат 1 -->
+      <!-- Сертификаты -->
       {certificates.map(cert => (
         <div class="card card--soft card--interactive cert-card">
           <a
@@ -110,11 +110,13 @@ const standards = [
     flex-direction: column;
   }
 
-  /* --- Карточка сертификата --- */
+  /* --- Карточка сертификата ---
+     Контент центрируется по вертикали и заполняет высоту карточки
+     (карточки тянутся под высоту правого блока). */
   .cert-card {
     display: flex;
-    gap: var(--space-4);
-    align-items: flex-start;
+    gap: var(--space-6);
+    align-items: center;
   }
 
   .cert-card__image-link {
@@ -130,7 +132,7 @@ const standards = [
   }
 
   .cert-card__preview {
-    width: 100px;
+    width: clamp(130px, 13vw, 180px);
     height: auto;
     display: block;
     border-radius: var(--radius-md);
@@ -139,17 +141,17 @@ const standards = [
   .cert-card__info {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-4);
   }
 
   .cert-card__title {
-    font-size: var(--font-size-base);
+    font-size: clamp(var(--font-size-lg), 1.8vw, var(--font-size-xl));
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
   }
 
   .cert-card__appendix {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
     color: var(--color-accent-primary);
     font-weight: var(--font-weight-medium);
     transition: opacity var(--transition-fast);
