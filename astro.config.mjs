@@ -9,6 +9,6 @@ const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 // https://astro.build/config
 export default defineConfig({
   site: isGitHubPages ? 'https://denisbalagin-vcode.github.io' : 'https://formit.pro',
-  base: isGitHubPages ? '/site' : '/',
+  base: isGitHubPages ? '/site2' : '/',
   integrations: [preact(), sitemap()],
 });
