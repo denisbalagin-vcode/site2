@@ -44,8 +44,8 @@
   --color-bg-secondary:  #f1f3f5;     /* --bg-secondary */
 
   --color-text-primary:  #2d2d2d;     /* --text-primary */
-  --color-text-secondary:#898989;     /* --text-secondary */
-  --color-text-dimmed:   #898989;     /* --text-secondary (same) */
+  --color-text-secondary:#595959;     /* затемнён для контраста (был #898989) */
+  --color-text-dimmed:   #595959;     /* затемнён для контраста (был #898989) */
   --color-text-inverse:  #ffffff;     /* --text-light */
   --color-text-link:     #3bb1e6;     /* --text-link */
   --color-text-success:  #00dc1a;     /* --text-success */
