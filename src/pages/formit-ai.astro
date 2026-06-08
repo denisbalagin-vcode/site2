@@ -9,6 +9,7 @@ import Contacts from '../components/sections/Contacts.astro';
 import { asset } from '../utils/asset';
 import { mailtoEmail } from '../data/contacts';
 
+// ── Возможности платформы ──
 const features = [
   {
     icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><circle cx="18" cy="18" r="6" fill="#0039c5" opacity=".3" stroke="#0039c5" stroke-width="1.8"/><path d="M18 6 V9 M18 27 V30 M6 18 H9 M27 18 H30 M9.5 9.5 L11.6 11.6 M24.4 24.4 L26.5 26.5 M26.5 9.5 L24.4 11.6 M11.6 24.4 L9.5 26.5" stroke="#0039c5" stroke-width="1.5" stroke-linecap="round"/><path d="M28 40 V26 H38 V40" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 30 H35 M31 34 H35" stroke="#0039c5" stroke-width="1.4" stroke-linecap="round"/></svg>`,
@@ -42,29 +43,78 @@ const features = [
   },
 ];
 
-const steps = [
-  {
-    n: '01',
-    title: 'Загрузка BIM',
-    desc: 'Импортируйте модель из Revit или GLB — единая BIM-среда без дублирования данных.',
-  },
-  {
-    n: '02',
-    title: 'ИИ-генерация',
-    desc: 'Платформа генерирует варианты застройки, квартирографию и фасадные решения с учётом ТЗ и ограничений.',
-  },
-  {
-    n: '03',
-    title: 'Расчёты и нормы',
-    desc: 'Собственный расчётный движок считает инсоляцию и ТЭП, проверяет нормы онлайн.',
-  },
-  {
-    n: '04',
-    title: 'Отчёты и альбом',
-    desc: 'Автоматическая сборка таблиц ТЭП, альбома концепции и отчётов для экспертизы.',
-  },
+// ── Проблема рынка ──
+const painPoints = [
+  { title: 'Дни и недели', desc: 'Расчёты и отчёты занимают недели вместо часов.' },
+  { title: 'Поздняя проверка', desc: 'Соответствие нормам проверяется слишком поздно.' },
+  { title: 'Мало итераций', desc: 'Команды не успевают сравнивать варианты застройки.' },
+];
+const currentSolutions = [
+  'Ручные расчёты в разных программах',
+  'Desktop-инструменты с долгой подготовкой модели',
+  'Excel, PDF и Revit по отдельности',
 ];
 
+// ── Решение ──
+const advantages = [
+  { title: 'Единая BIM-среда', desc: 'BIM → расчёт единым сквозным процессом, без дублирования данных.' },
+  { title: 'ИИ-генерация вариантов', desc: 'Платформа сама предлагает варианты застройки, квартирографии и фасадов.' },
+  { title: 'Проверка норм онлайн', desc: 'Соответствие СП и СанПиН проверяется в облаке, без тяжёлого desktop.' },
+  { title: 'Автоотчёты для экспертизы', desc: 'Таблицы ТЭП, альбом концепции и отчёты формируются автоматически.' },
+];
+
+// ── Шаги работы ──
+const steps = [
+  { n: '01', title: 'Загрузка BIM', desc: 'Импортируйте модель из Revit или GLB — единая BIM-среда без дублирования данных.' },
+  { n: '02', title: 'ИИ-генерация', desc: 'Платформа генерирует варианты застройки, квартирографию и фасадные решения с учётом ТЗ.' },
+  { n: '03', title: 'Расчёты и нормы', desc: 'Собственный расчётный движок считает инсоляцию и ТЭП, проверяет нормы онлайн.' },
+  { n: '04', title: 'Отчёты и альбом', desc: 'Автоматическая сборка таблиц ТЭП, альбома концепции и отчётов для экспертизы.' },
+];
+
+// ── Эффект для бизнеса ──
+const businessMetrics = [
+  { value: '70%', label: 'снижение трудозатрат' },
+  { value: '50×', label: 'ускорение расчётов' },
+  { value: '40 млн ₽', label: 'экономический эффект' },
+  { value: '99%', label: 'ежегодные продления' },
+];
+
+// ── Технология ──
+const techStack = [
+  'Собственный расчётный движок',
+  'Микросервисная архитектура',
+  'Облачный веб-сервис',
+  'Интеграция с Revit',
+  'ПО в реестре отечественного',
+];
+const techAdvantages = [
+  { title: 'BIM → расчёт', desc: 'Единый сквозной процесс от модели до отчёта.' },
+  { title: 'Онлайн', desc: 'Работа в облаке без тяжёлого desktop-софта.' },
+  { title: 'AI + Core', desc: 'Генерация вариантов и проверка норм в одном контуре.' },
+  { title: 'Revit-ready', desc: 'Интеграция с Revit без дублирования данных.' },
+];
+
+// ── Рынок и эффекты ──
+const keyNumbers = [
+  { value: '160', label: 'клиентов' },
+  { value: '202', label: 'лицензии' },
+  { value: '40 млн ₽', label: 'экономический эффект' },
+  { value: '50 000 м²', label: 'кейс жилого комплекса' },
+];
+const targetMarket = [
+  '138,9 млн ₽ — потенциал рынка',
+  '~210 тыс ₽ — средний чек',
+  'Девелоперы и проектировщики',
+  'B2B-рынок РФ',
+];
+const growthDrivers = [
+  'BIM становится отраслевым стандартом',
+  'Импортозамещение ускоряет спрос',
+  'ИИ расширяет сценарии проектирования',
+  'Цифровизация рынка продолжает расти',
+];
+
+// Hero-статистика
 const stats = [
   { value: '70%', unit: 'меньше', label: 'ручного труда' },
   { value: '50×', unit: 'быстрее', label: 'расчёты проекта' },
@@ -142,6 +192,59 @@ const stats = [
       </div>
     </section>
 
+    <!-- Проблема рынка -->
+    <section id="problem" class="section section--bg-secondary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Проблема рынка</h2>
+        <p class="section-sub">
+          Девелоперы и&nbsp;проектные компании теряют время из-за ручных расчётов
+          и&nbsp;поздней проверки норм.
+        </p>
+
+        <div class="cards-grid cards-grid--3">
+          {painPoints.map(p => (
+            <div class="card card--soft card--interactive pain-card">
+              <h3 class="pain-card__title">{p.title}</h3>
+              <p class="pain-card__desc">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="problem__bottom card">
+          <div class="problem__col">
+            <h4 class="problem__col-title">Как решают сейчас</h4>
+            <ul class="dash-list">
+              {currentSolutions.map(s => <li>{s}</li>)}
+            </ul>
+          </div>
+          <div class="problem__result">
+            <span class="problem__result-label">Результат</span>
+            <p class="problem__result-text">Медленный старт, выше риск ошибок.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Решение -->
+    <section id="solution" class="section section--bg-primary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Решение</h2>
+        <p class="section-sub">
+          FORMIT AI объединяет расчёты, генерацию вариантов и&nbsp;выпуск отчётов
+          в&nbsp;единую BIM-платформу для девелопмента.
+        </p>
+
+        <div class="cards-grid cards-grid--4">
+          {advantages.map(a => (
+            <div class="card card--soft card--interactive adv-card">
+              <h3 class="adv-card__title">{a.title}</h3>
+              <p class="adv-card__desc">{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- Возможности -->
     <section id="features" class="section section--bg-secondary features fade-in">
       <div class="container">
@@ -174,7 +277,94 @@ const stats = [
       </div>
     </section>
 
-    <!-- Early access CTA -->
+    <!-- Эффект для бизнеса -->
+    <section id="effect" class="section section--bg-secondary fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Эффект для бизнеса</h2>
+        <div class="metrics-grid">
+          {businessMetrics.map(m => (
+            <div class="card card--soft metric">
+              <span class="metric__value">{m.value}</span>
+              <span class="metric__label">{m.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Технология -->
+    <section id="technology" class="section section--bg-primary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Технология</h2>
+        <p class="section-sub">
+          Собственная платформа объединяет BIM, ИИ и&nbsp;облачные расчёты
+          для быстрого проектного анализа.
+        </p>
+
+        <div class="tech__layout">
+          <div class="card card--soft tech__stack">
+            <h4 class="tech__stack-title">Технологический стек</h4>
+            <ul class="check-list">
+              {techStack.map(t => <li>{t}</li>)}
+            </ul>
+          </div>
+
+          <div class="tech__adv">
+            {techAdvantages.map(a => (
+              <div class="card card--soft card--interactive adv-card">
+                <h3 class="adv-card__title">{a.title}</h3>
+                <p class="adv-card__desc">{a.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p class="tech__summary">
+          Итог: быстрее расчёты, больше итераций, ниже риск ошибок.
+        </p>
+      </div>
+    </section>
+
+    <!-- Рынок и эффекты -->
+    <section id="market" class="section section--bg-secondary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Рынок и эффекты</h2>
+        <p class="section-sub">
+          Растущий B2B-рынок и&nbsp;доказанный эффект внедрения для девелоперов
+          и&nbsp;проектировщиков.
+        </p>
+
+        <div class="metrics-grid">
+          {keyNumbers.map(n => (
+            <div class="card metric">
+              <span class="metric__value">{n.value}</span>
+              <span class="metric__label">{n.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="market__cols">
+          <div class="card card--soft">
+            <h4 class="market__col-title">Целевой рынок</h4>
+            <ul class="check-list">
+              {targetMarket.map(p => <li>{p}</li>)}
+            </ul>
+          </div>
+          <div class="card card--soft">
+            <h4 class="market__col-title">Драйверы роста</h4>
+            <ul class="check-list">
+              {growthDrivers.map(d => <li>{d}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <p class="market__note">
+          <strong>160 клиентов · 202 лицензии · 99% продлений</strong> — спрос уже подтверждён.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
     <section id="pricing" class="section section--bg-secondary cta-section fade-in">
       <div class="container cta-section__inner">
         <div class="card card--featured cta-card">
@@ -293,9 +483,7 @@ const stats = [
     z-index: 1;
     color: var(--color-accent-primary);
   }
-  .ai-placeholder__icon {
-    animation: spin-slow 12s linear infinite;
-  }
+  .ai-placeholder__icon { animation: spin-slow 12s linear infinite; }
   @keyframes spin-slow {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
@@ -322,18 +510,149 @@ const stats = [
   .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
   .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
 
+  /* ── Заголовок с подзаголовком ── */
+  .section-title--with-sub { margin-bottom: var(--space-4); }
+  .section-sub {
+    max-width: 64ch;
+    margin: 0 auto var(--space-12);
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  /* ── Проблема ── */
+  .pain-card { display: flex; flex-direction: column; gap: var(--space-2); }
+  .pain-card__title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .pain-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .problem__bottom {
+    margin-top: var(--space-6);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .problem__col-title,
+  .market__col-title,
+  .tech__stack-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-4);
+  }
+  .dash-list { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .dash-list li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .dash-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+  }
+  .problem__result {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border-navbar);
+  }
+  .problem__result-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-2);
+  }
+  .problem__result-text { font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); }
+
+  /* ── Карточки-преимущества (решение, технология) ── */
+  .adv-card { display: flex; flex-direction: column; gap: var(--space-2); }
+  .adv-card__title {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+  .adv-card__title::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-bold);
+  }
+  .adv-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  /* ── Features ── */
   .features__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
   .feature-card { display: flex; flex-direction: column; gap: var(--space-3); }
   .feature-card__icon :global(svg) { display: block; }
   .feature-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
   .feature-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
 
+  /* ── Steps ── */
   .steps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
   .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
   .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
   .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
   .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
 
+  /* ── Метрики ── */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .metric { display: flex; flex-direction: column; gap: var(--space-2); align-items: center; text-align: center; }
+  .metric__value { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); line-height: 1; }
+  .metric__label { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+  /* ── Технология ── */
+  .tech__layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  .check-list { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .check-list li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-bold);
+  }
+  .tech__adv { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  .tech__summary {
+    margin-top: var(--space-8);
+    text-align: center;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* ── Рынок ── */
+  .market__cols {
+    margin-top: var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+  .market__note {
+    margin-top: var(--space-8);
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+  }
+  .market__note strong { color: var(--color-accent-primary); }
+
+  /* ── CTA ── */
   .cta-section__inner { display: flex; justify-content: center; }
   .cta-card { max-width: 520px; width: 100%; display: flex; flex-direction: column; gap: var(--space-6); }
   .cta-card__badge {
@@ -359,18 +678,28 @@ const stats = [
   .cta-card__features li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
   .cta-card__features li::before { content: '✓'; color: var(--color-accent-primary); font-weight: var(--font-weight-bold); flex-shrink: 0; margin-top: 1px; }
 
+  /* ── Адаптивность ── */
   @media (prefers-reduced-motion: reduce) {
     .ai-placeholder__icon { animation: none; }
   }
   @media (max-width: 960px) {
-    .features__grid, .steps__grid { grid-template-columns: repeat(2, 1fr); }
+    .features__grid,
+    .steps__grid,
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .tech__layout { grid-template-columns: 1fr; }
+    .problem__bottom { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     .hero__title { max-width: 100%; }
     .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
     .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
+    .hero__stat:not(:first-child) { border-left: 0; }
     .hero__stat-value { font-size: var(--font-size-xl); }
     .hero__stat-label { text-align: left; }
-    .features__grid, .steps__grid { grid-template-columns: 1fr; }
+    .features__grid,
+    .steps__grid,
+    .metrics-grid,
+    .tech__adv,
+    .market__cols { grid-template-columns: 1fr; }
   }
 </style>
