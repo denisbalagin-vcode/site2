@@ -4,7 +4,11 @@ import { asset } from '../utils/asset';
 import { email, phones as contactPhones, telegram, address, docs, accountUrl } from '../data/contacts';
 
 // Навигация по разделам страницы
-const sectionLinks = [
+const pathname = Astro.url.pathname.replace(/\/$/, '');
+const isDemo = pathname === asset('/demo').replace(/\/$/, '');
+const isArticles = pathname.startsWith(asset('/articles'));
+
+const allSectionLinks = [
   { label: 'Кому подойдёт',  href: '#audience' },
   { label: 'Этапы',          href: '#stages' },
   { label: 'Видео',          href: '#video' },
@@ -15,6 +19,15 @@ const sectionLinks = [
   { label: 'Стоимость',      href: '#pricing' },
   { label: 'Контакты',       href: '#contacts' },
 ];
+
+const sectionLinks = (isDemo || isArticles)
+  ? [
+      { label: 'Главная', href: asset('/') },
+      ...(isDemo
+        ? [{ label: 'Демо продукта', href: asset('/demo') }]
+        : [{ label: 'Статьи', href: asset('/articles') }]),
+    ]
+  : allSectionLinks;
 
 // Документы
 const docLinks = [
