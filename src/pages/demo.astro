@@ -454,10 +454,21 @@ const steps = [
 </style>
 
 <script>
+  // Module-scoped: при SPA-навигации (ClientRouter) гасим прошлый observer и
+  // таймер автопрокрутки, чтобы они не висели на свапнутых узлах.
+  let demoIO: IntersectionObserver | null = null;
+  let demoTimer: number | undefined;
+
   function initDemoStepper() {
+    demoIO?.disconnect();
+    demoIO = null;
+    if (demoTimer) {
+      clearInterval(demoTimer);
+      demoTimer = undefined;
+    }
+
     const list = document.querySelector<HTMLElement>('[data-demo-steps]');
-    if (!list || list.dataset.bound === 'true') return;
-    list.dataset.bound = 'true';
+    if (!list) return;
 
     const steps = Array.from(list.querySelectorAll<HTMLButtonElement>('[data-step-index]'));
     const bars = Array.from(document.querySelectorAll<HTMLElement>('[data-progress-bar]'));
@@ -467,7 +478,6 @@ const steps = [
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let active = 0;
-    let timer: number | undefined;
 
     const render = (index: number) => {
       active = index;
@@ -482,13 +492,13 @@ const steps = [
     const advance = () => render((active + 1) % steps.length);
 
     const startAuto = () => {
-      if (reduceMotion || timer) return;
-      timer = window.setInterval(advance, 3500);
+      if (reduceMotion || demoTimer) return;
+      demoTimer = window.setInterval(advance, 3500);
     };
     const stopAuto = () => {
-      if (timer) {
-        clearInterval(timer);
-        timer = undefined;
+      if (demoTimer) {
+        clearInterval(demoTimer);
+        demoTimer = undefined;
       }
     };
 
@@ -500,11 +510,11 @@ const steps = [
     });
 
     // Останавливаем автопрокрутку, когда секция вне экрана — экономим ресурсы.
-    const io = new IntersectionObserver(
+    demoIO = new IntersectionObserver(
       (entries) => entries.forEach((e) => (e.isIntersecting ? startAuto() : stopAuto())),
       { threshold: 0.25 }
     );
-    io.observe(list);
+    demoIO.observe(list);
 
     render(0);
   }

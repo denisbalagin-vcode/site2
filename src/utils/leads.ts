@@ -46,7 +46,11 @@ export async function submitLead(data: LeadInput): Promise<LeadResult> {
       });
 
       if (!res.ok) {
-        return { ok: false, error: `Сервер вернул ${res.status}` };
+        const detail = await res.text().catch(() => '');
+        return {
+          ok: false,
+          error: `Сервер вернул ${res.status}${detail ? `: ${detail.slice(0, 200)}` : ''}`,
+        };
       }
       return { ok: true, via: 'endpoint' };
     } catch {

@@ -57,12 +57,19 @@ function normalize(entry: CollectionEntry<"articles">): Article {
   };
 }
 
+// Кеш на уровне модуля: коллекция за сборку не меняется, поэтому считаем её
+// один раз. Производные геттеры ниже переиспользуют результат вместо повторного
+// прохода по всей коллекции.
+let cache: Article[] | null = null;
+
 /** Все опубликованные статьи, по убыванию даты публикации. */
 export async function getAllArticles(): Promise<Article[]> {
+  if (cache) return cache;
   const entries = await getCollection("articles", ({ data }) => !data.draft);
-  return entries
+  cache = entries
     .map(normalize)
     .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
+  return cache;
 }
 
 /** Одна статья по slug (или `undefined`, если не найдена/черновик). */

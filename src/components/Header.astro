@@ -678,10 +678,17 @@ const docLinks = [
 <script>
   import { track } from '../utils/analytics';
 
+  // Module-scoped: при SPA-навигации (ClientRouter) body свапается, но слушатели
+  // на window/document переживают swap. Снимаем их перед повторной инициализацией,
+  // иначе они накапливаются от страницы к странице.
+  let cleanup: (() => void) | null = null;
+
   function initHeader() {
+    cleanup?.();
+    cleanup = null;
+
     const header = document.querySelector('[data-site-header]') as HTMLElement | null;
-    if (!header || header.dataset.bound === 'true') return;
-    header.dataset.bound = 'true';
+    if (!header) return;
 
     // 1. Тень/граница хедера при прокрутке
     const onScroll = () => {
@@ -707,8 +714,9 @@ const docLinks = [
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
+    let sectionObserver: IntersectionObserver | null = null;
     if (sections.length) {
-      const observer = new IntersectionObserver(
+      sectionObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
@@ -719,8 +727,13 @@ const docLinks = [
         },
         { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
       );
-      sections.forEach((s) => observer.observe(s));
+      sections.forEach((s) => sectionObserver!.observe(s));
     }
+
+    // Закрывалки попапов — собираем, чтобы общий onDocKeydown (Escape) и
+    // onDocClick могли их вызвать, а cleanup — снять глобальные слушатели.
+    let closeDropdown: (() => void) | null = null;
+    let closeMenu: (() => void) | null = null;
 
     // 3. Выпадающее меню документации
     const dropdown = document.querySelector<HTMLElement>('[data-dropdown]');
@@ -730,13 +743,10 @@ const docLinks = [
         dropdown.dataset.open = open ? 'true' : 'false';
         dropdownToggle.setAttribute('aria-expanded', String(open));
       };
+      closeDropdown = () => setDropdown(false);
       dropdownToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         setDropdown(dropdown.dataset.open !== 'true');
-      });
-      document.addEventListener('click', () => setDropdown(false));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') setDropdown(false);
       });
     }
 
@@ -750,16 +760,24 @@ const docLinks = [
         toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
         document.body.style.overflow = open ? 'hidden' : '';
       };
+      closeMenu = () => setMenu(false);
       toggle.addEventListener('click', () => {
         setMenu(!menu.classList.contains('is-open'));
       });
       menu.querySelectorAll('[data-mobile-close]').forEach((link) => {
         link.addEventListener('click', () => setMenu(false));
       });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') setMenu(false);
-      });
     }
+
+    // Глобальные слушатели для закрытия попапов (один раз, снимаются в cleanup).
+    const onDocClick = () => closeDropdown?.();
+    const onDocKeydown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      closeDropdown?.();
+      closeMenu?.();
+    };
+    document.addEventListener('click', onDocClick);
+    document.addEventListener('keydown', onDocKeydown);
 
     // 5. Переключатель темы (light/dark) с сохранением выбора
     const themeToggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
@@ -812,6 +830,14 @@ const docLinks = [
     document
       .querySelectorAll<HTMLAnchorElement>('.header__demo, .mobile-menu__link--demo')
       .forEach((link) => link.addEventListener('click', () => track('demo_click')));
+
+    // Снятие глобальных слушателей и observer перед следующей навигацией.
+    cleanup = () => {
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('click', onDocClick);
+      document.removeEventListener('keydown', onDocKeydown);
+      sectionObserver?.disconnect();
+    };
   }
 
   initHeader();

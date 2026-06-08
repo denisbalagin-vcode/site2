@@ -148,6 +148,10 @@ const tags = await getAllTags();
     const items = Array.from(document.querySelectorAll<HTMLElement>('.articles-grid__item'));
     const noResults = document.querySelector<HTMLElement>('[data-no-results]');
     if (!filter || !items.length) return;
+    // На свежем DOM (initial load / после SPA-навигации) bound сброшен — биндим
+    // один раз, чтобы прямой вызов и astro:page-load не навесили обработчики дважды.
+    if (filter.dataset.bound === 'true') return;
+    filter.dataset.bound = 'true';
 
     const chips = Array.from(filter.querySelectorAll<HTMLButtonElement>('[data-tag-filter]'));
 
