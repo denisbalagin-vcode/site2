@@ -6,9 +6,11 @@ interface Props {
   showDemoLink?: boolean;
   /** Скрыть ссылку на раздел статей. */
   showArticlesLink?: boolean;
+  /** Показать кнопку «Главная» (для внутренних страниц без pill-навигации). */
+  showHomeLink?: boolean;
 }
 
-const { showSectionNav = true, showDemoLink = true, showArticlesLink = true } = Astro.props;
+const { showSectionNav = true, showDemoLink = true, showArticlesLink = true, showHomeLink = false } = Astro.props;
 
 import Logo from './ui/Logo.astro';
 import FormSubmission from './FormSubmission.tsx';
@@ -69,8 +71,18 @@ const docLinks = [
     )}
 
     <!-- Правый блок (десктоп). Порядок слева направо:
-         Статьи · Демо · Документация · Войти · Смена темы -->
+         Главная · Статьи · Демо · Документация · Войти · Смена темы -->
     <div class="header__actions">
+      {showHomeLink && (
+        <a class="header__link header__home" href={asset('/')}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span>Главная</span>
+        </a>
+      )}
+
       {showArticlesLink && (
         <a class="header__link" href={asset('/articles')}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
