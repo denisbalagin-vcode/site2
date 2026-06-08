@@ -1,0 +1,320 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import FormSubmission from '../components/FormSubmission.tsx';
+import Contacts from '../components/sections/Contacts.astro';
+import { asset } from '../utils/asset';
+import { mailtoEmail } from '../data/contacts';
+
+const features = [
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="10" y="10" width="28" height="28" rx="3" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8"/><path d="M16 18 H32 M16 24 H26 M16 30 H22" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round"/><path d="M29 26 L32 26 L32 34 L29 34" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    title: 'Площади автоматически',
+    desc: 'Сервис считает площади квартир, секций, этажей и всего здания прямо из Revit-модели без ручного ввода.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><path d="M12 36 L20 24 L26 30 L32 18 L38 22" stroke="#0039c5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38" cy="22" r="2.5" fill="#0039c5"/></svg>`,
+    title: 'Технико-экономические показатели',
+    desc: 'Автоматический расчёт ТЭП: строительный объём, площадь застройки, коэффициент плотности и другие нормативные показатели.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><circle cx="24" cy="24" r="11" stroke="#0039c5" stroke-width="2"/><path d="M24 17 V24 L29 27" stroke="#0039c5" stroke-width="2.2" stroke-linecap="round"/><path d="M10 24 H14 M34 24 H38 M24 10 V14 M24 34 V38" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    title: 'Синхронизация в 1 клик',
+    desc: 'После изменений в проекте обновите данные одним кликом — ТЭПы пересчитаются автоматически.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="12" y="10" width="24" height="28" rx="2.5" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8"/><path d="M17 18 H31 M17 23 H31 M17 28 H24" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round"/><circle cx="31" cy="32" r="5" fill="#e8f0ff" stroke="#0039c5" stroke-width="1.6"/><path d="M29 32 L30.5 33.5 L33.5 30" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    title: 'Готовая таблица ТЭП',
+    desc: 'Получите готовую таблицу ТЭП в формате для ПЗ и ГПЗУ — соответствует требованиям экспертизы.',
+  },
+];
+
+const steps = [
+  {
+    n: '01',
+    title: 'Загрузите модель',
+    desc: 'Синхронизируйте Revit-модель в сервис — данные передаются в один клик через плагин.',
+  },
+  {
+    n: '02',
+    title: 'Автоматический расчёт',
+    desc: 'Сервис извлекает геометрию и атрибуты, рассчитывает площади, объёмы и коэффициенты.',
+  },
+  {
+    n: '03',
+    title: 'Проверка показателей',
+    desc: 'Смотрите итоговые ТЭП в удобном интерфейсе, сравнивайте с нормативными значениями.',
+  },
+  {
+    n: '04',
+    title: 'Экспорт таблицы',
+    desc: 'Выгрузите готовую таблицу ТЭП для включения в проектную документацию.',
+  },
+];
+
+const stats = [
+  { value: '1 клик', unit: 'синхронизация', label: 'обновление данных из модели', isLabel: true },
+  { value: 'авто', unit: 'расчёт', label: 'площади, объёмы, коэффициенты', isLabel: true },
+  { value: 'ГПЗУ', unit: 'совместимо', label: 'таблица под требования', isLabel: true },
+];
+---
+
+<Layout
+  title="Formit ТЭПы — технико-экономические показатели из Revit"
+  description="Автоматический расчёт технико-экономических показателей (ТЭП) из Revit-модели. Площади, объёмы, коэффициенты — в один клик."
+>
+  <Header currentProduct="tep" />
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container hero__inner">
+        <div class="hero__eyebrow" aria-label="Продукт">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          Formit ТЭПы
+        </div>
+
+        <h1 class="hero__title">
+          ТЭПы —<br />
+          <span class="hero__title-accent">без ручного труда</span>
+        </h1>
+
+        <p class="hero__desc">
+          Автоматически рассчитывайте технико-экономические показатели из&nbsp;Revit-модели.
+          Площади, объёмы, коэффициенты — мгновенно и&nbsp;в&nbsp;нужном формате.
+        </p>
+
+        <div class="hero__buttons">
+          <Button variant="filled" size="normal" href={mailtoEmail}>
+            Попробовать сервис
+          </Button>
+          <Button variant="outlined" size="normal" href={mailtoEmail}>
+            Получить консультацию
+          </Button>
+        </div>
+
+        <div class="hero__chips">
+          <Chip>#Площади автоматически</Chip>
+          <Chip>#Объёмы и коэффициенты</Chip>
+          <Chip>#Таблица для ПЗ</Chip>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__visual-inner">
+            <div class="hero__visual-circle hero__visual-circle--1"></div>
+            <div class="hero__visual-circle hero__visual-circle--2"></div>
+            <div class="hero__visual-circle hero__visual-circle--3"></div>
+            <img
+              src={asset('/images/insolatedBuilding.BsJLrvJH.webp')}
+              alt="Расчёт ТЭП из Revit-модели"
+              class="hero__visual-img"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <ul class="hero__stats" role="list">
+          {stats.map(s => (
+            <li class="hero__stat">
+              <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
+              <span class="hero__stat-unit">{s.unit}</span>
+              <span class="hero__stat-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Возможности -->
+    <section id="features" class="section section--bg-secondary features fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Возможности Formit ТЭПы</h2>
+        <div class="features__grid">
+          {features.map(f => (
+            <div class="card card--soft card--interactive feature-card">
+              <div class="feature-card__icon" aria-hidden="true" set:html={f.icon} />
+              <h3 class="feature-card__title">{f.title}</h3>
+              <p class="feature-card__desc">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Шаги -->
+    <section id="stages" class="section section--bg-primary stages fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Как это работает</h2>
+        <div class="steps__grid">
+          {steps.map((step) => (
+            <div class="card card--soft step-card">
+              <span class="step-card__num">{step.n}</span>
+              <h3 class="step-card__title">{step.title}</h3>
+              <p class="step-card__desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / Pricing -->
+    <section id="pricing" class="section section--bg-secondary cta-section fade-in">
+      <div class="container cta-section__inner">
+        <div class="card card--featured cta-card">
+          <div class="cta-card__header">
+            <h2 class="cta-card__name">Formit ТЭПы</h2>
+            <p class="cta-card__subtitle">Технико-экономические показатели из Revit-модели</p>
+          </div>
+          <div class="cta-card__price">
+            <span class="cta-card__price-year">Уточните стоимость</span>
+            <span class="cta-card__price-month">Индивидуальный расчёт для вашего проекта</span>
+          </div>
+          <ul class="cta-card__features">
+            <li>Автоматический расчёт площадей квартир, секций, этажей</li>
+            <li>Строительный объём и площадь застройки</li>
+            <li>Коэффициент плотности и другие нормативные ТЭП</li>
+            <li>Синхронизация с Revit в один клик</li>
+            <li>Готовая таблица ТЭП для ПЗ и ГПЗУ</li>
+            <li>Соответствие требованиям экспертизы</li>
+          </ul>
+          <FormSubmission client:load buttonText="Оставить заявку" variant="filled" size="normal" />
+        </div>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .hero__eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+  .hero__title {
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    max-width: 18ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+  .hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+  .hero__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+  .hero__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+  .hero__visual-inner { position: absolute; inset: 0; }
+  .hero__visual-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero__visual-circle--1 { width: 60%; aspect-ratio: 1; top: -20%; right: -10%; background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--2 { width: 40%; aspect-ratio: 1; bottom: -15%; left: 5%; background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--3 { width: 25%; aspect-ratio: 1; bottom: 10%; right: 15%; background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%); }
+  .hero__visual-img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+  .hero__stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: 0 var(--space-6); }
+  .hero__stat:not(:first-child) { border-left: 1px solid var(--color-border); }
+  .hero__stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: 1; color: var(--color-accent-primary); }
+  .hero__stat-value--label { color: var(--color-text-primary); }
+  .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+  .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
+
+  .features__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .feature-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .feature-card__icon :global(svg) { display: block; }
+  .feature-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .feature-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .steps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
+  .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .cta-section__inner { display: flex; justify-content: center; }
+  .cta-card { max-width: 520px; width: 100%; display: flex; flex-direction: column; gap: var(--space-6); }
+  .cta-card__header { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__name { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+  .cta-card__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__price { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__price-year { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .cta-card__price-month { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .cta-card__features li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features li::before { content: '✓'; color: var(--color-accent-primary); font-weight: var(--font-weight-bold); flex-shrink: 0; margin-top: 1px; }
+
+  @media (max-width: 960px) {
+    .features__grid, .steps__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .hero__title { max-width: 100%; }
+    .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
+    .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
+    .hero__stat-value { font-size: var(--font-size-xl); }
+    .hero__stat-label { text-align: left; }
+    .features__grid, .steps__grid { grid-template-columns: 1fr; }
+  }
+</style>

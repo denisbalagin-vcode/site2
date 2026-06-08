@@ -3,31 +3,21 @@ import Logo from './ui/Logo.astro';
 import { asset } from '../utils/asset';
 import { email, phones as contactPhones, telegram, address, docs, accountUrl } from '../data/contacts';
 
-// Навигация по разделам страницы
-const pathname = Astro.url.pathname.replace(/\/$/, '');
-const isDemo = pathname === asset('/demo').replace(/\/$/, '');
-const isArticles = pathname.startsWith(asset('/articles'));
-
-const allSectionLinks = [
-  { label: 'Кому подойдёт',  href: '#audience' },
-  { label: 'Этапы',          href: '#stages' },
-  { label: 'Видео',          href: '#video' },
-  { label: 'Статьи',         href: asset('/articles') },
-  { label: 'Демо продукта',  href: asset('/demo') },
-  { label: 'Экспертизы',     href: '#expertises' },
-  { label: 'Отзывы',         href: '#reviews' },
-  { label: 'Стоимость',      href: '#pricing' },
-  { label: 'Контакты',       href: '#contacts' },
+// Навигация по продуктам
+const productLinks = [
+  { label: 'ПД',        href: asset('/') },
+  { label: 'Концепция', href: asset('/conception') },
+  { label: 'ТЭПы',      href: asset('/tep') },
+  { label: 'FormitAI',  href: asset('/formit-ai') },
 ];
 
-const sectionLinks = (isDemo || isArticles)
-  ? [
-      { label: 'Главная', href: asset('/') },
-      ...(isDemo
-        ? [{ label: 'Статьи', href: asset('/articles') }]
-        : [{ label: 'Демо продукта', href: asset('/demo') }]),
-    ]
-  : allSectionLinks;
+// Дополнительные ссылки
+const extraLinks = [
+  { label: 'Статьи',        href: asset('/articles') },
+  { label: 'Демо продукта', href: asset('/demo') },
+];
+
+const sectionLinks = [...productLinks, ...extraLinks];
 
 // Документы
 const docLinks = [
@@ -84,8 +74,8 @@ const currentYear = new Date().getFullYear();
       </div>
 
       <!-- Колонка: навигация -->
-      <nav class="footer__col" aria-label="Разделы">
-        <h2 class="footer__col-title">Разделы</h2>
+      <nav class="footer__col" aria-label="Продукты и разделы">
+        <h2 class="footer__col-title">Продукты</h2>
         <ul class="footer__list">
           {sectionLinks.map(link => (
             <li><a class="footer__link" href={link.href}>{link.label}</a></li>

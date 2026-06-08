@@ -1,0 +1,364 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import FormSubmission from '../components/FormSubmission.tsx';
+import Contacts from '../components/sections/Contacts.astro';
+import { asset } from '../utils/asset';
+import { mailtoEmail } from '../data/contacts';
+
+const features = [
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><circle cx="24" cy="24" r="9" stroke="#0039c5" stroke-width="2"/><circle cx="24" cy="24" r="3" fill="#0039c5" opacity=".4"/><path d="M24 10 V14 M24 34 V38 M10 24 H14 M34 24 H38 M14.93 14.93 L17.76 17.76 M30.24 30.24 L33.07 33.07 M33.07 14.93 L30.24 17.76 M17.76 30.24 L14.93 33.07" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    title: 'Автоматизация расчётов',
+    desc: 'ИИ берёт на себя рутинные шаги: подбор параметров, проверку нормативов, формирование сводных данных.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><path d="M14 30 C14 22 22 16 24 16 C26 16 34 22 34 30" stroke="#0039c5" stroke-width="2" stroke-linecap="round"/><path d="M18 30 L20 26 L24 28 L28 20 L32 26" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 34 H36" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    title: 'Предиктивный анализ',
+    desc: 'Система предсказывает проблемные зоны и предлагает решения до того, как вы столкнётесь с ними на экспертизе.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="11" y="14" width="26" height="20" rx="3" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8"/><path d="M17 22 H22 M17 27 H22 M26 22 H31 M26 27 H31" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round"/><circle cx="34" cy="14" r="5" fill="#0039c5"/><path d="M32 14 L33.5 15.5 L36.5 12" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    title: 'Умная проверка отчёта',
+    desc: 'ИИ проверяет корректность данных, сверяет с нормативами и подсвечивает возможные замечания экспертизы.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><path d="M16 32 C16 24 24 18 32 18" stroke="#0039c5" stroke-width="2" stroke-linecap="round"/><path d="M20 36 C20 28 28 22 36 22" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round" opacity=".5"/><circle cx="32" cy="18" r="4" fill="#0039c5" opacity=".3" stroke="#0039c5" stroke-width="1.6"/><circle cx="36" cy="22" r="3" fill="#0039c5" opacity=".15" stroke="#0039c5" stroke-width="1.4"/></svg>`,
+    title: 'Обучение на ваших данных',
+    desc: 'Система обучается на истории ваших проектов и адаптируется под особенности ваших типовых решений.',
+  },
+];
+
+const steps = [
+  {
+    n: '01',
+    title: 'Загрузите модель',
+    desc: 'Синхронизируйте Revit-модель — FormitAI анализирует геометрию и атрибуты в фоне.',
+  },
+  {
+    n: '02',
+    title: 'ИИ анализирует',
+    desc: 'Система автоматически выявляет проблемные зоны, предлагает оптимальные варианты планировки.',
+  },
+  {
+    n: '03',
+    title: 'Рекомендации',
+    desc: 'Получите список конкретных правок с приоритетами — что исправить для прохождения экспертизы.',
+  },
+  {
+    n: '04',
+    title: 'Готовый отчёт',
+    desc: 'FormitAI формирует отчёт с объяснениями и обоснованиями — экспертиза получает полный пакет документов.',
+  },
+];
+
+const stats = [
+  { value: 'AI', unit: 'анализ', label: 'каждого проекта', isLabel: true },
+  { value: '>30%', unit: 'быстрее', label: 'прохождение экспертизы' },
+  { value: '0', unit: 'ручной', label: 'проверки нормативов', isLabel: false },
+];
+---
+
+<Layout
+  title="FormitAI — будущее архитектуры, экономики и данных"
+  description="FormitAI — интеллектуальный модуль Formit. Автоматизация расчётов, предиктивный анализ и умная проверка отчётов на базе искусственного интеллекта."
+>
+  <Header currentProduct="formit-ai" />
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero hero--ai">
+      <div class="container hero__inner">
+        <div class="hero__eyebrow" aria-label="Продукт">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          FormitAI
+        </div>
+
+        <h1 class="hero__title">
+          Будущее архитектуры,<br />
+          <span class="hero__title-accent">экономики и данных</span>
+        </h1>
+
+        <p class="hero__desc">
+          Интеллектуальный модуль Formit на&nbsp;базе ИИ автоматизирует расчёты,
+          предсказывает замечания экспертизы и&nbsp;формирует умные отчёты.
+        </p>
+
+        <div class="hero__buttons">
+          <Button variant="filled" size="normal" href={mailtoEmail}>
+            Получить ранний доступ
+          </Button>
+          <Button variant="outlined" size="normal" href={mailtoEmail}>
+            Узнать подробнее
+          </Button>
+        </div>
+
+        <div class="hero__chips">
+          <Chip>#Искусственный интеллект</Chip>
+          <Chip>#Предиктивный анализ</Chip>
+          <Chip>#Автоматизация</Chip>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__visual-inner">
+            <div class="hero__visual-circle hero__visual-circle--1"></div>
+            <div class="hero__visual-circle hero__visual-circle--2"></div>
+            <div class="hero__visual-circle hero__visual-circle--3"></div>
+            <div class="ai-placeholder">
+              <svg class="ai-placeholder__icon" width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" opacity=".4"/>
+                <circle cx="40" cy="40" r="18" stroke="currentColor" stroke-width="2" opacity=".6"/>
+                <circle cx="40" cy="40" r="8" fill="currentColor" opacity=".3"/>
+                <path d="M40 12 V20 M40 60 V68 M12 40 H20 M60 40 H68 M19.03 19.03 L24.69 24.69 M55.31 55.31 L60.97 60.97 M60.97 19.03 L55.31 24.69 M24.69 55.31 L19.03 60.97" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+              </svg>
+              <p class="ai-placeholder__text">FormitAI — скоро</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="hero__stats" role="list">
+          {stats.map(s => (
+            <li class="hero__stat">
+              <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
+              <span class="hero__stat-unit">{s.unit}</span>
+              <span class="hero__stat-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Возможности -->
+    <section id="features" class="section section--bg-secondary features fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Что умеет FormitAI</h2>
+        <div class="features__grid">
+          {features.map(f => (
+            <div class="card card--soft card--interactive feature-card">
+              <div class="feature-card__icon" aria-hidden="true" set:html={f.icon} />
+              <h3 class="feature-card__title">{f.title}</h3>
+              <p class="feature-card__desc">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Шаги -->
+    <section id="stages" class="section section--bg-primary stages fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Как работает FormitAI</h2>
+        <div class="steps__grid">
+          {steps.map((step) => (
+            <div class="card card--soft step-card">
+              <span class="step-card__num">{step.n}</span>
+              <h3 class="step-card__title">{step.title}</h3>
+              <p class="step-card__desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Early access CTA -->
+    <section id="pricing" class="section section--bg-secondary cta-section fade-in">
+      <div class="container cta-section__inner">
+        <div class="card card--featured cta-card">
+          <div class="cta-card__badge">Скоро</div>
+          <div class="cta-card__header">
+            <h2 class="cta-card__name">FormitAI</h2>
+            <p class="cta-card__subtitle">Ранний доступ для партнёров и действующих клиентов</p>
+          </div>
+          <div class="cta-card__price">
+            <span class="cta-card__price-year">Стоимость уточняется</span>
+            <span class="cta-card__price-month">Оставьте заявку — сообщим первыми о запуске</span>
+          </div>
+          <ul class="cta-card__features">
+            <li>Автоматический анализ Revit-модели</li>
+            <li>Предиктивное выявление замечаний экспертизы</li>
+            <li>Умная проверка отчётов на соответствие нормативам</li>
+            <li>Обучение на вашей истории проектов</li>
+            <li>Интеграция со всеми продуктами Formit</li>
+          </ul>
+          <FormSubmission client:load buttonText="Получить ранний доступ" variant="filled" size="normal" />
+        </div>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .hero__eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+  .hero__title {
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    max-width: 22ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+  .hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+  .hero__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+  .hero__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+  .hero__visual-inner { position: absolute; inset: 0; }
+  .hero__visual-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero__visual-circle--1 { width: 60%; aspect-ratio: 1; top: -20%; right: -10%; background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--2 { width: 40%; aspect-ratio: 1; bottom: -15%; left: 5%; background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--3 { width: 25%; aspect-ratio: 1; bottom: 10%; right: 15%; background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%); }
+
+  .ai-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    z-index: 1;
+    color: var(--color-accent-primary);
+  }
+  .ai-placeholder__icon {
+    animation: spin-slow 12s linear infinite;
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .ai-placeholder__text {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+  .hero__stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: 0 var(--space-6); }
+  .hero__stat:not(:first-child) { border-left: 1px solid var(--color-border); }
+  .hero__stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: 1; color: var(--color-accent-primary); }
+  .hero__stat-value--label { color: var(--color-text-primary); }
+  .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+  .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
+
+  .features__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .feature-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .feature-card__icon :global(svg) { display: block; }
+  .feature-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .feature-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .steps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
+  .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .cta-section__inner { display: flex; justify-content: center; }
+  .cta-card { max-width: 520px; width: 100%; display: flex; flex-direction: column; gap: var(--space-6); }
+  .cta-card__badge {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-accent-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cta-card__header { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__name { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+  .cta-card__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__price { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__price-year { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .cta-card__price-month { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .cta-card__features li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features li::before { content: '✓'; color: var(--color-accent-primary); font-weight: var(--font-weight-bold); flex-shrink: 0; margin-top: 1px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-placeholder__icon { animation: none; }
+  }
+  @media (max-width: 960px) {
+    .features__grid, .steps__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .hero__title { max-width: 100%; }
+    .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
+    .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
+    .hero__stat-value { font-size: var(--font-size-xl); }
+    .hero__stat-label { text-align: left; }
+    .features__grid, .steps__grid { grid-template-columns: 1fr; }
+  }
+</style>

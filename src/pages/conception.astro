@@ -1,0 +1,368 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import FormSubmission from '../components/FormSubmission.tsx';
+import Contacts from '../components/sections/Contacts.astro';
+import { asset } from '../utils/asset';
+import { mailtoEmail } from '../data/contacts';
+
+const features = [
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><path d="M24 10 C16 10 10 16 10 24 C10 32 16 38 24 38 C32 38 38 32 38 24" stroke="#0039c5" stroke-width="2.2" stroke-linecap="round"/><path d="M34 10 L38 14 M38 10 L34 14" stroke="#0039c5" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="3.5" fill="#0039c5" opacity=".3"/></svg>`,
+    title: 'Только стены и окна',
+    desc: 'Для проверки инсоляции достаточно построить стены и окна — полная детализация Revit-модели не нужна.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="10" y="14" width="14" height="20" rx="2" fill="#0039c5" opacity=".2" stroke="#0039c5" stroke-width="1.8"/><rect x="28" y="10" width="10" height="28" rx="2" fill="#0039c5" opacity=".15" stroke="#0039c5" stroke-width="1.8"/><path d="M13 24 H35" stroke="#0039c5" stroke-width="1.8" stroke-dasharray="3 2"/></svg>`,
+    title: 'Влияние на соседей',
+    desc: 'Проверяйте влияние нового здания на инсоляцию окружающей застройки прямо в браузере.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><circle cx="24" cy="24" r="11" stroke="#0039c5" stroke-width="2"/><path d="M24 13 V24 L31 31" stroke="#0039c5" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+    title: '~1000 проёмов/мин',
+    desc: 'Скорость расчёта затенения — около 1000 светопроёмов в минуту. Проверяйте варианты мгновенно.',
+  },
+  {
+    icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="13" y="11" width="22" height="26" rx="2" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8"/><path d="M18 19 H30 M18 24 H30 M18 29 H24" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round"/><circle cx="32" cy="33" r="5" fill="#e8f0ff" stroke="#0039c5" stroke-width="1.6"/><path d="M30 33 L31.5 34.5 L34.5 31" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    title: 'Отчёт с первой версии',
+    desc: 'Сформируйте предварительный отчёт уже на стадии концепции — чтобы видеть риски до детализации.',
+  },
+];
+
+const steps = [
+  {
+    n: '01',
+    title: 'Минимальная модель',
+    desc: 'Загрузите простую Revit-модель — достаточно стен и окон без полной детализации ПД.',
+  },
+  {
+    n: '02',
+    title: 'Быстрый расчёт',
+    desc: 'Сервис рассчитывает инсоляцию и массинг. Проверяйте варианты объёмно-планировочных решений.',
+  },
+  {
+    n: '03',
+    title: 'Анализ результатов',
+    desc: 'Смотрите фронты инсоляции, сравнивайте влияние на окружающую застройку.',
+  },
+  {
+    n: '04',
+    title: 'Предварительный отчёт',
+    desc: 'Сформируйте отчёт для обоснования решений внутри команды или заказчику.',
+  },
+];
+
+const stats = [
+  { value: '1000', unit: 'проёмов', label: 'за минуту расчёта' },
+  { value: 'Revit', unit: 'модель', label: 'минимальная детализация', isLabel: true },
+  { value: 'быстро', unit: 'и точно', label: 'ещё на стадии концепции', isLabel: true },
+];
+---
+
+<Layout
+  title="Formit Концепция — расчёт инсоляции на стадии концепции"
+  description="Проверяйте инсоляцию и КЕО на ранней стадии проектирования — по минимальной Revit-модели, мгновенно и без лишней детализации."
+>
+  <Header currentProduct="conception" />
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container hero__inner">
+        <div class="hero__eyebrow" aria-label="Продукт">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          Formit Концепция
+        </div>
+
+        <h1 class="hero__title">
+          Инсоляция<br />
+          <span class="hero__title-accent">с первого наброска</span>
+        </h1>
+
+        <p class="hero__desc">
+          Проверяйте инсоляцию и&nbsp;КЕО ещё на&nbsp;стадии концепции —
+          достаточно стен и&nbsp;окон. Без полной детализации, без потраченных недель.
+        </p>
+
+        <div class="hero__buttons">
+          <Button variant="filled" size="normal" href={mailtoEmail}>
+            Попробовать сервис
+          </Button>
+          <Button variant="outlined" size="normal" href={mailtoEmail}>
+            Получить консультацию
+          </Button>
+        </div>
+
+        <div class="hero__chips">
+          <Chip>#Концептуальная стадия</Chip>
+          <Chip>#Минимальная модель</Chip>
+          <Chip>#Быстрая проверка</Chip>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__visual-inner">
+            <div class="hero__visual-circle hero__visual-circle--1"></div>
+            <div class="hero__visual-circle hero__visual-circle--2"></div>
+            <div class="hero__visual-circle hero__visual-circle--3"></div>
+            <img
+              src={asset('/images/insolatedBuilding.BsJLrvJH.webp')}
+              alt="Расчёт инсоляции на стадии концепции"
+              class="hero__visual-img"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <ul class="hero__stats" role="list">
+          {stats.map(s => (
+            <li class="hero__stat">
+              <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
+              <span class="hero__stat-unit">{s.unit}</span>
+              <span class="hero__stat-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Возможности -->
+    <section id="features" class="section section--bg-secondary features fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Что даёт Formit Концепция</h2>
+        <div class="features__grid">
+          {features.map(f => (
+            <div class="card card--soft card--interactive feature-card">
+              <div class="feature-card__icon" aria-hidden="true" set:html={f.icon} />
+              <h3 class="feature-card__title">{f.title}</h3>
+              <p class="feature-card__desc">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Шаги -->
+    <section id="stages" class="section section--bg-primary stages fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Как это работает</h2>
+        <div class="steps__grid">
+          {steps.map((step, i) => (
+            <div class="card card--soft step-card">
+              <span class="step-card__num">{step.n}</span>
+              <h3 class="step-card__title">{step.title}</h3>
+              <p class="step-card__desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / Pricing -->
+    <section id="pricing" class="section section--bg-secondary cta-section fade-in">
+      <div class="container cta-section__inner">
+        <div class="card card--featured cta-card">
+          <div class="cta-card__header">
+            <h2 class="cta-card__name">Formit Концепция</h2>
+            <p class="cta-card__subtitle">Расчёт инсоляции на стадии концепции</p>
+          </div>
+          <div class="cta-card__price">
+            <span class="cta-card__price-year">150 000 ₽ / год</span>
+            <span class="cta-card__price-month">12 500 ₽ / мес</span>
+          </div>
+          <ul class="cta-card__features">
+            <li>Автоматическая разбивка сеткой в сервисе</li>
+            <li>Расчёт инсоляции светопроёмов с учётом заглубления окон</li>
+            <li>Автоматическая сверка с нормативами</li>
+            <li>Сечение с подсветкой результатов</li>
+            <li>Расчёт инсоляции массинга, отдельных точек и территорий</li>
+            <li>10 доступных проектов</li>
+          </ul>
+          <FormSubmission client:load buttonText="Оставить заявку" variant="filled" size="normal" />
+        </div>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* ── Hero (переиспользует стили из Hero.astro через те же классы) ── */
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .hero__eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+  .hero__title {
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    max-width: 18ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+  .hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+  .hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+  .hero__visual-inner { position: absolute; inset: 0; }
+  .hero__visual-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero__visual-circle--1 { width: 60%; aspect-ratio: 1; top: -20%; right: -10%; background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--2 { width: 40%; aspect-ratio: 1; bottom: -15%; left: 5%; background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--3 { width: 25%; aspect-ratio: 1; bottom: 10%; right: 15%; background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%); }
+  .hero__visual-img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+  .hero__stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: 0 var(--space-6); }
+  .hero__stat:not(:first-child) { border-left: 1px solid var(--color-border); }
+  .hero__stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: 1; color: var(--color-accent-primary); }
+  .hero__stat-value--label { color: var(--color-text-primary); }
+  .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+  .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
+
+  /* ── Features ── */
+  .features__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+  .feature-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .feature-card__icon :global(svg) { display: block; }
+  .feature-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .feature-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  /* ── Steps ── */
+  .steps__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+  .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
+  .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  /* ── CTA Pricing ── */
+  .cta-section__inner { display: flex; justify-content: center; }
+  .cta-card {
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .cta-card__header { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__name { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+  .cta-card__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__price { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__price-year { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .cta-card__price-month { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+  }
+  .cta-card__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .cta-card__features li::before {
+    content: '✓';
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .features__grid,
+    .steps__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .hero__title { max-width: 100%; }
+    .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
+    .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
+    .hero__stat-value { font-size: var(--font-size-xl); }
+    .hero__stat-label { text-align: left; }
+    .features__grid,
+    .steps__grid { grid-template-columns: 1fr; }
+  }
+</style>
