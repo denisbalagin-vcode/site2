@@ -114,22 +114,6 @@ const growthDrivers = [
   'Цифровизация рынка продолжает расти',
 ];
 
-// ── Конкуренты ──
-const criteria = [
-  'BIM / Revit',
-  'SaaS / web',
-  'Автоотчёты',
-  'Скорость итераций',
-  'Проверка норм',
-  'Единый контур работы',
-];
-const players = [
-  { name: 'FORMIT', values: ['full', 'full', 'full', 'Высокая', 'full', 'full'], highlight: true },
-  { name: 'UrbanSketch', values: ['partial', 'full', 'none', 'Средняя', 'none', 'partial'], highlight: false },
-  { name: 'RTIM.City', values: ['none', 'full', 'partial', 'Средняя', 'partial', 'partial'], highlight: false },
-  { name: 'Ручная работа', values: ['partial', 'none', 'none', 'Низкая', 'partial', 'none'], highlight: false },
-];
-
 // Hero-статистика
 const stats = [
   { value: '70%', unit: 'меньше', label: 'ручного труда' },
@@ -377,56 +361,6 @@ const stats = [
         <p class="market__note">
           <strong>160 клиентов · 202 лицензии · 99% продлений</strong> — спрос уже подтверждён.
         </p>
-      </div>
-    </section>
-
-    <!-- Конкуренты -->
-    <section id="competitors" class="section section--bg-primary fade-in">
-      <div class="container">
-        <h2 class="section-title h2 section-title--with-sub">Конкуренты</h2>
-        <p class="section-sub">
-          Сейчас клиенты используют точечные сервисы и&nbsp;ручную работу.
-          FORMIT выигрывает за&nbsp;счёт BIM-интеграции, скорости и&nbsp;автоматизации отчётов.
-        </p>
-
-        <div class="compare">
-          <table class="compare__table">
-            <thead>
-              <tr>
-                <th scope="col">Критерий</th>
-                {players.map(p => (
-                  <th scope="col" class:list={['compare__player', p.highlight && 'compare__player--hl']}>
-                    {p.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {criteria.map((c, i) => (
-                <tr>
-                  <th scope="row" class="compare__criterion">{c}</th>
-                  {players.map(p => {
-                    const v = p.values[i];
-                    return (
-                      <td class:list={['compare__cell', p.highlight && 'compare__cell--hl']}>
-                        {v === 'full' && <span class="mark mark--full" title="сильная сторона">✓</span>}
-                        {v === 'partial' && <span class="mark mark--partial" title="частично">~</span>}
-                        {v === 'none' && <span class="mark mark--none" title="отсутствует">—</span>}
-                        {v !== 'full' && v !== 'partial' && v !== 'none' && <span class="mark mark--text">{v}</span>}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <ul class="compare__legend" aria-hidden="true">
-          <li><span class="mark mark--full">✓</span> сильная сторона</li>
-          <li><span class="mark mark--partial">~</span> частично</li>
-          <li><span class="mark mark--none">—</span> отсутствует</li>
-        </ul>
       </div>
     </section>
 
@@ -717,53 +651,6 @@ const stats = [
     color: var(--color-text-secondary);
   }
   .market__note strong { color: var(--color-accent-primary); }
-
-  /* ── Конкуренты ── */
-  .compare { overflow-x: auto; }
-  .compare__table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 640px;
-  }
-  .compare__table th,
-  .compare__table td {
-    padding: var(--space-4);
-    text-align: center;
-    border-bottom: 1px solid var(--color-border);
-    font-size: var(--font-size-sm);
-  }
-  .compare__criterion {
-    text-align: left;
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
-  }
-  .compare__player {
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
-  }
-  .compare__player--hl {
-    color: var(--color-accent-primary);
-    background: var(--color-accent-soft);
-    border-top-left-radius: var(--radius-md);
-    border-top-right-radius: var(--radius-md);
-  }
-  .compare__cell--hl { background: color-mix(in srgb, var(--color-accent-soft) 55%, transparent); }
-  .mark { font-weight: var(--font-weight-bold); }
-  .mark--full { color: var(--color-accent-primary); }
-  .mark--partial { color: var(--color-text-secondary); }
-  .mark--none { color: var(--color-text-dimmed); }
-  .mark--text { font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
-  .compare__legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    justify-content: center;
-    margin-top: var(--space-6);
-    list-style: none;
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-  }
-  .compare__legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
 
   /* ── CTA ── */
   .cta-section__inner { display: flex; justify-content: center; }
