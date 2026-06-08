@@ -5,7 +5,6 @@ import { submitLead } from '../utils/leads';
 import { track } from '../utils/analytics';
 
 interface Props {
-  trigger?: string;
   buttonText?: string;
   buttonClass?: string;
   variant?: 'filled' | 'outlined';

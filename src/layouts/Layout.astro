@@ -6,6 +6,7 @@ interface Props {
   ogImage?: string;
 }
 
+import { ClientRouter } from 'astro:transitions';
 import { asset } from '../utils/asset';
 import { email, phones, telegram, address } from '../data/contacts';
 
@@ -77,8 +78,8 @@ const plausibleSrc =
     <link rel="icon" type="image/svg+xml" href={asset('/favicon.svg')} />
 
     <!-- Preload critical fonts -->
-    <link rel="preload" as="font" href={asset('/fonts/montserrat-600.ttf')} type="font/ttf" crossorigin />
-    <link rel="preload" as="font" href={asset('/fonts/montserrat-700.ttf')} type="font/ttf" crossorigin />
+    <link rel="preload" as="font" href={asset('/fonts/montserrat-600.woff2')} type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href={asset('/fonts/montserrat-700.woff2')} type="font/woff2" crossorigin />
 
     <title>{title}</title>
 
@@ -106,6 +107,9 @@ const plausibleSrc =
       <script is:inline defer data-domain={plausibleDomain} src={plausibleSrc}></script>
     )}
 
+    <!-- Плавная навигация без полной перезагрузки (View Transitions). -->
+    <ClientRouter />
+
     <!-- Доп. теги в <head> для отдельных страниц (например, JSON-LD статьи). -->
     <slot name="head" />
   </head>
@@ -119,21 +123,29 @@ const plausibleSrc =
 </style>
 
 <script>
+  // Module-scoped: при SPA-навигации (ClientRouter) отключаем предыдущий
+  // observer, чтобы он не оставался висеть на свапнутых узлах.
+  let fadeObserver: IntersectionObserver | null = null;
+
   function initFadeIn() {
+    fadeObserver?.disconnect();
     const els = document.querySelectorAll<HTMLElement>('.fade-in');
-    if (!els.length) return;
-    const observer = new IntersectionObserver(
+    if (!els.length) {
+      fadeObserver = null;
+      return;
+    }
+    fadeObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            fadeObserver?.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
     );
-    els.forEach((el) => observer.observe(el));
+    els.forEach((el) => fadeObserver!.observe(el));
   }
 
   initFadeIn();

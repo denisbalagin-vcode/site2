@@ -27,7 +27,3 @@ export function validateLead(input: LeadInput): LeadErrors {
 
   return errors;
 }
-
-export function isValidLead(input: LeadInput): boolean {
-  return Object.keys(validateLead(input)).length === 0;
-}
