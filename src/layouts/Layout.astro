@@ -40,16 +40,23 @@ const plausibleSrc =
     <meta name="color-scheme" content="light dark" />
 
     <!-- Тема: выставляем data-theme до отрисовки тела, чтобы не было мигания (FOUC).
-         Сохранённый выбор имеет приоритет над системной темой. -->
+         Сохранённый выбор имеет приоритет над системной темой.
+         astro:before-swap переносит тему на новый документ до свапа при SPA-навигации. -->
     <script is:inline>
       (function () {
-        try {
-          var saved = localStorage.getItem('theme');
-          var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : system;
-        } catch (e) {
-          document.documentElement.dataset.theme = 'light';
+        function applyTheme(doc) {
+          try {
+            var saved = localStorage.getItem('theme');
+            var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            doc.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : system;
+          } catch (e) {
+            doc.documentElement.dataset.theme = 'light';
+          }
         }
+        applyTheme(document);
+        document.addEventListener('astro:before-swap', function (e) {
+          applyTheme(e.newDocument);
+        });
       })();
     </script>
 
