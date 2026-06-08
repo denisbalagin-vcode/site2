@@ -44,13 +44,6 @@ const steps = [
     <!-- Хедер демо-страницы -->
     <section class="demo-hero">
       <div class="container demo-hero__inner">
-        <a class="demo-hero__back" href={asset('/')}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 12H5M11 6l-6 6 6 6" />
-          </svg>
-          На главную
-        </a>
-
         <span class="demo-hero__eyebrow">
           <span class="demo-hero__eyebrow-dot" aria-hidden="true"></span>
           Демо продукта
@@ -176,20 +169,6 @@ const steps = [
     align-items: center;
     text-align: center;
     gap: var(--space-5);
-  }
-
-  .demo-hero__back {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-    transition: color var(--transition-fast);
-  }
-
-  .demo-hero__back:hover {
-    color: var(--color-accent-primary);
   }
 
   .demo-hero__eyebrow {
