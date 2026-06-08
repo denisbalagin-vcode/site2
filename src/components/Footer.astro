@@ -24,8 +24,8 @@ const sectionLinks = (isDemo || isArticles)
   ? [
       { label: 'Главная', href: asset('/') },
       ...(isDemo
-        ? [{ label: 'Демо продукта', href: asset('/demo') }]
-        : [{ label: 'Статьи', href: asset('/articles') }]),
+        ? [{ label: 'Статьи', href: asset('/articles') }]
+        : [{ label: 'Демо продукта', href: asset('/demo') }]),
     ]
   : allSectionLinks;
 
