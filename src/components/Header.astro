@@ -350,47 +350,36 @@ const docLinks = [
     justify-self: end;
   }
 
-  /* Ссылки-кнопки в правом блоке (Статьи, Демо) */
-  .header__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: 0.5rem 0.875rem;
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border-strong);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-    transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
-  }
-
-  .header__link svg {
-    color: var(--color-accent-primary);
-    transition: color var(--transition-fast);
-  }
-
-  .header__link:hover {
-    border-color: var(--color-accent-primary);
-    color: var(--color-accent-primary);
-    background: var(--color-accent-soft);
-  }
-
-  /* Кнопка входа в аккаунт — спокойный ghost, чтобы не спорить с filled-CTA */
-  .header__login {
+  /* Все текстовые элементы правого блока — единый ghost-стиль.
+     Применяется к: .header__link (Статьи, Демо), .header__login (Войти),
+     .dropdown__toggle (Документация). */
+  .header__link,
+  .header__login,
+  .dropdown__toggle {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
     padding: 0.5rem 0.75rem;
     border-radius: var(--radius-full);
+    border: none;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     color: var(--color-text-secondary);
     transition: color var(--transition-fast), background-color var(--transition-fast);
   }
 
-  .header__login:hover {
+  .header__link:hover,
+  .header__login:hover,
+  .dropdown__toggle:hover {
     color: var(--color-text-primary);
     background: var(--color-bg-secondary);
+  }
+
+  /* Иконки внутри ссылок — акцентный цвет */
+  .header__link svg,
+  .header__login svg {
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
   }
 
   /* Переключатель темы */
@@ -462,23 +451,6 @@ const docLinks = [
 
   .dropdown {
     position: relative;
-  }
-
-  .dropdown__toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-    transition: color var(--transition-fast), background-color var(--transition-fast);
-  }
-
-  .dropdown__toggle:hover {
-    color: var(--color-text-primary);
-    background: var(--color-bg-secondary);
   }
 
   .dropdown__caret {
