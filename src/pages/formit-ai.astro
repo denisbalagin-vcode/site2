@@ -303,7 +303,6 @@ const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg
           <ol class="feature-detail__steps" aria-label={`Шаги: ${f.title}`}>
             {f.steps.map(s => (
               <li class="fstep">
-                <span class="fstep__num" aria-hidden="true">{s.num}</span>
                 <div class="fstep__content">
                   <h3 class="fstep__title">{s.title}</h3>
                   <p class="fstep__desc">{s.desc}</p>
@@ -626,23 +625,7 @@ const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg
   }
   .fstep {
     display: flex;
-    gap: var(--space-5);
     align-items: flex-start;
-  }
-  .fstep__num {
-    flex-shrink: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: var(--radius-md);
-    background: var(--color-accent-soft);
-    border: 1px solid var(--color-border-navbar);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-accent-primary);
-    letter-spacing: 0.04em;
   }
   .fstep__content { display: flex; flex-direction: column; gap: var(--space-1); padding-top: 0.35rem; }
   .fstep__title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
