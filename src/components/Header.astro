@@ -285,10 +285,9 @@ const docLinks = [
   }
 
   .header__inner {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    display: flex;
     align-items: center;
-    gap: clamp(var(--space-4), 3vw, var(--space-8));
+    gap: var(--space-6);
     width: 100%;
     max-width: var(--container-max-width);
     margin-inline: auto;
@@ -296,19 +295,16 @@ const docLinks = [
   }
 
   .header__logo {
-    /* первая колонка — прижать лого влево */
     display: inline-flex;
     align-items: center;
-    grid-column: 1;
-    justify-self: start;
+    flex-shrink: 0;
   }
 
   /* ============================================================
      PILL-НАВИГАЦИЯ
      ============================================================ */
   .nav-pill {
-    grid-column: 2;
-    justify-self: center;
+    margin-inline: auto;
     display: flex;
     align-items: center;
     gap: var(--space-1);
@@ -348,8 +344,7 @@ const docLinks = [
      ПРАВЫЙ БЛОК + ВЫПАДАЮЩЕЕ МЕНЮ
      ============================================================ */
   .header__actions {
-    /* третья колонка — прижать действия вправо */
-    grid-column: 3;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -508,9 +503,7 @@ const docLinks = [
      ============================================================ */
   .burger {
     display: none;
-    /* в grid занимает правую колонку → justify-self выравнивает вправо */
-    grid-column: 3;
-    justify-self: end;
+    margin-left: auto;
     width: 2.5rem;
     height: 2.5rem;
     align-items: center;

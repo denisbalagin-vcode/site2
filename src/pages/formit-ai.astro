@@ -129,15 +129,15 @@ const steps = [
 const businessMetrics = [
   { value: '70%', label: 'снижение трудозатрат' },
   { value: '50×', label: 'ускорение расчётов' },
-  { value: '40 млн ₽', label: 'экономический эффект' },
   { value: '99%', label: 'ежегодные продления' },
+  { value: '160+', label: 'клиентов' },
 ];
 
 // Hero-статистика
 const stats = [
   { value: '70%', unit: 'меньше', label: 'ручного труда' },
   { value: '50×', unit: 'быстрее', label: 'расчёты проекта' },
-  { value: '40 млн ₽', unit: 'эффект', label: 'экономический эффект', isLabel: true },
+  { value: '99%', unit: '', label: 'ежегодных продлений' },
 ];
 
 // Чередование фона для секций возможностей
@@ -326,6 +326,35 @@ const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg
               <span class="metric__label">{m.label}</span>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Кейс: экономический эффект -->
+    <section id="case" class="section section--bg-primary fade-in">
+      <div class="container">
+        <div class="case-card card card--soft">
+          <div class="case-card__label">Кейс · Жилой комплекс</div>
+          <div class="case-card__body">
+            <div class="case-card__left">
+              <h2 class="case-card__title">40 млн ₽ экономического эффекта</h2>
+              <p class="case-card__desc">
+                Расчёт выполнен для проекта жилого комплекса площадью&nbsp;50&nbsp;000&nbsp;м².
+                Эффект складывается из сокращения трудозатрат на&nbsp;расчёты, ускорения
+                согласований и&nbsp;снижения риска замечаний на&nbsp;экспертизе.
+              </p>
+            </div>
+            <div class="case-card__stats">
+              <div class="case-stat">
+                <span class="case-stat__value">50 000 м²</span>
+                <span class="case-stat__label">площадь ЖК</span>
+              </div>
+              <div class="case-stat">
+                <span class="case-stat__value">40 млн ₽</span>
+                <span class="case-stat__label">эффект</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -674,6 +703,52 @@ const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg
   .cta-card__features li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
   .cta-card__features li::before { content: '✓'; color: var(--color-accent-primary); font-weight: var(--font-weight-bold); flex-shrink: 0; margin-top: 1px; }
 
+  /* ── Кейс ── */
+  .case-card { display: flex; flex-direction: column; gap: var(--space-4); }
+  .case-card__label {
+    align-self: flex-start;
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border-navbar);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .case-card__body {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-10);
+    align-items: center;
+  }
+  .case-card__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-3);
+  }
+  .case-card__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 56ch;
+  }
+  .case-card__stats {
+    display: flex;
+    gap: var(--space-8);
+    flex-shrink: 0;
+  }
+  .case-stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); }
+  .case-stat__value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-primary);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .case-stat__label { font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+
   /* ── Адаптивность ── */
   @media (prefers-reduced-motion: reduce) {
     .ai-placeholder__icon { animation: none; }
@@ -682,6 +757,8 @@ const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg
     .steps__grid,
     .metrics-grid { grid-template-columns: repeat(2, 1fr); }
     .problem__bottom { grid-template-columns: 1fr; }
+    .case-card__body { grid-template-columns: 1fr; }
+    .case-card__stats { justify-content: flex-start; }
     .feature-detail__inner {
       grid-template-columns: 1fr;
       gap: var(--space-10);
