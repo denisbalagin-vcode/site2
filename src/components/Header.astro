@@ -1,7 +1,7 @@
 ---
 interface Props {
   /** Текущий продукт (для подсветки активного в product nav). */
-  currentProduct?: 'pd' | 'conception' | 'tep' | 'formit-ai';
+  currentProduct?: 'pd' | 'conception' | 'formit-ai';
   /** Скрыть ссылку на демо на самой странице демо. */
   showDemoLink?: boolean;
   /** Показать раздел с якорными ссылками в мобильном меню (только для ПД). */
@@ -23,7 +23,6 @@ import { docs, accountUrl } from '../data/contacts';
 const productLinks = [
   { label: 'ПД',         href: asset('/'),            id: 'pd' },
   { label: 'Концепция',  href: asset('/conception'),  id: 'conception' },
-  { label: 'ТЭПы',       href: asset('/tep'),          id: 'tep' },
   { label: 'FormitAI',   href: asset('/formit-ai'),   id: 'formit-ai' },
 ];
 
@@ -286,13 +285,10 @@ const docLinks = [
   }
 
   .header__inner {
-    /* 3-колоночный grid: лого | центр (nav) | действия.
-       Крайние колонки одинаковой ширины гарантируют,
-       что nav-pill всегда точно по центру. */
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--space-4);
+    gap: clamp(var(--space-4), 3vw, var(--space-8));
     width: 100%;
     max-width: var(--container-max-width);
     margin-inline: auto;
@@ -311,8 +307,8 @@ const docLinks = [
      PILL-НАВИГАЦИЯ
      ============================================================ */
   .nav-pill {
-    /* вторая (центральная) колонка grid */
     grid-column: 2;
+    justify-self: center;
     display: flex;
     align-items: center;
     gap: var(--space-1);
