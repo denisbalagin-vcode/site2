@@ -1,0 +1,756 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import FormSubmission from '../components/FormSubmission.tsx';
+import Contacts from '../components/sections/Contacts.astro';
+import { asset } from '../utils/asset';
+import { mailtoEmail } from '../data/contacts';
+
+// ── Возможности платформы — подробные секции ──
+const features = [
+  {
+    id: 'insolation',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><circle cx="18" cy="18" r="6" fill="#0039c5" opacity=".3" stroke="#0039c5" stroke-width="1.8"/><path d="M18 6 V9 M18 27 V30 M6 18 H9 M27 18 H30 M9.5 9.5 L11.6 11.6 M24.4 24.4 L26.5 26.5 M26.5 9.5 L24.4 11.6 M11.6 24.4 L9.5 26.5" stroke="#0039c5" stroke-width="1.5" stroke-linecap="round"/><path d="M28 40 V26 H38 V40" stroke="#0039c5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 30 H35 M31 34 H35" stroke="#0039c5" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+    title: 'Расчёт инсоляционной горки',
+    subtitle: 'Автоматический анализ солнечного света, высотности и нормативных ограничений — за минуты вместо недель.',
+    detail: 'Платформа рассчитывает продолжительность инсоляции для каждого здания и прилегающей территории, строит оптимальный перепад высот и проверяет соответствие нормативам без ручного вмешательства.',
+    steps: [
+      { num: '01', title: 'Анализ инсоляции', desc: 'Расчёт продолжительности солнечного света для зданий и прилегающей территории с учётом затенения соседних объектов.' },
+      { num: '02', title: 'Инсоляционная горка', desc: 'Формирование оптимального перепада высот застройки для выполнения нормативных требований по инсоляции.' },
+      { num: '03', title: 'Соответствие нормам', desc: 'Автоматическая проверка по СП 52.13330.2016 и СанПиН 1.2.3685-21 — отклонения видны сразу.' },
+      { num: '04', title: 'Результат', desc: 'Комфортная жилая среда и максимизация потенциала застройки при соблюдении всех нормативных ограничений.' },
+    ],
+    tags: ['СП 52.13330.2016', 'СанПиН 1.2.3685-21', 'BIM-интеграция'],
+  },
+  {
+    id: 'variants',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="10" y="22" width="8" height="16" rx="1.5" fill="#0039c5" opacity=".2" stroke="#0039c5" stroke-width="1.6"/><rect x="20" y="14" width="8" height="24" rx="1.5" fill="#0039c5" opacity=".15" stroke="#0039c5" stroke-width="1.6"/><rect x="30" y="18" width="8" height="20" rx="1.5" fill="#0039c5" opacity=".2" stroke="#0039c5" stroke-width="1.6"/></svg>`,
+    title: 'Генерация вариантов застройки',
+    subtitle: 'Поиск оптимальной конфигурации участка по ограничениям, ТЗ и ключевым метрикам — автоматически.',
+    detail: 'Вместо одного решения платформа генерирует десятки планировочных сценариев за счёт ИИ-движка, позволяя сравнить плотность, высотность и типологию до начала детального проектирования.',
+    steps: [
+      { num: '01', title: 'Автоматическая генерация', desc: 'Формирование множества планировочных решений с учётом градостроительных ограничений, ТЗ и параметров участка.' },
+      { num: '02', title: 'Разнообразие сценариев', desc: 'Проработка вариантов плотности, высотности и типологии застройки: от малоэтажной до высотной.' },
+      { num: '03', title: 'Быстрый анализ', desc: 'Сравнение вариантов по ключевым показателям: ТЭП, инсоляция, парковочный баланс, экономика проекта.' },
+      { num: '04', title: 'Оптимальный выбор', desc: 'Подбор наиболее эффективного варианта для раскрытия потенциала участка и достижения целей девелопера.' },
+    ],
+    tags: ['ИИ-генерация', 'Градоограничения', 'Сравнение вариантов'],
+  },
+  {
+    id: 'apartment-mix',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="11" y="11" width="26" height="26" rx="2" fill="#0039c5" opacity=".1" stroke="#0039c5" stroke-width="1.8"/><path d="M24 11 V37 M11 24 H24 M24 19 H37" stroke="#0039c5" stroke-width="1.6"/></svg>`,
+    title: 'Формирование квартирографии',
+    subtitle: 'Автоматический подбор структуры квартир и проверка продуктовой модели под рыночный спрос.',
+    detail: 'Платформа рассчитывает оптимальный микс студий, 1-, 2- и 3-комнатных квартир, контролирует площади и этажную структуру, позволяя быстро итерировать продуктовую модель до фиксации решения.',
+    steps: [
+      { num: '01', title: 'Распределение квартир', desc: 'Формирование набора квартир по типам и площадям в заданных ограничениях этажности и пятна застройки.' },
+      { num: '02', title: 'Баланс типологий', desc: 'Настройка долей студий, 1-, 2- и 3-комнатных квартир с учётом рыночного спроса и бизнес-модели.' },
+      { num: '03', title: 'Проверка показателей', desc: 'Контроль площадей, количества квартир, средних метражей и структуры этажа в режиме реального времени.' },
+      { num: '04', title: 'Быстрая корректировка', desc: 'Оперативное изменение параметров для получения оптимальной квартирографии без пересборки модели.' },
+    ],
+    tags: ['Квартирография', 'Продуктовая модель', 'Рыночный спрос'],
+  },
+  {
+    id: 'tep',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="11" y="12" width="26" height="24" rx="2" fill="#0039c5" opacity=".1" stroke="#0039c5" stroke-width="1.8"/><path d="M11 19 H37 M19 19 V36 M28 19 V36" stroke="#0039c5" stroke-width="1.5"/></svg>`,
+    title: 'Формирование таблиц с ТЭП',
+    subtitle: 'Расчёт технико-экономических показателей для каждого варианта посадки и быстрый выбор оптимального сценария.',
+    detail: 'Сервис автоматически формирует таблицы ТЭП по каждому варианту посадки и выводит их рядом для сравнения — без ручной вёрстки и риска ошибок при копировании данных.',
+    steps: [
+      { num: '01', title: 'Сбор параметров', desc: 'Площадь, этажность, фасады, квартирография и ограничения проекта фиксируются в модели автоматически.' },
+      { num: '02', title: 'Автоматический расчёт', desc: 'Сервис формирует таблицы ТЭП для каждого варианта посадки без ручной вёрстки и сводных таблиц в Excel.' },
+      { num: '03', title: 'Сравнение сценариев', desc: 'Ключевые показатели выведены рядом: площадь, количество квартир, этажность, плотность, паркинг.' },
+      { num: '04', title: 'Передача в отчёт', desc: 'Результаты используются в презентации, альбоме концепции и готовом PDF / DOCX отчёте для экспертизы.' },
+    ],
+    tags: ['ТЭП', 'Автоотчёт', 'PDF / DOCX'],
+  },
+  {
+    id: 'facades',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><rect x="14" y="10" width="20" height="28" rx="2" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8"/><path d="M19 16 H23 M25 16 H29 M19 22 H23 M25 22 H29 M19 28 H23 M25 28 H29" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    title: 'ИИ-генерация фасадных решений',
+    subtitle: 'Вариативная проработка облика здания по стилю, материалам и параметрам участка — за минуты.',
+    detail: 'ИИ-модуль генерирует фасадные концепции на основе заданного стиля, материалов и ограничений проекта. Архитекторы получают разнообразные решения для выбора и дальнейшей детализации без ручной отрисовки каждого варианта.',
+    steps: [
+      { num: '01', title: 'Много вариантов', desc: 'Генерация фасадных решений и композиционных сценариев за минуты — от классики до современного минимализма.' },
+      { num: '02', title: 'Контроль стиля и ТЗ', desc: 'Сохранение требований по материалам, ритму фасада, этажности и площади остекления из технического задания.' },
+      { num: '03', title: 'Быстрая адаптация', desc: 'Подстройка решения под параметры участка, ограничения охранных зон и требования градостроительного регламента.' },
+      { num: '04', title: 'Интеграция в проект', desc: 'Выбранный вариант экспортируется в BIM-модель и альбом концепции без дублирования работы.' },
+    ],
+    tags: ['ИИ-генерация', 'Фасадные решения', 'Архитектурный стиль'],
+  },
+  {
+    id: 'album',
+    icon: `<svg width="64" height="64" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#e8f0ff"/><path d="M14 12 H30 L34 16 V36 H14 Z" fill="#0039c5" opacity=".12" stroke="#0039c5" stroke-width="1.8" stroke-linejoin="round"/><path d="M19 22 H29 M19 27 H29 M19 32 H25" stroke="#0039c5" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    title: 'Формирование альбома концепции',
+    subtitle: 'Автоматическая сборка материалов проекта в единую структуру для презентации заказчику.',
+    detail: 'Платформа собирает генплан, варианты застройки, фасады, квартирографию и аналитику в единый структурированный альбом. При изменении параметров выбранного решения альбом обновляется автоматически.',
+    steps: [
+      { num: '01', title: 'Сборка материалов', desc: 'Объединение генплана, вариантов застройки, фасадов, квартирографии и аналитики в единый документ.' },
+      { num: '02', title: 'Структура разделов', desc: 'Сервис формирует логичную последовательность листов и блоков альбома в соответствии со стандартами.' },
+      { num: '03', title: 'Единый стиль', desc: 'Подписи, рамки, легенды и графика автоматически приводятся к единому фирменному оформлению.' },
+      { num: '04', title: 'Быстрое обновление', desc: 'При изменении параметров выбранного решения альбом обновляется автоматически — без пересборки вручную.' },
+    ],
+    tags: ['Альбом концепции', 'Автосборка', 'PDF-экспорт'],
+  },
+];
+
+// ── Проблема рынка ──
+const painPoints = [
+  { title: 'Дни и недели', desc: 'Расчёты и отчёты занимают недели вместо часов.' },
+  { title: 'Поздняя проверка', desc: 'Соответствие нормам проверяется слишком поздно.' },
+  { title: 'Мало итераций', desc: 'Команды не успевают сравнивать варианты застройки.' },
+];
+const currentSolutions = [
+  'Ручные расчёты в разных программах',
+  'Desktop-инструменты с долгой подготовкой модели',
+  'Excel, PDF и Revit по отдельности',
+];
+
+// ── Решение ──
+const advantages = [
+  { title: 'Единая BIM-среда', desc: 'BIM → расчёт единым сквозным процессом, без дублирования данных.' },
+  { title: 'ИИ-генерация вариантов', desc: 'Платформа сама предлагает варианты застройки, квартирографии и фасадов.' },
+  { title: 'Проверка норм онлайн', desc: 'Соответствие СП и СанПиН проверяется в облаке, без тяжёлого desktop.' },
+  { title: 'Автоотчёты для экспертизы', desc: 'Таблицы ТЭП, альбом концепции и отчёты формируются автоматически.' },
+];
+
+// ── Шаги работы ──
+const steps = [
+  { n: '01', title: 'Загрузка BIM', desc: 'Импортируйте модель из Revit или GLB — единая BIM-среда без дублирования данных.' },
+  { n: '02', title: 'ИИ-генерация', desc: 'Платформа генерирует варианты застройки, квартирографию и фасадные решения с учётом ТЗ.' },
+  { n: '03', title: 'Расчёты и нормы', desc: 'Собственный расчётный движок считает инсоляцию и ТЭП, проверяет нормы онлайн.' },
+  { n: '04', title: 'Отчёты и альбом', desc: 'Автоматическая сборка таблиц ТЭП, альбома концепции и отчётов для экспертизы.' },
+];
+
+// ── Эффект для бизнеса ──
+const businessMetrics = [
+  { value: '70%', label: 'снижение трудозатрат' },
+  { value: '50×', label: 'ускорение расчётов' },
+  { value: '40 млн ₽', label: 'эффект для ЖК 50 000 м²' },
+  { value: '99%', label: 'ежегодные продления' },
+];
+
+// Hero-статистика
+const stats = [
+  { value: '70%', unit: 'меньше', label: 'ручного труда' },
+  { value: '50×', unit: 'быстрее', label: 'расчёты проекта' },
+  { value: '40 млн ₽', unit: 'кейс', label: 'ЖК 50 000 м²', isLabel: true },
+];
+
+// Чередование фона для секций возможностей
+const featureBgs = ['section--bg-secondary', 'section--bg-primary', 'section--bg-secondary', 'section--bg-primary', 'section--bg-secondary', 'section--bg-primary'];
+---
+
+<Layout
+  title="FORMIT AI — ИИ-платформа для девелопмента"
+  description="FORMIT AI автоматизирует расчёты, генерацию застройки и выпуск проектных решений на основе BIM. Единая облачная платформа для девелоперов и проектировщиков."
+>
+  <Header currentProduct="formit-ai" />
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero hero--ai">
+      <div class="container hero__inner">
+        <div class="hero__eyebrow" aria-label="Продукт">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          FORMIT AI
+        </div>
+
+        <h1 class="hero__title">
+          ИИ-платформа<br />
+          <span class="hero__title-accent">для девелопмента</span>
+        </h1>
+
+        <p class="hero__desc">
+          Автоматизирует расчёты, генерацию застройки и&nbsp;выпуск проектных
+          решений на&nbsp;основе&nbsp;BIM. Работает в&nbsp;облаке, интегрируется с&nbsp;Revit.
+        </p>
+
+        <div class="hero__buttons">
+          <Button variant="filled" size="normal" href={mailtoEmail}>
+            Запросить демо
+          </Button>
+          <Button variant="outlined" size="normal" href={mailtoEmail}>
+            Получить консультацию
+          </Button>
+        </div>
+
+        <div class="hero__chips">
+          <Chip>#Быстрые решения</Chip>
+          <Chip>#Меньше ручного труда</Chip>
+          <Chip>#Точнее расчёты</Chip>
+          <Chip>#Полный контроль</Chip>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__visual-inner">
+            <div class="hero__visual-circle hero__visual-circle--1"></div>
+            <div class="hero__visual-circle hero__visual-circle--2"></div>
+            <div class="hero__visual-circle hero__visual-circle--3"></div>
+            <div class="ai-placeholder">
+              <svg class="ai-placeholder__icon" width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" opacity=".4"/>
+                <circle cx="40" cy="40" r="18" stroke="currentColor" stroke-width="2" opacity=".6"/>
+                <circle cx="40" cy="40" r="8" fill="currentColor" opacity=".3"/>
+                <path d="M40 12 V20 M40 60 V68 M12 40 H20 M60 40 H68 M19.03 19.03 L24.69 24.69 M55.31 55.31 L60.97 60.97 M60.97 19.03 L55.31 24.69 M24.69 55.31 L19.03 60.97" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+              </svg>
+              <p class="ai-placeholder__text">FORMIT AI</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="hero__stats" role="list">
+          {stats.map(s => (
+            <li class="hero__stat">
+              <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
+              <span class="hero__stat-unit">{s.unit}</span>
+              <span class="hero__stat-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Проблема рынка -->
+    <section id="problem" class="section section--bg-secondary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Проблема рынка</h2>
+        <p class="section-sub">
+          Девелоперы и&nbsp;проектные компании теряют время из-за ручных расчётов
+          и&nbsp;поздней проверки норм.
+        </p>
+
+        <div class="cards-grid cards-grid--3">
+          {painPoints.map(p => (
+            <div class="card card--soft card--interactive pain-card">
+              <h3 class="pain-card__title">{p.title}</h3>
+              <p class="pain-card__desc">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="problem__bottom card">
+          <div class="problem__col">
+            <h4 class="problem__col-title">Как решают сейчас</h4>
+            <ul class="dash-list">
+              {currentSolutions.map(s => <li>{s}</li>)}
+            </ul>
+          </div>
+          <div class="problem__result">
+            <span class="problem__result-label">Результат</span>
+            <p class="problem__result-text">Медленный старт, выше риск ошибок.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Решение -->
+    <section id="solution" class="section section--bg-primary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Решение</h2>
+        <p class="section-sub">
+          FORMIT AI объединяет расчёты, генерацию вариантов и&nbsp;выпуск отчётов
+          в&nbsp;единую BIM-платформу для девелопмента.
+        </p>
+
+        <div class="cards-grid cards-grid--4">
+          {advantages.map(a => (
+            <div class="card card--soft card--interactive adv-card">
+              <h3 class="adv-card__title">{a.title}</h3>
+              <p class="adv-card__desc">{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Шаги -->
+    <section id="stages" class="section section--bg-secondary stages fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Как работает FORMIT AI</h2>
+        <div class="steps__grid">
+          {steps.map((step) => (
+            <div class="card card--soft step-card">
+              <span class="step-card__num">{step.n}</span>
+              <h3 class="step-card__title">{step.title}</h3>
+              <p class="step-card__desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Возможности — отдельная секция на каждую функцию -->
+    {features.map((f, i) => (
+      <section id={`feature-${f.id}`} class:list={['section', featureBgs[i], 'feature-detail', 'fade-in', i % 2 !== 0 && 'feature-detail--reverse']}>
+        <div class="container feature-detail__inner">
+
+          <div class="feature-detail__visual">
+            <div class="feature-detail__icon-wrap" aria-hidden="true" set:html={f.icon} />
+            <h2 class="feature-detail__title">{f.title}</h2>
+            <p class="feature-detail__subtitle">{f.subtitle}</p>
+            <p class="feature-detail__body">{f.detail}</p>
+            <ul class="feature-detail__tags" aria-label="Теги">
+              {f.tags.map(tag => (
+                <li class="feature-detail__tag">{tag}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="feature-detail__media" aria-label={`Видео или GIF: ${f.title}`}>
+            <div class="media-placeholder">
+              <div class="media-placeholder__screen" aria-hidden="true">
+                <span class="media-placeholder__play"></span>
+              </div>
+              <div class="media-placeholder__meta">
+                <span class="media-placeholder__label">Видео / GIF</span>
+                <span class="media-placeholder__title">{f.title}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    ))}
+
+    <!-- Эффект для бизнеса -->
+    <section id="effect" class="section section--bg-secondary fade-in">
+      <div class="container">
+        <h2 class="section-title h2 section-title--with-sub">Эффект для бизнеса</h2>
+        <p class="section-sub">
+          Экономический эффект 40 млн ₽ рассчитан для конкретного кейса жилого комплекса площадью 50 000 м².
+        </p>
+        <div class="metrics-grid">
+          {businessMetrics.map(m => (
+            <div class="card card--soft metric">
+              <span class="metric__value">{m.value}</span>
+              <span class="metric__label">{m.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="pricing" class="section section--bg-primary cta-section fade-in">
+      <div class="container cta-section__inner">
+        <div class="card card--featured cta-card">
+          <div class="cta-card__badge">B2B-платформа</div>
+          <div class="cta-card__header">
+            <h2 class="cta-card__name">FORMIT AI</h2>
+            <p class="cta-card__subtitle">ИИ-платформа для девелопмента на основе BIM</p>
+          </div>
+          <div class="cta-card__price">
+            <span class="cta-card__price-year">Годовая SaaS-лицензия</span>
+            <span class="cta-card__price-month">Облачный веб-сервис · средний чек ~210 000 ₽</span>
+          </div>
+          <ul class="cta-card__features">
+            <li>Единая BIM-среда: BIM → расчёт сквозным процессом</li>
+            <li>ИИ-генерация вариантов застройки и фасадов</li>
+            <li>Проверка норм онлайн без тяжёлого desktop</li>
+            <li>Автоотчёты и альбом концепции для экспертизы</li>
+            <li>Интеграция с Revit, ПО в реестре</li>
+            <li>Консалтинг и внедрение</li>
+          </ul>
+          <FormSubmission client:load buttonText="Запросить демо" variant="filled" size="normal" />
+        </div>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .hero__eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+  .hero__title {
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    max-width: 22ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+  .hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+  .hero__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+  .hero__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+  .hero__visual-inner { position: absolute; inset: 0; }
+  .hero__visual-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero__visual-circle--1 { width: 60%; aspect-ratio: 1; top: -20%; right: -10%; background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--2 { width: 40%; aspect-ratio: 1; bottom: -15%; left: 5%; background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%); }
+  .hero__visual-circle--3 { width: 25%; aspect-ratio: 1; bottom: 10%; right: 15%; background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%); }
+
+  .ai-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    z-index: 1;
+    color: var(--color-accent-primary);
+  }
+  .ai-placeholder__icon { animation: spin-slow 12s linear infinite; }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .ai-placeholder__text {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+  .hero__stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: 0 var(--space-6); }
+  .hero__stat:not(:first-child) { border-left: 1px solid var(--color-border); }
+  .hero__stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: 1; color: var(--color-accent-primary); }
+  .hero__stat-value--label { color: var(--color-text-primary); }
+  .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+  .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
+
+  /* ── Заголовок с подзаголовком ── */
+  .section-title--with-sub { margin-bottom: var(--space-4); }
+  .section-sub {
+    max-width: 64ch;
+    margin: 0 auto var(--space-12);
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  /* ── Проблема ── */
+  .pain-card { display: flex; flex-direction: column; gap: var(--space-2); }
+  .pain-card__title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .pain-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  .problem__bottom {
+    margin-top: var(--space-6);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .problem__col-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-4);
+  }
+  .dash-list { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .dash-list li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .dash-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+  }
+  .problem__result {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border-navbar);
+  }
+  .problem__result-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-2);
+  }
+  .problem__result-text { font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); }
+
+  /* ── Карточки-преимущества (решение) ── */
+  .adv-card { display: flex; flex-direction: column; gap: var(--space-2); }
+  .adv-card__title {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+  .adv-card__title::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-bold);
+  }
+  .adv-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  /* ── Steps (как работает) ── */
+  .steps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
+  .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+  .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+
+  /* ── Детальные секции возможностей ── */
+  .feature-detail__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+  .feature-detail--reverse .feature-detail__inner {
+    direction: rtl;
+  }
+  .feature-detail--reverse .feature-detail__inner > * {
+    direction: ltr;
+  }
+
+  .feature-detail__icon-wrap {
+    margin-bottom: var(--space-5);
+  }
+  .feature-detail__visual {
+    max-width: 58ch;
+  }
+  .feature-detail--reverse .feature-detail__visual {
+    margin-left: auto;
+  }
+  .feature-detail__icon-wrap :global(svg) {
+    width: 72px;
+    height: 72px;
+  }
+  .feature-detail__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+  .feature-detail__subtitle {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-primary);
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--space-4);
+  }
+  .feature-detail__body {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    margin-bottom: var(--space-5);
+  }
+  .feature-detail__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+  .feature-detail__tag {
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.04em;
+  }
+
+  .feature-detail__media {
+    width: 100%;
+  }
+  .media-placeholder {
+    display: grid;
+    grid-template-rows: minmax(260px, 1fr) auto;
+    min-height: 360px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .media-placeholder__screen {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-accent-primary) 12%, transparent), transparent 42%),
+      linear-gradient(0deg, var(--color-bg-secondary), var(--color-bg-primary));
+  }
+  .media-placeholder__screen::before {
+    content: '';
+    position: absolute;
+    inset: var(--space-6);
+    border: 1px dashed color-mix(in srgb, var(--color-accent-primary) 35%, var(--color-border));
+    border-radius: var(--radius-md);
+  }
+  .media-placeholder__play {
+    position: relative;
+    z-index: 1;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-full);
+    background: var(--color-accent-primary);
+    box-shadow: var(--shadow-md);
+  }
+  .media-placeholder__play::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-38%, -50%);
+    border-left: 0.9rem solid #fff;
+    border-top: 0.6rem solid transparent;
+    border-bottom: 0.6rem solid transparent;
+  }
+  .media-placeholder__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+  .media-placeholder__label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+  .media-placeholder__title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* ── Метрики ── */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+  .metric { display: flex; flex-direction: column; gap: var(--space-2); align-items: center; text-align: center; }
+  .metric__value { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); line-height: 1; }
+  .metric__label { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+  /* ── CTA ── */
+  .cta-section__inner { display: flex; justify-content: center; }
+  .cta-card { max-width: 520px; width: 100%; display: flex; flex-direction: column; gap: var(--space-6); }
+  .cta-card__badge {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-accent-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cta-card__header { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__name { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+  .cta-card__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__price { display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-card__price-year { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
+  .cta-card__price-month { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+  .cta-card__features li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__features li::before { content: '✓'; color: var(--color-accent-primary); font-weight: var(--font-weight-bold); flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Адаптивность ── */
+  @media (prefers-reduced-motion: reduce) {
+    .ai-placeholder__icon { animation: none; }
+  }
+  @media (max-width: 960px) {
+    .steps__grid,
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .problem__bottom { grid-template-columns: 1fr; }
+    .feature-detail__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+    .feature-detail--reverse .feature-detail__inner {
+      direction: ltr;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero__title { max-width: 100%; }
+    .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
+    .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
+    .hero__stat:not(:first-child) { border-left: 0; }
+    .hero__stat-value { font-size: var(--font-size-xl); }
+    .hero__stat-label { text-align: left; }
+    .steps__grid,
+    .metrics-grid { grid-template-columns: 1fr; }
+  }
+</style>

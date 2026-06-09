@@ -1,0 +1,184 @@
+---
+import FormSubmission from '../FormSubmission.tsx';
+import { asset } from '../../utils/asset';
+
+const cities = [
+  ['Москва', 'Санкт-Петербург', 'Екатеринбург', 'Новосибирск', 'Казань'],
+  ['Владивосток', 'Хабаровск', 'Самара', 'Вологда', 'Томск'],
+  ['Краснодар', 'Ростов', 'Тюмень', 'Пенза'],
+  ['Ямало-Ненецкий АО', 'Амурская область', 'Челябинск', 'Астрахань'],
+];
+---
+
+<section id="expertises" class="section section--bg-primary expertises fade-in">
+  <div class="container">
+    <h2 class="section-title h2">Дружим с экспертизами</h2>
+
+    <div class="expertises__grid">
+      <!-- Левая колонка: описание -->
+      <div class="card expertises__info">
+        <h4 class="expertises__subtitle">Клиенты Formit проходят экспертизу</h4>
+        <ul class="expertises__points">
+          <li>
+            Сотрудничаем с экспертами и учитываем в отчете все их пожелания и замечания
+          </li>
+          <li class="expertises__points-dimmed">
+            Если вашего региона еще нет в списке пройденных — станьте первым,
+            а мы поможем по всем вопросам от экспертов
+          </li>
+        </ul>
+        <FormSubmission client:load buttonText="Получить консультацию" variant="filled" size="normal" buttonClass="expertises__cta" />
+      </div>
+
+      <!-- Центр: карта -->
+      <div class="expertises__map">
+        <img
+          src={asset('/images/expertisesMap.BKsQ8uxG.png')}
+          alt="Карта взаимодействия с экспертизами"
+          width="600"
+          height="400"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <!-- Правая колонка: города -->
+      <div class="card card--soft expertises__cities">
+        <h5 class="expertises__cities-title">
+          География прохождения экспертиз с нашим сервисом:
+        </h5>
+        <div class="expertises__cities-grid">
+          {cities.map(column => (
+            <ul>
+              {column.map(city => <li>{city}</li>)}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .expertises__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    grid-template-rows: auto auto;
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+
+  /* Текст — верхний левый, карта — верхний правый, города — во всю ширину снизу */
+  .expertises__info {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    justify-content: center;
+    border-color: var(--color-accent-primary);
+  }
+
+  .expertises__map {
+    grid-column: 2;
+    grid-row: 1;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .expertises__cities {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .expertises__subtitle {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+  }
+
+  .expertises__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+  }
+
+  .expertises__points li {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  .expertises__points-dimmed {
+    color: var(--color-text-dimmed) !important;
+    font-size: var(--font-size-sm) !important;
+  }
+
+  .expertises__cta {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .expertises__map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .expertises__cities-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-5);
+  }
+
+  .expertises__cities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2) var(--space-8);
+  }
+
+  .expertises__cities-grid ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .expertises__cities-grid li {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 1100px) {
+    .expertises__cities-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .expertises__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .expertises__info {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .expertises__map {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .expertises__cities {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    .expertises__map {
+      min-height: 240px;
+    }
+  }
+</style>
