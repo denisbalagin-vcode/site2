@@ -1,0 +1,237 @@
+---
+import { asset } from '../../utils/asset';
+const certificates = [
+  {
+    preview: asset('/images/certificateOfConformityPreview.BR6acEUv.webp'),
+    title: 'Сертификат соответствия',
+    docHref: asset('/images/certificateOfConformityPreview.BR6acEUv.jpg'),
+    appendixHref: asset('/documents/Приложение к сертификату соответствия (Formit).pdf'),
+    appendixLabel: 'Приложение',
+  },
+  {
+    preview: asset('/images/verificationCertificatePreview.Bfme0gof.webp'),
+    title: 'Свидетельство о верификации РААСН',
+    docHref: asset('/images/verificationCertificatePreview.Bfme0gof.jpg'),
+    appendixHref: asset('/documents/Приложение к свидетельству о верификации РААСН (Formit).pdf'),
+    appendixLabel: 'Приложение',
+  },
+];
+
+const standards = [
+  'СП 52.13330.2016 с изменениями №1, №2',
+  'СП 367.1325800.2017 с изменениями №1, №2',
+  'СанПиН 1.2.3685-21',
+  'ГОСТ Р 57795-2017',
+];
+---
+
+<section id="certified" class="section section--bg-primary certified fade-in">
+  <div class="container">
+    <h2 class="section-title h2">Сервис сертифицирован</h2>
+
+    <div class="certified__cards">
+      <!-- Сертификаты -->
+      {certificates.map(cert => (
+        <div class="card card--soft card--interactive cert-card">
+          <a
+            class="cert-card__image-link"
+            href={cert.docHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Открыть: ${cert.title}`}
+          >
+            <img
+              class="cert-card__preview"
+              src={cert.preview}
+              alt={cert.title}
+              width="165"
+              height="233"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+          <div class="cert-card__info">
+            <h4 class="cert-card__title">{cert.title}</h4>
+            <a
+              class="cert-card__appendix"
+              href={cert.appendixHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {cert.appendixLabel}
+            </a>
+          </div>
+        </div>
+      ))}
+
+      <!-- Соответствие стандартам -->
+      <div class="card card--soft standards-card">
+        <p class="standards-card__title">
+          Соответствует требованиям нормативных документов:
+        </p>
+        <ul class="standards-card__list">
+          {standards.map(s => (
+            <li>
+              <svg class="standards-card__check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7L5.5 10L11.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {s}
+            </li>
+          ))}
+        </ul>
+        <div class="standards-card__registry">
+          <div class="standards-card__registry-badge">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M7 1L9 5H13L10 8L11 12L7 10L3 12L4 8L1 5H5L7 1Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+            <span>Входит в реестр отечественного ПО</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .certified__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+
+  /* Два сертификата сгруппированы в левой колонке, реестр ПО — справа на всю высоту */
+  .certified__cards > :nth-child(1) { grid-column: 1; grid-row: 1; }
+  .certified__cards > :nth-child(2) { grid-column: 1; grid-row: 2; }
+  .certified__cards > :nth-child(3) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- Карточка сертификата ---
+     Контент центрируется по вертикали и заполняет высоту карточки
+     (карточки тянутся под высоту правого блока). */
+  .cert-card {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .cert-card__image-link {
+    flex-shrink: 0;
+    display: block;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: opacity var(--transition-fast);
+  }
+
+  .cert-card__image-link:hover {
+    opacity: 0.8;
+  }
+
+  .cert-card__preview {
+    width: clamp(130px, 13vw, 180px);
+    height: auto;
+    display: block;
+    border-radius: var(--radius-md);
+  }
+
+  .cert-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cert-card__title {
+    font-size: clamp(var(--font-size-lg), 1.8vw, var(--font-size-xl));
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  .cert-card__appendix {
+    font-size: var(--font-size-base);
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-medium);
+    transition: opacity var(--transition-fast);
+  }
+
+  .cert-card__appendix:hover {
+    opacity: 0.75;
+  }
+
+  /* --- Карточка стандартов --- */
+  .standards-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(var(--space-6), 4vw, var(--space-10));
+  }
+
+  .standards-card__title {
+    max-width: 30rem;
+    font-size: clamp(var(--font-size-base), 1.6vw, var(--font-size-lg));
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-tight);
+  }
+
+  .standards-card__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .standards-card__list li {
+    font-size: clamp(var(--font-size-base), 1.5vw, var(--font-size-lg));
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    line-height: var(--line-height-normal);
+  }
+
+  .standards-card__check {
+    flex-shrink: 0;
+    color: var(--color-accent-primary);
+    width: 18px;
+    height: 18px;
+    margin-top: 0.2em;
+  }
+
+  .standards-card__registry {
+    padding-top: var(--space-6);
+    border-top: var(--card-border);
+  }
+
+  .standards-card__registry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-primary);
+    font-size: clamp(var(--font-size-base), 1.5vw, var(--font-size-lg));
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @media (max-width: 600px) {
+    .certified__cards {
+      grid-template-columns: 1fr;
+    }
+
+    /* на узких экранах — естественный поток DOM в одну колонку */
+    .certified__cards > :nth-child(1),
+    .certified__cards > :nth-child(2),
+    .certified__cards > :nth-child(3) {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .standards-card {
+      justify-content: flex-start;
+    }
+  }
+</style>

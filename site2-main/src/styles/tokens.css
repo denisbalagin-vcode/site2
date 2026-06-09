@@ -1,0 +1,187 @@
+/* ============================================================
+   DESIGN TOKENS
+   Здесь сосредоточены все переменные дизайна.
+   Для редизайна начинай именно с этого файла.
+   ============================================================ */
+
+:root {
+  /* --- Шрифты --- */
+  --font-family: 'Montserrat', sans-serif;
+  --font-size-xs:   0.75rem;   /* 12px */
+  --font-size-sm:   0.875rem;  /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-md:   1.125rem;  /* 18px */
+  --font-size-lg:   1.25rem;   /* 20px */
+  --font-size-xl:   1.5rem;    /* 24px */
+  --font-size-2xl:  2rem;      /* 32px */
+  --font-size-3xl:  2.5rem;    /* 40px */
+  --font-size-4xl:  3.5rem;    /* 56px */
+  --font-size-hero: clamp(2.5rem, 6vw, 5rem);
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:    700;
+
+  --line-height-tight:  1.2;
+  --line-height-normal: 1.5;
+  --line-height-loose:  1.7;
+
+  /* --- Цвета бренда (точные значения из продакшн-темы) --- */
+  --color-blue-dark:   #0021ba;
+  --color-blue-main:   #0039c5;
+  --color-blue-light:  #3baee4;
+  --color-blue-bright: #00b3fd;
+
+  --color-green-main:  #00dc1a;
+  --color-green-bg:    #b0f4b8;
+
+  --color-white:       #ffffff;
+  --color-black:       #000000;
+
+  /* --- Семантические цвета — НЕ МЕНЯТЬ при редизайне, цвета зафиксированы --- */
+  --color-bg-primary:    #ffffff;     /* --bg-primary */
+  --color-bg-secondary:  #f1f3f5;     /* --bg-secondary */
+
+  --color-text-primary:  #2d2d2d;     /* --text-primary */
+  --color-text-secondary:#595959;     /* затемнён для контраста (был #898989) */
+  --color-text-dimmed:   #595959;     /* затемнён для контраста (был #898989) */
+  --color-text-inverse:  #ffffff;     /* --text-light */
+  --color-text-link:     #3bb1e6;     /* --text-link */
+  --color-text-success:  #00dc1a;     /* --text-success */
+  --color-text-error:    #e15151;     /* --text-error */
+
+  --color-accent-primary:   #0039c5;  /* --primary */
+  --color-accent-bg:        #3baee4;  /* --primary-bg */
+  /* мягкая подсветка активного пункта навигации — вычисляется из --primary, не новый цвет */
+  --color-accent-soft:      color-mix(in srgb, #0039c5 8%, #ffffff);
+  --color-accent-hover:     color-mix(in srgb, #0039c5 85%, #000000);
+  --color-accent-secondary: #00dc1a;  /* --secondary */
+  --color-accent-secondary-bg: #b0f4b8; /* --secondary-bg */
+
+  --color-border:        #c9c9c9;     /* --border-color */
+  --color-border-light:  #c8c8c8;     /* --border-light-color */
+  --color-border-navbar: #d8dcf2;     /* --navbar-border-color */
+  --color-border-strong: #c9c9c9;
+
+  /* --- Специальные --- */
+  --color-insolation-point: #ffea00;  /* --hero-insolation-point */
+
+  /* --- Градиенты --- */
+  --gradient-primary: linear-gradient(88.5deg, #0021ba 0%, #00b3fd 100.8%); /* --primary-gradient */
+  --gradient-logo:    linear-gradient(135deg, #0021ba 0%, #3baee4 70%, #00b3fd 100%);
+  --gradient-hero-circle: linear-gradient(83.04deg, #0021ba80 12.72%, #00b3fd80 84.99%);
+
+  /* --- Отступы --- */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-5:   1.25rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+
+  --section-v-padding: clamp(var(--space-12), 8vw, var(--space-24));
+
+  /* --- Контейнер --- */
+  --container-max-width: 1280px;
+  --container-padding-x: clamp(var(--space-4), 5vw, var(--space-16));
+
+  /* --- Скругления --- */
+  --radius-sm:   0.25rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.5rem;
+  --radius-full: 9999px;
+
+  /* --- Тени --- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+
+  /* --- Переходы (cubic-bezier из оригинальной темы) --- */
+  --transition-fast:   0.2s cubic-bezier(0.4, 0, 0.2, 1); /* --hover-transition-timing */
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- z-index --- */
+  --z-base:   0;
+  --z-raised: 10;
+  --z-header: 100;
+  --z-modal:  200;
+
+  /* --- Карточки --- */
+  --card-padding:        var(--space-8);
+  --card-border-radius:  var(--radius-xl);
+  --card-border:         1px solid var(--color-border);     /* #c9c9c9 */
+  --card-bg-outlined:    var(--color-bg-primary);            /* #ffffff */
+  --card-bg-filled:      var(--color-accent-primary);        /* #0039c5 */
+  --card-color-filled:   var(--color-text-inverse);          /* #ffffff */
+
+  /* --- Кнопки --- */
+  --button-height-sm:    2.25rem;
+  --button-height-md:    3rem;
+  --button-padding-sm:   0 var(--space-5);
+  --button-padding-md:   0 var(--space-8);
+  --button-border-radius: var(--radius-full);
+  --button-font-weight:  var(--font-weight-semibold);
+  --button-font-size:    var(--font-size-sm);
+
+  /* --- Навигация (header) --- */
+  --header-height:       4.5rem;
+  --header-bg:           color-mix(in srgb, var(--color-bg-primary) 88%, transparent);
+  --header-blur:         16px;
+  --header-border:       1px solid var(--color-border-navbar); /* #d8dcf2 */
+}
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА
+   Переопределяем только семантические токены. Бренд-цвета и
+   геометрия (отступы, радиусы, шрифты) остаются прежними.
+   Значения вынесены в общий набор кастомных свойств, чтобы не
+   дублировать список: ручной выбор ([data-theme]) и системная
+   тема используют один и тот же блок --dark-*.
+   ============================================================ */
+:root {
+  --dark-bg-primary:    #0f1320;
+  --dark-bg-secondary:  #161b2b;
+  --dark-text-primary:  #e8ebf2;
+  --dark-text-secondary:#9aa3b5;
+  --dark-text-inverse:  #0f1320;
+  --dark-border:        #2a3142;
+  --dark-border-navbar: #232a3b;
+  --dark-border-strong: #38415a;
+  --dark-accent-primary:#3d7dff;
+  --dark-accent-soft:   color-mix(in srgb, #3d7dff 16%, #0f1320);
+  --dark-accent-hover:  color-mix(in srgb, #3d7dff 85%, #ffffff);
+}
+
+/* Тему всегда проставляет inline-скрипт в <head> (см. Layout.astro):
+   он резолвит сохранённый выбор или системную тему в конкретный
+   data-theme, поэтому здесь достаточно одного селектора без FOUC. */
+:root[data-theme='dark'] {
+  --color-bg-primary:     var(--dark-bg-primary);
+  --color-bg-secondary:   var(--dark-bg-secondary);
+  --color-text-primary:   var(--dark-text-primary);
+  --color-text-secondary: var(--dark-text-secondary);
+  --color-text-dimmed:    var(--dark-text-secondary);
+  --color-text-inverse:   #ffffff;
+  --color-border:         var(--dark-border);
+  --color-border-light:   var(--dark-border);
+  --color-border-navbar:  var(--dark-border-navbar);
+  --color-border-strong:  var(--dark-border-strong);
+  --color-accent-primary: var(--dark-accent-primary);
+  --color-accent-bg:      var(--dark-accent-primary);
+  --color-accent-soft:    var(--dark-accent-soft);
+  --color-accent-hover:   var(--dark-accent-hover);
+  --card-bg-filled:       var(--dark-accent-primary);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  color-scheme: dark;
+}

@@ -1,0 +1,243 @@
+---
+/*
+  Переиспользуемый видео-плеер с «фасадом» (click-to-play).
+  Сначала показывается лёгкое превью (постер + кнопка ▶), а тяжёлое
+  видео/iframe подгружается только по клику — это не тормозит загрузку
+  страницы и экономит трафик.
+
+  Способы задать источник видео (приоритет сверху вниз):
+    • src     — путь к самостоятельно размещённому файлу (.mp4/.webm),
+                например asset('/videos/demo.mp4')
+    • embed   — URL для встраивания (YouTube/VK/RuTube embed-ссылка)
+  Если источник не указан — плеер остаётся в режиме превью
+  (постер с кнопкой), готовый к подключению ролика позже.
+*/
+import { asset } from '../../utils/asset';
+
+interface Props {
+  /** Самостоятельно размещённый видеофайл (.mp4/.webm). */
+  src?: string;
+  /** URL для встраивания (iframe): YouTube/VK/RuTube. */
+  embed?: string;
+  /** Картинка-постер (превью кадра). */
+  poster: string;
+  /** Доступное описание/подпись для скринридеров и aria-label. */
+  title: string;
+  /** Длительность ролика — печатается бейджем поверх превью. */
+  duration?: string;
+  /** Соотношение сторон, по умолчанию 16 / 9. */
+  ratio?: string;
+  /** Дополнительный CSS-класс на корневой элемент. */
+  class?: string;
+}
+
+const {
+  src,
+  embed,
+  poster,
+  title,
+  duration,
+  ratio = '16 / 9',
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={['video-player', className]}
+  data-video-player
+  data-video-src={src}
+  data-video-embed={embed}
+  data-video-title={title}
+  style={`--video-ratio: ${ratio};`}
+>
+  <button type="button" class="video-player__facade" data-video-trigger aria-label={`Воспроизвести: ${title}`}>
+    <img
+      class="video-player__poster"
+      src={poster}
+      alt=""
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="video-player__overlay" aria-hidden="true"></span>
+
+    {duration && <span class="video-player__duration" aria-hidden="true">{duration}</span>}
+
+    <span class="video-player__play" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.78-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+      </svg>
+    </span>
+  </button>
+</div>
+
+<style>
+  .video-player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--video-ratio, 16 / 9);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: var(--card-border);
+    background: var(--color-bg-secondary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .video-player__facade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .video-player__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .video-player__facade:hover .video-player__poster {
+    transform: scale(1.04);
+  }
+
+  .video-player__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-blue-dark) 10%, transparent) 0%,
+      color-mix(in srgb, var(--color-blue-dark) 45%, transparent) 100%
+    );
+    transition: opacity var(--transition-fast);
+  }
+
+  .video-player__facade:hover .video-player__overlay {
+    opacity: 0.8;
+  }
+
+  .video-player__duration {
+    position: absolute;
+    bottom: var(--space-3);
+    right: var(--space-3);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-black) 55%, transparent);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-white);
+  }
+
+  .video-player__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4.5rem;
+    height: 4.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 4px; /* визуально центрируем треугольник */
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-white) 92%, transparent);
+    color: var(--color-accent-primary);
+    box-shadow: var(--shadow-lg);
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .video-player__facade:hover .video-player__play {
+    transform: translate(-50%, -50%) scale(1.08);
+    background: var(--color-white);
+  }
+
+  .video-player__facade:focus-visible {
+    outline: 3px solid var(--color-accent-primary);
+    outline-offset: -3px;
+  }
+
+  /* Пульсация-«ореол» вокруг кнопки воспроизведения */
+  @media (prefers-reduced-motion: no-preference) {
+    .video-player__play::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-white) 70%, transparent);
+      animation: video-pulse 2.4s ease-out infinite;
+    }
+  }
+
+  @keyframes video-pulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-white) 55%, transparent); }
+    70%  { box-shadow: 0 0 0 18px color-mix(in srgb, var(--color-white) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-white) 0%, transparent); }
+  }
+
+  /* Подключённый медиа-элемент занимает весь контейнер */
+  .video-player :global(video),
+  .video-player :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+  }
+</style>
+
+<script>
+  function initVideoPlayers() {
+    const players = document.querySelectorAll<HTMLElement>('[data-video-player]');
+
+    players.forEach((player) => {
+      if (player.dataset.bound === 'true') return;
+      player.dataset.bound = 'true';
+
+      const trigger = player.querySelector<HTMLButtonElement>('[data-video-trigger]');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', () => {
+        const src = player.dataset.videoSrc;
+        const embed = player.dataset.videoEmbed;
+        const title = player.dataset.videoTitle ?? 'Видео';
+
+        // Нет реального источника — оставляем превью как есть.
+        if (!src && !embed) return;
+
+        let media: HTMLVideoElement | HTMLIFrameElement;
+
+        if (src) {
+          const video = document.createElement('video');
+          video.src = src;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.setAttribute('aria-label', title);
+          media = video;
+        } else {
+          const iframe = document.createElement('iframe');
+          const sep = embed!.includes('?') ? '&' : '?';
+          iframe.src = `${embed}${sep}autoplay=1`;
+          iframe.title = title;
+          iframe.allow =
+            'accelerated-2d-canvas; autoplay; encrypted-media; fullscreen; picture-in-picture';
+          iframe.allowFullscreen = true;
+          media = iframe;
+        }
+
+        trigger.replaceWith(media);
+      });
+    });
+  }
+
+  initVideoPlayers();
+  document.addEventListener('astro:page-load', initVideoPlayers);
+</script>

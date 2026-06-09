@@ -1,0 +1,524 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import VideoPlayer from '../components/ui/VideoPlayer.astro';
+import FormSubmission from '../components/FormSubmission.tsx';
+import { asset } from '../utils/asset';
+import { mailtoEmail } from '../data/contacts';
+
+// Шаги интерактивного демо
+const steps = [
+  {
+    n: '01',
+    title: 'Загрузите модель',
+    desc: 'Откройте готовый пример Revit-модели или синхронизируйте свою в один клик.',
+  },
+  {
+    n: '02',
+    title: 'Запустите расчёт',
+    desc: 'Сервис рассчитывает инсоляцию и КЕО — около 1000 светопроёмов в минуту.',
+  },
+  {
+    n: '03',
+    title: 'Изучите результат',
+    desc: 'Посмотрите фронты инсоляции на планах и расширенную легенду результатов.',
+  },
+  {
+    n: '04',
+    title: 'Сформируйте отчёт',
+    desc: 'Получите готовый отчёт по действующим нормам — сразу для экспертизы.',
+  },
+];
+---
+
+<Layout
+  title="Демо продукта Formit — расчёт инсоляции и КЕО онлайн"
+  description="Интерактивное демо Formit: пройдите весь сценарий расчёта инсоляции и КЕО на готовом примере прямо в браузере. Без установки и регистрации."
+>
+  <Header showDemoLink={false} />
+
+  <main class="demo-page">
+    <!-- Хедер демо-страницы -->
+    <section class="demo-hero">
+      <div class="container demo-hero__inner">
+        <span class="demo-hero__eyebrow">
+          <span class="demo-hero__eyebrow-dot" aria-hidden="true"></span>
+          Демо продукта
+        </span>
+
+        <h1 class="demo-hero__title">
+          Интерактивное демо <span class="demo-hero__title-accent">Formit</span>
+        </h1>
+
+        <p class="demo-hero__desc">
+          Пройдите весь путь расчёта инсоляции и&nbsp;КЕО на&nbsp;готовом примере —
+          прямо в&nbsp;браузере, без установки и&nbsp;регистрации.
+        </p>
+
+        <div class="demo-hero__chips">
+          <Chip>#Без установки</Chip>
+          <Chip>#Готовый пример</Chip>
+          <Chip>#Реальный интерфейс</Chip>
+        </div>
+      </div>
+    </section>
+
+    <!-- Интерактивная область демо (макет окна продукта) -->
+    <section class="demo-stage">
+      <div class="container">
+        <div class="demo-window">
+          <!-- Шапка окна (браузерный chrome) -->
+          <div class="demo-window__bar" aria-hidden="true">
+            <span class="demo-window__dot demo-window__dot--r"></span>
+            <span class="demo-window__dot demo-window__dot--y"></span>
+            <span class="demo-window__dot demo-window__dot--g"></span>
+            <span class="demo-window__url">app.formit.pro</span>
+          </div>
+
+          <!-- Полотно демо: видеозапись прохождения сценария -->
+          <div class="demo-window__canvas">
+            <!-- Индикатор прогресса по шагам -->
+            <div class="demo-progress" data-demo-progress aria-hidden="true">
+              {steps.map((_, i) => (
+                <span class="demo-progress__bar" data-progress-bar data-index={i}></span>
+              ))}
+            </div>
+
+            <VideoPlayer
+              poster={asset('/images/insolatedBuilding.BsJLrvJH.webp')}
+              title="Интерактивное демо Formit — расчёт инсоляции и КЕО"
+              duration="3:24"
+              ratio="16 / 9"
+            />
+
+            <!-- Подпись активного шага поверх окна -->
+            <div class="demo-window__caption" data-demo-caption aria-live="polite">
+              <span class="demo-window__caption-num" data-caption-num>01</span>
+              <span class="demo-window__caption-text" data-caption-text>{steps[0].title}</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="demo-stage__hint">
+          Нажмите ▶, чтобы запустить запись, или выбирайте шаги ниже, чтобы пройти сценарий.
+        </p>
+      </div>
+    </section>
+
+    <!-- Как это работает: интерактивные шаги -->
+    <section class="section section--bg-secondary demo-steps fade-in">
+      <div class="container">
+        <h2 class="section-title h2">Как пройти демо за 4 шага</h2>
+
+        <ol class="demo-steps__grid" role="tablist" aria-label="Шаги демо" data-demo-steps>
+          {steps.map((step, i) => (
+            <li role="presentation">
+              <button
+                type="button"
+                class="card card--interactive demo-step"
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-step-index={i}
+                data-step-number={step.n}
+              >
+                <h3 class="demo-step__title">{step.title}</h3>
+                <p class="demo-step__desc">{step.desc}</p>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Финальный призыв -->
+    <section class="section demo-final fade-in">
+      <div class="container demo-final__inner">
+        <h2 class="demo-final__title">Готовы попробовать на своём проекте?</h2>
+        <p class="demo-final__desc">
+          Оставьте заявку — подберём тариф и&nbsp;поможем с&nbsp;первым расчётом.
+          Или сразу напишите нам.
+        </p>
+        <div class="demo-final__actions">
+          <FormSubmission client:load buttonText="Попробовать на своём проекте" variant="filled" size="normal" />
+          <Button variant="outlined" size="normal" href={mailtoEmail}>
+            Получить консультацию
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* ============================================================
+     ХЕДЕР ДЕМО-СТРАНИЦЫ
+     ============================================================ */
+  .demo-hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding) var(--space-8);
+  }
+
+  .demo-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-5);
+  }
+
+  .demo-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+
+  .demo-hero__eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  .demo-hero__title {
+    font-size: clamp(var(--font-size-3xl), 6vw, var(--font-size-4xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+  }
+
+  .demo-hero__title-accent {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .demo-hero__desc {
+    max-width: 54ch;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  .demo-hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  /* ============================================================
+     ОКНО ДЕМО
+     ============================================================ */
+  .demo-stage {
+    padding-bottom: var(--section-v-padding);
+  }
+
+  .demo-window {
+    max-width: 1040px;
+    margin-inline: auto;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: var(--card-border);
+    background: var(--color-bg-primary);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .demo-window__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .demo-window__dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .demo-window__dot--r { background: #ff5f57; }
+  .demo-window__dot--y { background: #febc2e; }
+  .demo-window__dot--g { background: #28c840; }
+
+  .demo-window__url {
+    margin-left: var(--space-4);
+    padding: 0.2rem var(--space-4);
+    border-radius: var(--radius-full);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .demo-window__canvas {
+    /* Видео-плеер уже несёт свои скругления — здесь обнуляем,
+       чтобы он ровно вписался в окно. */
+    padding: 0;
+    position: relative;
+  }
+
+  /* --- Индикатор прогресса по шагам --- */
+  .demo-progress {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    right: var(--space-3);
+    z-index: 2;
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .demo-progress__bar {
+    flex: 1;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+  }
+
+  .demo-progress__bar.is-active {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  /* --- Подпись активного шага поверх окна --- */
+  .demo-window__caption {
+    position: absolute;
+    left: var(--space-4);
+    bottom: var(--space-4);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    background: rgba(15, 19, 32, 0.72);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    max-width: calc(100% - var(--space-8));
+  }
+
+  .demo-window__caption-num {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-blue-bright);
+  }
+
+  .demo-window__caption-text {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .demo-window__canvas :global(.video-player) {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .demo-stage__hint {
+    margin-top: var(--space-5);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* ============================================================
+     ШАГИ
+     ============================================================ */
+  .demo-steps__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+    list-style: none; /* убираем маркеры <ol> (1. 2. 3. 4.) */
+  }
+
+  .demo-steps__grid > li {
+    list-style: none;
+  }
+
+  .demo-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .demo-step[aria-selected='true'] {
+    border-color: var(--color-accent-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .demo-step:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+  }
+
+  .demo-step__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  .demo-step__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-normal);
+  }
+
+  /* ============================================================
+     ФИНАЛЬНЫЙ ПРИЗЫВ
+     ============================================================ */
+  .demo-final__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-5);
+  }
+
+  .demo-final__title {
+    font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+  }
+
+  .demo-final__desc {
+    max-width: 52ch;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  .demo-final__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  /* ============================================================
+     АДАПТИВНОСТЬ
+     ============================================================ */
+  @media (max-width: 1100px) {
+    .demo-steps__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .demo-steps__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .demo-steps__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .demo-window__caption-text {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Module-scoped: при SPA-навигации (ClientRouter) гасим прошлый observer и
+  // таймер автопрокрутки, чтобы они не висели на свапнутых узлах.
+  let demoIO: IntersectionObserver | null = null;
+  let demoTimer: number | undefined;
+
+  function initDemoStepper() {
+    demoIO?.disconnect();
+    demoIO = null;
+    if (demoTimer) {
+      clearInterval(demoTimer);
+      demoTimer = undefined;
+    }
+
+    const list = document.querySelector<HTMLElement>('[data-demo-steps]');
+    if (!list) return;
+
+    const steps = Array.from(list.querySelectorAll<HTMLButtonElement>('[data-step-index]'));
+    const bars = Array.from(document.querySelectorAll<HTMLElement>('[data-progress-bar]'));
+    const captionNum = document.querySelector<HTMLElement>('[data-caption-num]');
+    const captionText = document.querySelector<HTMLElement>('[data-caption-text]');
+    if (!steps.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let active = 0;
+
+    const render = (index: number) => {
+      active = index;
+      steps.forEach((s, i) => s.setAttribute('aria-selected', String(i === index)));
+      bars.forEach((b, i) => b.classList.toggle('is-active', i === index));
+      const num = steps[index].dataset.stepNumber ?? '';
+      const title = steps[index].querySelector('.demo-step__title')?.textContent ?? '';
+      if (captionNum) captionNum.textContent = num;
+      if (captionText) captionText.textContent = title;
+    };
+
+    const advance = () => render((active + 1) % steps.length);
+
+    const startAuto = () => {
+      if (reduceMotion || demoTimer) return;
+      demoTimer = window.setInterval(advance, 3500);
+    };
+    const stopAuto = () => {
+      if (demoTimer) {
+        clearInterval(demoTimer);
+        demoTimer = undefined;
+      }
+    };
+
+    steps.forEach((step, i) => {
+      step.addEventListener('click', () => {
+        stopAuto();
+        render(i);
+      });
+    });
+
+    // Останавливаем автопрокрутку, когда секция вне экрана — экономим ресурсы.
+    demoIO = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? startAuto() : stopAuto())),
+      { threshold: 0.25 }
+    );
+    demoIO.observe(list);
+
+    render(0);
+  }
+
+  initDemoStepper();
+  document.addEventListener('astro:page-load', initDemoStepper);
+</script>
