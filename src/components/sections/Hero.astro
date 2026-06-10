@@ -120,9 +120,11 @@ const stats = [
 
   /* --- Title --- */
   .hero__title {
+    font-family: var(--font-family-heading);
     font-size: var(--font-size-hero);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-tight);
+    letter-spacing: -0.02em;
     color: var(--color-text-primary);
     max-width: 18ch;
     margin-bottom: calc(-1 * var(--space-3));
@@ -204,7 +206,7 @@ const stats = [
     aspect-ratio: 1;
     bottom: 10%;
     right: 15%;
-    background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-insolation-point) 20%, transparent) 0%, transparent 70%);
   }
 
   .hero__visual-img {

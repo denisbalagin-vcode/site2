@@ -45,7 +45,7 @@ const Tag = href ? 'a' : 'button';
     font-weight: var(--button-font-weight);
     font-size: var(--button-font-size);
     white-space: nowrap;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast), transform 0.1s ease;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
   }
@@ -75,13 +75,16 @@ const Tag = href ? 'a' : 'button';
 
   /* Варианты */
   .btn--filled {
-    background: var(--color-accent-primary);
+    background: var(--gradient-primary);
     color: var(--color-text-inverse);
     border: 1px solid transparent;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-accent-primary) 40%, transparent);
   }
 
   .btn--filled:hover {
-    opacity: 0.85;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent-primary) 50%, transparent);
+    opacity: 1;
   }
 
   .btn--outlined {
