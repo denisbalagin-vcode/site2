@@ -13,13 +13,15 @@ const gipFeatures = [
     icon: asset('/images/reportIcon.BHVjrbWR.gif'),
     iconAlt: 'Отчет',
     title: 'Формирование документации для экспертизы',
-    subtitle: 'Гибкий конструктор отчетов с автоматическим формированием графики и текста',
+    subtitle:
+      'Гибкий конструктор отчетов с автоматическим формированием графики и текста',
   },
   {
     icon: asset('/images/roomPlanIcon.DayKlSI4.gif'),
     iconAlt: 'План комнаты',
     title: 'Нет перепланировкам',
-    subtitle: 'Возможность быстрой проверки инсоляции и КЕО на любом этапе проектирования',
+    subtitle:
+      'Возможность быстрой проверки инсоляции и КЕО на любом этапе проектирования',
   },
 ];
 
@@ -45,9 +47,9 @@ const bimFeatures = [
 ];
 
 const ceoStats = [
-  { value: '10 мин',   label: 'на расчет 1 проекта' },
-  { value: 'до 30%',   label: 'снижения потерь' },
-  { value: '>120',     label: 'компаний используют Formit' },
+  { value: '10 мин', label: 'на расчет 1 проекта' },
+  { value: 'до 30%', label: 'снижения потерь' },
+  { value: '>120', label: 'компаний используют Formit' },
 ];
 
 const ceoFeatures = [
@@ -57,7 +59,8 @@ const ceoFeatures = [
   },
   {
     title: 'Снизить потери прибыли из-за переделок до 30%',
-    subtitle: 'Сервис поддерживает "Быстрый расчет" после изменений в проекте на любом этапе',
+    subtitle:
+      'Сервис поддерживает "Быстрый расчет" после изменений в проекте на любом этапе',
   },
   {
     title: 'Работа в сертифицированном сервисе',
@@ -68,24 +71,40 @@ const ceoFeatures = [
 
 <section id="audience" class="section section--bg-primary audience fade-in">
   <div class="container">
-    <h2 class="section-title h2">Сервис подойдет</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Кому подойдёт</span>
+      <h2 class="section-title h2">Сервис подойдет</h2>
+      <p class="section-subtitle">
+        Польза для каждой роли в&nbsp;проектной команде — от&nbsp;ГИПа
+        до&nbsp;генерального директора.
+      </p>
+    </div>
 
     <div class="audience__cards">
       <!-- Карточка: ГИП и ГАП -->
       <div class="card card--soft card--interactive">
         <h3 class="card__title">ГИП и ГАП</h3>
         <ul class="feature-list">
-          {gipFeatures.map(f => (
-            <li class="feature-item">
-              <div class="feature-item__icon feature-item__icon--default">
-                <img src={f.icon} width="60" height="60" alt={f.iconAlt} loading="lazy" decoding="async" />
-              </div>
-              <div>
-                <p class="feature-item__title">{f.title}</p>
-                <p class="feature-item__subtitle">{f.subtitle}</p>
-              </div>
-            </li>
-          ))}
+          {
+            gipFeatures.map((f) => (
+              <li class="feature-item">
+                <div class="feature-item__icon feature-item__icon--default">
+                  <img
+                    src={f.icon}
+                    width="60"
+                    height="60"
+                    alt={f.iconAlt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div>
+                  <p class="feature-item__title">{f.title}</p>
+                  <p class="feature-item__subtitle">{f.subtitle}</p>
+                </div>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
@@ -93,20 +112,29 @@ const ceoFeatures = [
       <div class="card card--filled card--interactive">
         <h3 class="card__title">BIM-менеджерам</h3>
         <ul class="feature-list">
-          {bimFeatures.map(f => (
-            <li class="feature-item">
-              <div class:list={['feature-item__icon', 'feature-item__icon--bg', f.isText && 'feature-item__icon--text']}>
-                {f.isText
-                  ? <span set:html={f.icon.replace(/\n/g, '<br/>')} />
-                  : f.icon
-                }
-              </div>
-              <div>
-                <p class="feature-item__title">{f.title}</p>
-                <p class="feature-item__subtitle">{f.subtitle}</p>
-              </div>
-            </li>
-          ))}
+          {
+            bimFeatures.map((f) => (
+              <li class="feature-item">
+                <div
+                  class:list={[
+                    'feature-item__icon',
+                    'feature-item__icon--bg',
+                    f.isText && 'feature-item__icon--text',
+                  ]}
+                >
+                  {f.isText ? (
+                    <span set:html={f.icon.replace(/\n/g, '<br/>')} />
+                  ) : (
+                    f.icon
+                  )}
+                </div>
+                <div>
+                  <p class="feature-item__title">{f.title}</p>
+                  <p class="feature-item__subtitle">{f.subtitle}</p>
+                </div>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
@@ -115,23 +143,27 @@ const ceoFeatures = [
         <div class="ceo-card__top">
           <h3 class="card__title">Генеральным директорам</h3>
           <div class="ceo-stats">
-            {ceoStats.map(s => (
-              <div class="ceo-stat">
-                <span class="ceo-stat__value">{s.value}</span>
-                <span class="ceo-stat__label">{s.label}</span>
-              </div>
-            ))}
+            {
+              ceoStats.map((s) => (
+                <div class="ceo-stat">
+                  <span class="ceo-stat__value">{s.value}</span>
+                  <span class="ceo-stat__label">{s.label}</span>
+                </div>
+              ))
+            }
           </div>
         </div>
         <ul class="feature-list feature-list--no-icon">
-          {ceoFeatures.map(f => (
-            <li class="feature-item">
-              <div>
-                <p class="feature-item__title">{f.title}</p>
-                <p class="feature-item__subtitle">{f.subtitle}</p>
-              </div>
-            </li>
-          ))}
+          {
+            ceoFeatures.map((f) => (
+              <li class="feature-item">
+                <div>
+                  <p class="feature-item__title">{f.title}</p>
+                  <p class="feature-item__subtitle">{f.subtitle}</p>
+                </div>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
@@ -193,7 +225,7 @@ const ceoFeatures = [
   }
 
   .feature-item__icon--bg {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     font-size: var(--font-size-xl);
   }
 

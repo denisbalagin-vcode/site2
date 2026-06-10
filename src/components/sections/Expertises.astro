@@ -12,7 +12,14 @@ const cities = [
 
 <section id="expertises" class="section section--bg-primary expertises fade-in">
   <div class="container">
-    <h2 class="section-title h2">Дружим с экспертизами</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Экспертиза</span>
+      <h2 class="section-title h2">Дружим с экспертизами</h2>
+      <p class="section-subtitle">
+        Отчёты Formit принимают экспертизы по&nbsp;всей России —
+        от&nbsp;Санкт-Петербурга до&nbsp;Владивостока.
+      </p>
+    </div>
 
     <div class="expertises__grid">
       <!-- Левая колонка: описание -->
@@ -20,14 +27,21 @@ const cities = [
         <h4 class="expertises__subtitle">Клиенты Formit проходят экспертизу</h4>
         <ul class="expertises__points">
           <li>
-            Сотрудничаем с экспертами и учитываем в отчете все их пожелания и замечания
+            Сотрудничаем с экспертами и учитываем в отчете все их пожелания и
+            замечания
           </li>
           <li class="expertises__points-dimmed">
-            Если вашего региона еще нет в списке пройденных — станьте первым,
-            а мы поможем по всем вопросам от экспертов
+            Если вашего региона еще нет в списке пройденных — станьте первым, а
+            мы поможем по всем вопросам от экспертов
           </li>
         </ul>
-        <FormSubmission client:load buttonText="Получить консультацию" variant="filled" size="normal" buttonClass="expertises__cta" />
+        <FormSubmission
+          client:load
+          buttonText="Получить консультацию"
+          variant="filled"
+          size="normal"
+          buttonClass="expertises__cta"
+        />
       </div>
 
       <!-- Центр: карта -->
@@ -48,11 +62,15 @@ const cities = [
           География прохождения экспертиз с нашим сервисом:
         </h5>
         <div class="expertises__cities-grid">
-          {cities.map(column => (
-            <ul>
-              {column.map(city => <li>{city}</li>)}
-            </ul>
-          ))}
+          {
+            cities.map((column) => (
+              <ul>
+                {column.map((city) => (
+                  <li>{city}</li>
+                ))}
+              </ul>
+            ))
+          }
         </div>
       </div>
     </div>

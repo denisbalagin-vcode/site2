@@ -53,33 +53,57 @@ const reviews = [
   <div class="reviews__bg-circle" aria-hidden="true"></div>
 
   <div class="container">
-    <h2 class="section-title h2">Отзывы</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Отзывы клиентов</span>
+      <h2 class="section-title h2">Что говорят пользователи</h2>
+      <p class="section-subtitle">
+        Архитекторы, BIM-специалисты и&nbsp;проектные компании о&nbsp;работе
+        с&nbsp;Formit.
+      </p>
+    </div>
 
     <div class="reviews__cards">
-      {reviews.map(r => (
-        <article class="card card--interactive review-card">
-          <div class="review-card__profile">
-            <img
-              class="review-card__avatar"
-              src={r.avatar}
-              alt={r.name}
-              width="80"
-              height="80"
-              loading="lazy"
-              decoding="async"
-            />
-            <div>
-              <h4 class="review-card__name">{r.name}</h4>
-              <p class="review-card__role">{r.role}</p>
-              <p class="review-card__company">{r.company}</p>
-              <p class="review-card__city">{r.city}</p>
+      {
+        reviews.map((r) => (
+          <article class="card card--interactive review-card">
+            <svg
+              class="review-card__quote"
+              width="36"
+              height="28"
+              viewBox="0 0 36 28"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M0 28V14.8C0 6.8 4.4 1.6 13.2 0l2 4.4c-4.8 1.2-7.2 4-7.6 8.4H14V28H0Zm22 0V14.8C22 6.8 26.4 1.6 35.2 0l2 4.4c-4.8 1.2-7.2 4-7.6 8.4H36V28H22Z"
+                transform="scale(0.92)"
+              />
+            </svg>
+            <div class="review-card__profile">
+              <img
+                class="review-card__avatar"
+                src={r.avatar}
+                alt={r.name}
+                width="80"
+                height="80"
+                loading="lazy"
+                decoding="async"
+              />
+              <div>
+                <h4 class="review-card__name">{r.name}</h4>
+                <p class="review-card__role">{r.role}</p>
+                <p class="review-card__company">{r.company}</p>
+                <p class="review-card__city">{r.city}</p>
+              </div>
             </div>
-          </div>
-          <div class="review-card__text">
-            {r.paragraphs.map(p => <p>{p}</p>)}
-          </div>
-        </article>
-      ))}
+            <div class="review-card__text">
+              {r.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -95,7 +119,11 @@ const reviews = [
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--color-blue-bright) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      var(--color-blue-bright) 0%,
+      transparent 70%
+    );
     opacity: 0.05;
     top: -200px;
     right: -200px;
@@ -109,9 +137,18 @@ const reviews = [
   }
 
   .review-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
+  }
+
+  .review-card__quote {
+    position: absolute;
+    top: var(--card-padding);
+    right: var(--card-padding);
+    color: color-mix(in srgb, var(--color-accent-primary) 14%, transparent);
+    pointer-events: none;
   }
 
   .review-card__profile {
@@ -127,7 +164,8 @@ const reviews = [
     object-fit: cover;
     flex-shrink: 0;
     border: 2px solid var(--color-border);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-primary) 12%, transparent);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-accent-primary) 12%, transparent);
   }
 
   .review-card__name {

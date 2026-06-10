@@ -1,0 +1,146 @@
+---
+/*
+  FAQ — снимает типовые возражения перед покупкой.
+  Все ответы основаны на фактах, опубликованных на этом сайте
+  (hero, экспертизы, сертификация, тарифы, демо).
+*/
+const faqs = [
+  {
+    q: 'Что нужно, чтобы начать работать с сервисом?',
+    a: 'Достаточно Revit-модели — загрузите её и получите полный расчёт инсоляции и КЕО со всеми нормами и готовым отчётом. На освоение сервиса уходит около 40 минут, а служба поддержки поможет на любом этапе.',
+  },
+  {
+    q: 'Подойдёт ли отчёт для прохождения экспертизы?',
+    a: 'Да. Клиенты Formit проходят экспертизу по всей России — от Санкт-Петербурга до Владивостока. Мы сотрудничаем с экспертами и учитываем в отчёте их пожелания и замечания.',
+  },
+  {
+    q: 'Каким нормативам соответствуют расчёты?',
+    a: 'Расчёты соответствуют СП 52.13330.2016 (изм. №1, №2), СП 367.1325800.2017 (изм. №1, №2), СанПиН 1.2.3685-21 и ГОСТ Р 57795-2017. Сервис сертифицирован, верифицирован НИИСФ РААСН и входит в реестр отечественного ПО.',
+  },
+  {
+    q: 'Можно ли попробовать сервис до покупки?',
+    a: 'Да — откройте интерактивное демо прямо в браузере: без установки и регистрации вы пройдёте весь сценарий расчёта и увидите пример готового отчёта. Для пробного доступа оставьте заявку.',
+  },
+  {
+    q: 'На каких этапах проектирования можно считать?',
+    a: 'На всех: мастер-план, концепция и проектная документация. Для проверки инсоляции на ранней стадии достаточно построить стены и окна, а «Быстрый расчёт» позволяет проверять изменения проекта на любом этапе.',
+  },
+];
+---
+
+<section id="faq" class="section section--bg-secondary faq fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-eyebrow">Вопросы и ответы</span>
+      <h2 class="section-title h2">Частые вопросы</h2>
+      <p class="section-subtitle">
+        Коротко о&nbsp;том, что чаще всего спрашивают перед стартом работы
+        с&nbsp;Formit.
+      </p>
+    </div>
+
+    <div class="faq__list">
+      {
+        faqs.map((item) => (
+          <details class="faq__item">
+            <summary class="faq__question">
+              <span>{item.q}</span>
+              <svg
+                class="faq__chevron"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <p class="faq__answer">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 880px;
+  }
+
+  .faq__item {
+    border: var(--card-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-primary);
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .faq__item:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent-primary) 40%,
+      var(--color-border)
+    );
+  }
+
+  .faq__item[open] {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent-primary) 50%,
+      var(--color-border)
+    );
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    list-style: none;
+    user-select: none;
+  }
+
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__question:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+  }
+
+  .faq__chevron {
+    flex-shrink: 0;
+    color: var(--color-accent-primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .faq__item[open] .faq__chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq__answer {
+    padding: 0 var(--space-6) var(--space-5);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 70ch;
+  }
+</style>

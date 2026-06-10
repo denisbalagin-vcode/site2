@@ -1,19 +1,40 @@
 ---
 import Button from '../ui/Button.astro';
 import Chip from '../ui/Chip.astro';
+import FormSubmission from '../FormSubmission.tsx';
 import { asset } from '../../utils/asset';
-import { mailtoEmail } from '../../data/contacts';
+
+const trust = [
+  'Сертифицирован',
+  'В реестре отечественного ПО',
+  'Более 120 компаний',
+];
 
 const stats = [
-  { value: '1000',   unit: 'светопроёмов', label: 'за минуту расчёта',     isLabel: false },
-  { value: '40',     unit: 'минут',        label: 'на освоение сервиса',    isLabel: false },
-  { value: 'Revit',  unit: 'модель',       label: 'всё, что нужно для старта', isLabel: true },
+  {
+    value: '1000',
+    unit: 'светопроёмов',
+    label: 'за минуту расчёта',
+    isLabel: false,
+  },
+  { value: '40', unit: 'минут', label: 'на освоение сервиса', isLabel: false },
+  {
+    value: 'Revit',
+    unit: 'модель',
+    label: 'всё, что нужно для старта',
+    isLabel: true,
+  },
 ];
 ---
 
 <section id="hero" class="hero">
-  <div class="container hero__inner">
+  <!-- Фоновое свечение и сетка -->
+  <div class="hero__bg" aria-hidden="true">
+    <span class="hero__bg-glow hero__bg-glow--1"></span>
+    <span class="hero__bg-glow hero__bg-glow--2"></span>
+  </div>
 
+  <div class="container hero__inner">
     <!-- Eyebrow badge -->
     <div class="hero__eyebrow" aria-label="Категория">
       <span class="hero__eyebrow-dot" aria-hidden="true"></span>
@@ -34,13 +55,51 @@ const stats = [
 
     <!-- CTA buttons -->
     <div class="hero__buttons">
-      <Button variant="filled" size="normal" href={mailtoEmail}>
-        Попробовать сервис
-      </Button>
-      <Button variant="outlined" size="normal" href={mailtoEmail}>
-        Получить консультацию
+      <FormSubmission
+        client:load
+        buttonText="Попробовать сервис"
+        variant="filled"
+        size="normal"
+      />
+      <Button variant="outlined" size="normal" href={asset('/demo')}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.78-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z"
+          ></path>
+        </svg>
+        Смотреть демо в браузере
       </Button>
     </div>
+
+    <!-- Trust-строка -->
+    <ul class="hero__trust" role="list">
+      {
+        trust.map((item) => (
+          <li class="hero__trust-item">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
 
     <!-- Hashtag chips -->
     <div class="hero__chips">
@@ -56,21 +115,65 @@ const stats = [
         <div class="hero__visual-circle hero__visual-circle--1"></div>
         <div class="hero__visual-circle hero__visual-circle--2"></div>
         <div class="hero__visual-circle hero__visual-circle--3"></div>
-        <img src={asset('/images/insolatedBuilding.BsJLrvJH.webp')} alt="Интерфейс Formit с результатами расчёта инсоляции" class="hero__visual-img" decoding="async" />
+        <img
+          src={asset('/images/insolatedBuilding.BsJLrvJH.webp')}
+          alt="Интерфейс Formit с результатами расчёта инсоляции"
+          class="hero__visual-img"
+          decoding="async"
+        />
+      </div>
+
+      <!-- Плавающие бейджи поверх визуала -->
+      <div class="hero__float hero__float--report">
+        <span class="hero__float-icon hero__float-icon--ok">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg
+          >
+        </span>
+        <span class="hero__float-text">
+          <strong>Отчёт для экспертизы</strong>
+          <span>сформирован автоматически</span>
+        </span>
+      </div>
+      <div class="hero__float hero__float--speed">
+        <span class="hero__float-icon hero__float-icon--bolt">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
+            ><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"></path></svg
+          >
+        </span>
+        <span class="hero__float-text">
+          <strong>1000 светопроёмов</strong>
+          <span>за минуту расчёта</span>
+        </span>
       </div>
     </div>
 
     <!-- Stats row -->
     <ul class="hero__stats" role="list">
-      {stats.map(s => (
-        <li class="hero__stat">
-          <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
-          <span class="hero__stat-unit">{s.unit}</span>
-          <span class="hero__stat-label">{s.label}</span>
-        </li>
-      ))}
+      {
+        stats.map((s) => (
+          <li class="hero__stat">
+            <span
+              class:list={[
+                'hero__stat-value',
+                s.isLabel && 'hero__stat-value--label',
+              ]}
+            >
+              {s.value}
+            </span>
+            <span class="hero__stat-unit">{s.unit}</span>
+            <span class="hero__stat-label">{s.label}</span>
+          </li>
+        ))
+      }
     </ul>
-
   </div>
 </section>
 
@@ -78,6 +181,47 @@ const stats = [
   .hero {
     background: var(--color-bg-primary);
     padding-block: var(--section-v-padding);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- Фоновое свечение --- */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero__bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .hero__bg-glow--1 {
+    width: 560px;
+    height: 560px;
+    top: -280px;
+    left: 50%;
+    transform: translateX(-80%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-blue-bright) 14%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__bg-glow--2 {
+    width: 480px;
+    height: 480px;
+    top: -200px;
+    left: 50%;
+    transform: translateX(10%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-blue-dark) 12%, transparent) 0%,
+      transparent 70%
+    );
   }
 
   .hero__inner {
@@ -114,8 +258,15 @@ const stats = [
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.5; transform: scale(0.75); }
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.75);
+    }
   }
 
   /* --- Title --- */
@@ -151,6 +302,29 @@ const stats = [
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-3);
+  }
+
+  /* --- Trust-строка --- */
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-6);
+    margin-top: calc(-1 * var(--space-4));
+  }
+
+  .hero__trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  .hero__trust-item svg {
+    color: var(--color-text-success);
+    flex-shrink: 0;
   }
 
   /* --- Chips --- */
@@ -190,7 +364,11 @@ const stats = [
     aspect-ratio: 1;
     top: -20%;
     right: -10%;
-    background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #00b3fd 40%, transparent) 0%,
+      transparent 70%
+    );
   }
 
   .hero__visual-circle--2 {
@@ -198,7 +376,11 @@ const stats = [
     aspect-ratio: 1;
     bottom: -15%;
     left: 5%;
-    background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #0021ba 30%, transparent) 0%,
+      transparent 70%
+    );
   }
 
   .hero__visual-circle--3 {
@@ -206,7 +388,11 @@ const stats = [
     aspect-ratio: 1;
     bottom: 10%;
     right: 15%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--color-insolation-point) 20%, transparent) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-insolation-point) 20%, transparent) 0%,
+      transparent 70%
+    );
   }
 
   .hero__visual-img {
@@ -216,6 +402,90 @@ const stats = [
     display: block;
     position: relative;
     z-index: 1;
+  }
+
+  /* --- Плавающие бейджи --- */
+  .hero__float {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+    background: color-mix(in srgb, var(--color-bg-primary) 86%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-md);
+    text-align: left;
+  }
+
+  .hero__float--report {
+    top: 8%;
+    right: 4%;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero__float--speed {
+    bottom: 8%;
+    left: 4%;
+    animation: float 7s ease-in-out 1.2s infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__float {
+      animation: none;
+    }
+  }
+
+  .hero__float-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .hero__float-icon--ok {
+    background: var(--color-accent-secondary-bg);
+    color: var(--color-green-main);
+  }
+
+  .hero__float-icon--bolt {
+    background: var(--color-accent-soft);
+    color: var(--color-accent-primary);
+  }
+
+  .hero__float-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero__float-text strong {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+
+  .hero__float-text span {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.2;
   }
 
   /* --- Stats --- */
@@ -268,6 +538,11 @@ const stats = [
   @media (max-width: 640px) {
     .hero__title {
       max-width: 100%;
+    }
+
+    /* На узких экранах бейджи перекрывают визуал — скрываем */
+    .hero__float {
+      display: none;
     }
 
     .hero__stats {

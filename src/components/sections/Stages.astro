@@ -40,11 +40,19 @@ const stages = [
 
 <section id="stages" class="section section--bg-secondary stages fade-in">
   <div class="container">
-    <h2 class="section-title h2">Расчеты на всех этапах проектирования</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Этапы работы</span>
+      <h2 class="section-title h2">Расчеты на всех этапах проектирования</h2>
+      <p class="section-subtitle">
+        Один сервис на&nbsp;всех стадиях — от&nbsp;мастер-плана
+        до&nbsp;проектной документации для экспертизы.
+      </p>
+    </div>
 
     <div class="stages__cards">
-      {stages.map(stage => (
+      {stages.map((stage, i) => (
         <div class="card card--interactive stage-card">
+          <span class="stage-card__num" aria-hidden="true">0{i + 1}</span>
           <div class="stage-card__icon" aria-hidden="true" set:html={stage.iconSvg} />
           <h3 class="stage-card__title">{stage.title}</h3>
           <ul class="stage-card__features">
@@ -85,6 +93,19 @@ const stages = [
     position: relative;
     display: flex;
     flex-direction: column;
+  }
+
+  /* Номер этапа в правом верхнем углу */
+  .stage-card__num {
+    position: absolute;
+    top: var(--card-padding);
+    right: var(--card-padding);
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-accent-primary) 18%, transparent);
+    user-select: none;
   }
 
   .stage-card__icon {

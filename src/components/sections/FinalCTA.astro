@@ -1,0 +1,162 @@
+---
+/*
+  Финальный CTA-баннер перед футером: последний шанс конвертировать
+  посетителя, дочитавшего страницу до конца.
+*/
+import Button from '../ui/Button.astro';
+import FormSubmission from '../FormSubmission.tsx';
+import { asset } from '../../utils/asset';
+---
+
+<section id="final-cta" class="section final-cta fade-in">
+  <div class="container">
+    <div class="final-cta__card">
+      <span class="final-cta__glow final-cta__glow--1" aria-hidden="true"
+      ></span>
+      <span class="final-cta__glow final-cta__glow--2" aria-hidden="true"
+      ></span>
+
+      <div class="final-cta__content">
+        <h2 class="final-cta__title">
+          Готовы считать инсоляцию и&nbsp;КЕО быстрее?
+        </h2>
+        <p class="final-cta__desc">
+          Оставьте заявку — поможем подобрать тариф и&nbsp;запустить первый
+          расчёт. Или начните с&nbsp;интерактивного демо в&nbsp;браузере.
+        </p>
+
+        <div class="final-cta__actions">
+          <FormSubmission
+            client:load
+            buttonText="Оставить заявку"
+            variant="filled"
+            size="normal"
+            buttonClass="final-cta__btn"
+          />
+          <Button
+            variant="outlined"
+            size="normal"
+            href={asset('/demo')}
+            class="final-cta__btn-demo"
+          >
+            Открыть демо
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta__card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    padding: clamp(var(--space-10), 7vw, var(--space-20));
+    background: var(--gradient-primary);
+    color: var(--color-text-inverse);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+
+  .final-cta__glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(10px);
+  }
+
+  .final-cta__glow--1 {
+    width: 40%;
+    aspect-ratio: 1;
+    top: -30%;
+    left: -10%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-blue-bright) 55%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .final-cta__glow--2 {
+    width: 34%;
+    aspect-ratio: 1;
+    bottom: -35%;
+    right: -8%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-white) 24%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .final-cta__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    max-width: 64ch;
+    margin-inline: auto;
+  }
+
+  .final-cta__title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(var(--font-size-2xl), 4.5vw, var(--font-size-3xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.01em;
+  }
+
+  .final-cta__desc {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-loose);
+    color: color-mix(in srgb, var(--color-white) 88%, transparent);
+  }
+
+  .final-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  /* Кнопка заявки на градиентном фоне — белая с синим текстом */
+  .final-cta__actions :global(.final-cta__btn) {
+    background: var(--color-white);
+    color: var(--color-accent-primary);
+    border-color: transparent;
+  }
+
+  .final-cta__actions :global(.final-cta__btn:hover:not(:disabled)) {
+    box-shadow: 0 4px 18px
+      color-mix(in srgb, var(--color-black) 25%, transparent);
+  }
+
+  /* Контурная кнопка демо — белая обводка */
+  .final-cta__btn-demo.btn--outlined {
+    color: var(--color-white);
+    border-color: color-mix(in srgb, var(--color-white) 55%, transparent);
+  }
+
+  .final-cta__btn-demo.btn--outlined:hover {
+    color: var(--color-white);
+    border-color: var(--color-white);
+    background: color-mix(in srgb, var(--color-white) 12%, transparent);
+  }
+</style>

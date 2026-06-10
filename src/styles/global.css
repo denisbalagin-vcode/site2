@@ -5,7 +5,9 @@
    ГЛОБАЛЬНЫЕ СТИЛИ
    ============================================================ */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -41,7 +43,8 @@ body {
   :root.theme-transitioning textarea,
   :root.theme-transitioning svg,
   :root.theme-transitioning .card {
-    transition-property: color, background-color, border-color, box-shadow, fill, stroke;
+    transition-property:
+      color, background-color, border-color, box-shadow, fill, stroke;
     transition-duration: 240ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -70,7 +73,8 @@ section[id] {
   scroll-margin-top: calc(var(--header-height) + 1rem);
 }
 
-img, video {
+img,
+video {
   max-width: 100%;
   height: auto;
   display: block;
@@ -79,6 +83,16 @@ img, video {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent-primary) 18%, transparent);
 }
 
 ul {
@@ -198,7 +212,11 @@ button {
 .card--interactive:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: color-mix(in srgb, var(--color-accent-primary) 40%, var(--color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 40%,
+    var(--color-border)
+  );
 }
 
 /* У залитой акцентом карточки ховер не меняет рамку на синюю */
@@ -237,6 +255,49 @@ button {
   margin-bottom: var(--space-12);
 }
 
+/* Шапка секции: кикер + заголовок + подзаголовок.
+   Используй вместо одиночного .section-title, чтобы у секций
+   был единый ритм и читаемая иерархия. */
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-12);
+  max-width: 720px;
+}
+
+.section-head .section-title,
+.section-head .h2 {
+  margin-bottom: 0;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-primary);
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 1.5rem;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+}
+
+.section-subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-loose);
+  max-width: 60ch;
+}
+
 /* Разделитель */
 .divider {
   width: 100%;
@@ -252,7 +313,7 @@ button {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
@@ -275,7 +336,13 @@ button {
     transform: translateY(0);
   }
 
-  .fade-in--delay-1 { transition-delay: 0.1s; }
-  .fade-in--delay-2 { transition-delay: 0.2s; }
-  .fade-in--delay-3 { transition-delay: 0.3s; }
+  .fade-in--delay-1 {
+    transition-delay: 0.1s;
+  }
+  .fade-in--delay-2 {
+    transition-delay: 0.2s;
+  }
+  .fade-in--delay-3 {
+    transition-delay: 0.3s;
+  }
 }

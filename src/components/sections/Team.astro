@@ -20,24 +20,45 @@ const departments = [
   {
     title: 'Менеджеры по продукту',
     members: [
-      { photo: asset('/images/tatyanaKorotinskaya.BTxxRB9P.webp'), name: 'Татьяна Коротинская' },
+      {
+        photo: asset('/images/tatyanaKorotinskaya.BTxxRB9P.webp'),
+        name: 'Татьяна Коротинская',
+      },
     ],
   },
   {
     title: 'Техническая поддержка',
     members: [
-      { photo: asset('/images/tatyanaKrestnikova.Bd70MgbJ.webp'),  name: 'Татьяна Крестникова' },
-      { photo: asset('/images/alexandraIgnatova.Dk3HuI_b.webp'),   name: 'Александра Игнатова' },
+      {
+        photo: asset('/images/tatyanaKrestnikova.Bd70MgbJ.webp'),
+        name: 'Татьяна Крестникова',
+      },
+      {
+        photo: asset('/images/alexandraIgnatova.Dk3HuI_b.webp'),
+        name: 'Александра Игнатова',
+      },
     ],
   },
   {
     title: 'Программисты',
     members: [
-      { photo: asset('/images/matveyKupriyanov.CjERHxKf.webp'),        name: 'Матвей Куприянов' },
-      { photo: asset('/images/vladislav.lRKiQW9v.webp'),                name: 'Владислав' },
-      { photo: asset('/images/alexanderOleynikov.Bs3pnuFE.webp'),       name: 'Александр Олейников' },
-      { photo: asset('/images/fedorPichugin.COoPxeeJ.webp'),            name: 'Федор Пичугин' },
-      { photo: asset('/images/alexanderMescheryakov.DukWLxPa.webp'),    name: 'Александр Мещеряков' },
+      {
+        photo: asset('/images/matveyKupriyanov.CjERHxKf.webp'),
+        name: 'Матвей Куприянов',
+      },
+      { photo: asset('/images/vladislav.lRKiQW9v.webp'), name: 'Владислав' },
+      {
+        photo: asset('/images/alexanderOleynikov.Bs3pnuFE.webp'),
+        name: 'Александр Олейников',
+      },
+      {
+        photo: asset('/images/fedorPichugin.COoPxeeJ.webp'),
+        name: 'Федор Пичугин',
+      },
+      {
+        photo: asset('/images/alexanderMescheryakov.DukWLxPa.webp'),
+        name: 'Александр Мещеряков',
+      },
     ],
   },
 ];
@@ -45,23 +66,30 @@ const departments = [
 
 <section id="team" class="section section--bg-secondary team fade-in">
   <div class="container">
-    <h2 class="section-title h2">Команда</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Кто делает Formit</span>
+      <h2 class="section-title h2">Команда</h2>
+      <p class="section-subtitle">
+        Продукт развивает команда разработчиков, продакт-менеджеров
+        и&nbsp;технической поддержки.
+      </p>
+    </div>
 
-    {departments.map(dept => (
-      <div class:list={['team__dept', dept.isCeo && 'team__dept--ceo']}>
-        {dept.title && <h4 class="team__dept-title">{dept.title}</h4>}
+    {
+      departments.map((dept) => (
+        <div class:list={['team__dept', dept.isCeo && 'team__dept--ceo']}>
+          {dept.title && <h4 class="team__dept-title">{dept.title}</h4>}
 
-        {dept.isCeo
-          ? (
+          {dept.isCeo ? (
             <div class="ceo-block">
-              {dept.members.map(m => (
+              {dept.members.map((m) => (
                 <>
                   <div class="member-card member-card--large">
                     <img
                       src={m.photo}
                       alt={m.name}
                       loading="lazy"
-                    decoding="async"
+                      decoding="async"
                       class="member-card__photo"
                     />
                   </div>
@@ -69,16 +97,17 @@ const departments = [
                     <p class="ceo-block__role">{m.role}</p>
                     <h3 class="ceo-block__name">{m.name}</h3>
                     <ul class="ceo-block__bio">
-                      {m.bio?.map(b => <li>{b}</li>)}
+                      {m.bio?.map((b) => (
+                        <li>{b}</li>
+                      ))}
                     </ul>
                   </div>
                 </>
               ))}
             </div>
-          )
-          : (
+          ) : (
             <div class="team__members">
-              {dept.members.map(m => (
+              {dept.members.map((m) => (
                 <div class="member-card">
                   <img
                     src={m.photo}
@@ -91,10 +120,10 @@ const departments = [
                 </div>
               ))}
             </div>
-          )
-        }
-      </div>
-    ))}
+          )}
+        </div>
+      ))
+    }
   </div>
 </section>
 

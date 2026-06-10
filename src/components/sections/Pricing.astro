@@ -1,5 +1,8 @@
 ---
 import FormSubmission from '../FormSubmission.tsx';
+import { asset } from '../../utils/asset';
+
+const demoHref = asset('/demo');
 
 const plans = [
   {
@@ -51,41 +54,70 @@ const plans = [
 
 <section id="pricing" class="section section--bg-primary pricing fade-in">
   <div class="container">
-    <h2 class="section-title h2">Стоимость</h2>
+    <div class="section-head">
+      <span class="section-eyebrow">Тарифы</span>
+      <h2 class="section-title h2">Стоимость</h2>
+      <p class="section-subtitle">
+        Выберите тариф под объём ваших проектов — а&nbsp;если сомневаетесь,
+        поможем подобрать оптимальный.
+      </p>
+    </div>
 
     <div class="pricing__cards">
-      {plans.map(plan => (
-        <div class:list={[
-          'card',
-          'card--interactive',
-          'pricing-card',
-          plan.isFeatured ? 'card--featured' : 'card--soft',
-          plan.isFeatured && 'pricing-card--featured',
-        ]}>
-          <div class="pricing-card__header">
-            <h3 class="pricing-card__name">{plan.name}</h3>
-            <p class="pricing-card__projects">
-              доступных проектов: <strong>{plan.projects}</strong>
-            </p>
+      {
+        plans.map((plan) => (
+          <div
+            class:list={[
+              'card',
+              'card--interactive',
+              'pricing-card',
+              plan.isFeatured ? 'card--featured' : 'card--soft',
+              plan.isFeatured && 'pricing-card--featured',
+            ]}
+          >
+            <div class="pricing-card__header">
+              <h3 class="pricing-card__name">{plan.name}</h3>
+              <p class="pricing-card__projects">
+                доступных проектов: <strong>{plan.projects}</strong>
+              </p>
+            </div>
+
+            <div class="pricing-card__price">
+              <span class="pricing-card__price-year">{plan.priceYear}</span>
+              <span class="pricing-card__price-month">{plan.priceMonth}</span>
+            </div>
+
+            <ul class="pricing-card__features">
+              {plan.features.map((f) => (
+                <li
+                  class:list={[
+                    'pricing-card__feature',
+                    f.includes('Одновременный') &&
+                      'pricing-card__feature--bold',
+                  ]}
+                >
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <FormSubmission
+              client:load
+              buttonText="Оставить заявку"
+              variant={plan.isFeatured ? 'filled' : 'outlined'}
+              size="normal"
+              buttonClass="pricing-card__cta"
+            />
           </div>
-
-          <div class="pricing-card__price">
-            <span class="pricing-card__price-year">{plan.priceYear}</span>
-            <span class="pricing-card__price-month">{plan.priceMonth}</span>
-          </div>
-
-          <ul class="pricing-card__features">
-            {plan.features.map(f => (
-              <li class:list={['pricing-card__feature', f.includes('Одновременный') && 'pricing-card__feature--bold']}>
-                {f}
-              </li>
-            ))}
-          </ul>
-
-          <FormSubmission client:load buttonText="Оставить заявку" variant="outlined" size="normal" buttonClass="pricing-card__cta" />
-        </div>
-      ))}
+        ))
+      }
     </div>
+
+    <p class="pricing__note">
+      Не&nbsp;уверены в&nbsp;выборе? Посмотрите
+      <a href={demoHref} class="pricing__note-link">демо продукта</a>
+      или оставьте заявку — подберём тариф под вашу задачу.
+    </p>
   </div>
 </section>
 
@@ -111,8 +143,9 @@ const plans = [
     transform: translateY(-4px);
   }
 
-  /* Кнопка «Оставить заявку» подсвечивается при наведении на карточку */
-  .pricing-card:hover :global(.pricing-card__cta) {
+  /* Кнопка «Оставить заявку» подсвечивается при наведении на карточку
+     (только у обычных тарифов — у рекомендуемого она и так залита) */
+  .pricing-card:not(.pricing-card--featured):hover :global(.pricing-card__cta) {
     background: var(--color-accent-primary);
     color: var(--color-text-inverse);
     border-color: var(--color-accent-primary);
@@ -124,7 +157,9 @@ const plans = [
     transform: none;
   }
 
-  :global(body.formit-modal-open) .pricing-card:hover :global(.pricing-card__cta) {
+  :global(body.formit-modal-open)
+    .pricing-card:not(.pricing-card--featured):hover
+    :global(.pricing-card__cta) {
     background: transparent;
     color: var(--color-text-primary);
     border-color: var(--color-border);
@@ -185,7 +220,11 @@ const plans = [
 
   .pricing-card--featured .pricing-card__price {
     background: color-mix(in srgb, var(--color-accent-primary) 8%, transparent);
-    border-color: color-mix(in srgb, var(--color-accent-primary) 30%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent-primary) 30%,
+      transparent
+    );
   }
 
   .pricing-card__price-year {
@@ -229,6 +268,26 @@ const plans = [
   .pricing-card__cta {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Подпись-помощь под тарифами */
+  .pricing__note {
+    margin-top: var(--space-8);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .pricing__note-link {
+    color: var(--color-accent-primary);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition-fast);
+  }
+
+  .pricing__note-link:hover {
+    color: var(--color-accent-hover);
   }
 
   @media (max-width: 900px) {

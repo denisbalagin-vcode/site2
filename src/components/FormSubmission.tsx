@@ -26,7 +26,9 @@ export default function FormSubmission({
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [errors, setErrors] = useState<LeadErrors>({});
   const [errorMsg, setErrorMsg] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'sending' | 'success' | 'error'
+  >('idle');
 
   const close = useCallback(() => {
     setOpen(false);
@@ -100,7 +102,9 @@ export default function FormSubmission({
     `form-btn--${variant}`,
     `form-btn--${size}`,
     buttonClass,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <>
@@ -111,114 +115,170 @@ export default function FormSubmission({
       {/* Модалка рендерится в <body> через портал: иначе backdrop-filter
           на шапке создаёт containing block для position:fixed и оверлей
           обрезается по высоте шапки. */}
-      {open && portalRoot && createPortal(
-        <div class="modal-overlay" onClick={(e) => e.target === e.currentTarget && close()} role="dialog" aria-modal="true" aria-labelledby="form-modal-title">
-          <div class="modal">
-            <button type="button" class="modal__close" onClick={close} aria-label="Закрыть">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M4 4L14 14M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-
-            {status === 'success' ? (
-              <div class="modal__success">
-                <div class="modal__success-icon">✓</div>
-                <h3 class="modal__title">Заявка отправлена!</h3>
-                <p class="modal__subtitle">Мы свяжемся с вами в ближайшее время.</p>
-                <button type="button" class="form-btn form-btn--filled form-btn--normal" onClick={close}>
-                  Закрыть
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={submit} noValidate>
-                <h3 id="form-modal-title" class="modal__title">Оставить заявку</h3>
-                <p class="modal__subtitle">Заполните форму — мы свяжемся с вами и подберём оптимальный тариф.</p>
-
-                <div class="modal__fields">
-                  <label class="field">
-                    <span class="field__label">Имя <span aria-hidden="true">*</span></span>
-                    <input
-                      class={`field__input${errors.name ? ' field__input--invalid' : ''}`}
-                      type="text"
-                      placeholder="Иван Иванов"
-                      required
-                      value={name}
-                      aria-invalid={errors.name ? 'true' : undefined}
-                      aria-describedby={errors.name ? 'field-name-error' : undefined}
-                      onInput={(e) => {
-                        setName((e.target as HTMLInputElement).value);
-                        if (errors.name) setErrors((p) => ({ ...p, name: undefined }));
-                      }}
-                    />
-                    {errors.name && <span id="field-name-error" class="field__error">{errors.name}</span>}
-                  </label>
-
-                  <label class="field">
-                    <span class="field__label">Email <span aria-hidden="true">*</span></span>
-                    <input
-                      class={`field__input${errors.email ? ' field__input--invalid' : ''}`}
-                      type="email"
-                      placeholder="ivan@example.com"
-                      required
-                      value={contact}
-                      aria-invalid={errors.email ? 'true' : undefined}
-                      aria-describedby={errors.email ? 'field-email-error' : undefined}
-                      onInput={(e) => {
-                        setContact((e.target as HTMLInputElement).value);
-                        if (errors.email) setErrors((p) => ({ ...p, email: undefined }));
-                      }}
-                    />
-                    {errors.email && <span id="field-email-error" class="field__error">{errors.email}</span>}
-                  </label>
-
-                  <label class="field">
-                    <span class="field__label">Комментарий</span>
-                    <textarea
-                      class="field__input field__input--textarea"
-                      placeholder="Расскажите о вашем проекте..."
-                      rows={3}
-                      value={comment}
-                      onInput={(e) => setComment((e.target as HTMLTextAreaElement).value)}
-                    />
-                  </label>
-
-                  {/* honeypot: скрыт от людей, доступен ботам */}
-                  <input
-                    class="field__trap"
-                    type="text"
-                    name="company"
-                    tabIndex={-1}
-                    autocomplete="off"
-                    aria-hidden="true"
-                    value={trap}
-                    onInput={(e) => setTrap((e.target as HTMLInputElement).value)}
+      {open &&
+        portalRoot &&
+        createPortal(
+          <div
+            class="modal-overlay"
+            onClick={(e) => e.target === e.currentTarget && close()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="form-modal-title"
+          >
+            <div class="modal">
+              <button
+                type="button"
+                class="modal__close"
+                onClick={close}
+                aria-label="Закрыть"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path
+                    d="M4 4L14 14M14 4L4 14"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
                   />
-                </div>
+                </svg>
+              </button>
 
-                {status === 'error' && (
-                  <p class="modal__error" role="alert">
-                    {errorMsg || 'Что-то пошло не так. Попробуйте ещё раз.'}
+              {status === 'success' ? (
+                <div class="modal__success">
+                  <div class="modal__success-icon">✓</div>
+                  <h3 class="modal__title">Заявка отправлена!</h3>
+                  <p class="modal__subtitle">
+                    Мы свяжемся с вами в ближайшее время.
                   </p>
-                )}
-
-                <div class="modal__actions">
                   <button
-                    type="submit"
-                    class={`form-btn form-btn--filled form-btn--normal modal__submit${status === 'sending' ? ' is-loading' : ''}`}
-                    disabled={status === 'sending'}
+                    type="button"
+                    class="form-btn form-btn--filled form-btn--normal"
+                    onClick={close}
                   >
-                    {status === 'sending' ? 'Отправка...' : status === 'error' ? 'Попробовать снова' : 'Отправить заявку'}
+                    Закрыть
                   </button>
-                  <p class="modal__privacy">
-                    Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
-                  </p>
                 </div>
-              </form>
-            )}
-          </div>
-        </div>,
-        portalRoot
-      )}
+              ) : (
+                <form onSubmit={submit} noValidate>
+                  <h3 id="form-modal-title" class="modal__title">
+                    Оставить заявку
+                  </h3>
+                  <p class="modal__subtitle">
+                    Заполните форму — мы свяжемся с вами и подберём оптимальный
+                    тариф.
+                  </p>
+
+                  <div class="modal__fields">
+                    <label class="field">
+                      <span class="field__label">
+                        Имя <span aria-hidden="true">*</span>
+                      </span>
+                      <input
+                        class={`field__input${errors.name ? ' field__input--invalid' : ''}`}
+                        type="text"
+                        placeholder="Иван Иванов"
+                        required
+                        value={name}
+                        aria-invalid={errors.name ? 'true' : undefined}
+                        aria-describedby={
+                          errors.name ? 'field-name-error' : undefined
+                        }
+                        onInput={(e) => {
+                          setName((e.target as HTMLInputElement).value);
+                          if (errors.name)
+                            setErrors((p) => ({ ...p, name: undefined }));
+                        }}
+                      />
+                      {errors.name && (
+                        <span id="field-name-error" class="field__error">
+                          {errors.name}
+                        </span>
+                      )}
+                    </label>
+
+                    <label class="field">
+                      <span class="field__label">
+                        Email <span aria-hidden="true">*</span>
+                      </span>
+                      <input
+                        class={`field__input${errors.email ? ' field__input--invalid' : ''}`}
+                        type="email"
+                        placeholder="ivan@example.com"
+                        required
+                        value={contact}
+                        aria-invalid={errors.email ? 'true' : undefined}
+                        aria-describedby={
+                          errors.email ? 'field-email-error' : undefined
+                        }
+                        onInput={(e) => {
+                          setContact((e.target as HTMLInputElement).value);
+                          if (errors.email)
+                            setErrors((p) => ({ ...p, email: undefined }));
+                        }}
+                      />
+                      {errors.email && (
+                        <span id="field-email-error" class="field__error">
+                          {errors.email}
+                        </span>
+                      )}
+                    </label>
+
+                    <label class="field">
+                      <span class="field__label">Комментарий</span>
+                      <textarea
+                        class="field__input field__input--textarea"
+                        placeholder="Расскажите о вашем проекте..."
+                        rows={3}
+                        value={comment}
+                        onInput={(e) =>
+                          setComment((e.target as HTMLTextAreaElement).value)
+                        }
+                      />
+                    </label>
+
+                    {/* honeypot: скрыт от людей, доступен ботам */}
+                    <input
+                      class="field__trap"
+                      type="text"
+                      name="company"
+                      tabIndex={-1}
+                      autocomplete="off"
+                      aria-hidden="true"
+                      value={trap}
+                      onInput={(e) =>
+                        setTrap((e.target as HTMLInputElement).value)
+                      }
+                    />
+                  </div>
+
+                  {status === 'error' && (
+                    <p class="modal__error" role="alert">
+                      {errorMsg || 'Что-то пошло не так. Попробуйте ещё раз.'}
+                    </p>
+                  )}
+
+                  <div class="modal__actions">
+                    <button
+                      type="submit"
+                      class={`form-btn form-btn--filled form-btn--normal modal__submit${status === 'sending' ? ' is-loading' : ''}`}
+                      disabled={status === 'sending'}
+                    >
+                      {status === 'sending'
+                        ? 'Отправка...'
+                        : status === 'error'
+                          ? 'Попробовать снова'
+                          : 'Отправить заявку'}
+                    </button>
+                    <p class="modal__privacy">
+                      Нажимая кнопку, вы соглашаетесь с обработкой персональных
+                      данных
+                    </p>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>,
+          portalRoot,
+        )}
 
       <style>{`
         .form-btn {
@@ -237,11 +297,18 @@ export default function FormSubmission({
         .form-btn--small { font-size: var(--font-size-sm, 0.875rem); padding: 0.5rem 1.125rem; }
         .form-btn--normal { font-size: var(--font-size-base, 1rem); padding: 0.75rem 1.75rem; }
         .form-btn--filled {
-          background: var(--color-accent-primary, #0047ff);
+          background: var(--gradient-primary, var(--color-accent-primary, #0047ff));
           color: #fff;
-          border-color: var(--color-accent-primary, #0047ff);
+          border-color: transparent;
         }
-        .form-btn--filled:hover:not(:disabled) { opacity: 0.88; }
+        .form-btn--filled:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent-primary, #0047ff) 50%, transparent);
+        }
+        .form-btn:focus-visible {
+          outline: 2px solid var(--color-accent-primary, #0047ff);
+          outline-offset: 3px;
+        }
         .form-btn--outlined {
           background: transparent;
           color: var(--color-text-primary, #0f1117);
