@@ -281,47 +281,6 @@ export default function FormSubmission({
         )}
 
       <style>{`
-        .form-btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          font-family: inherit;
-          font-weight: var(--font-weight-semibold, 600);
-          border-radius: var(--radius-full, 9999px);
-          cursor: pointer;
-          border: 1.5px solid transparent;
-          transition: background 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.1s;
-          white-space: nowrap;
-        }
-        .form-btn--small { font-size: var(--font-size-sm, 0.875rem); padding: 0.5rem 1.125rem; }
-        .form-btn--normal { font-size: var(--font-size-base, 1rem); padding: 0.75rem 1.75rem; }
-        .form-btn--filled {
-          background: var(--gradient-primary, var(--color-accent-primary, #0047ff));
-          color: #fff;
-          border-color: transparent;
-        }
-        .form-btn--filled:hover:not(:disabled) {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent-primary, #0047ff) 50%, transparent);
-        }
-        .form-btn:focus-visible {
-          outline: 2px solid var(--color-accent-primary, #0047ff);
-          outline-offset: 3px;
-        }
-        .form-btn--outlined {
-          background: transparent;
-          color: var(--color-text-primary, #0f1117);
-          border-color: var(--color-border, #e2e8f0);
-        }
-        .form-btn--outlined:hover:not(:disabled) {
-          background: var(--color-accent-primary, #0047ff);
-          color: #fff;
-          border-color: var(--color-accent-primary, #0047ff);
-        }
-        .form-btn:active:not(:disabled) { transform: translateY(1px); }
-        .form-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
         .modal-overlay {
           position: fixed;
           inset: 0;
