@@ -1,7 +1,7 @@
 ---
 interface Props {
   /** Текущий продукт (для подсветки активного в product nav). */
-  currentProduct?: 'pd' | 'conception' | 'formit-ai';
+  currentProduct?: 'pd' | 'conception' | 'tep' | 'formit-ai';
   /** Скрыть ссылку на демо на самой странице демо. */
   showDemoLink?: boolean;
   /** Показать раздел с якорными ссылками в мобильном меню (только для ПД). */
@@ -23,6 +23,7 @@ import { docs, accountUrl } from '../data/contacts';
 const productLinks = [
   { label: 'ПД', href: asset('/'), id: 'pd' },
   { label: 'Концепция', href: asset('/conception'), id: 'conception' },
+  { label: 'ТЭПы', href: asset('/tep'), id: 'tep' },
   { label: 'FormitAI', href: asset('/formit-ai'), id: 'formit-ai' },
 ];
 

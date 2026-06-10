@@ -1,0 +1,388 @@
+---
+/*
+  Общий hero для продуктовых страниц (Концепция, ТЭПы, FORMIT AI).
+  Слоты:
+    • title   — содержимое <h1> (можно <br/> и .hero__title-accent)
+    • desc    — текст под заголовком
+    • buttons — CTA-кнопки
+    • visual  — кастомное наполнение визуала (если не передан image)
+*/
+import Chip from '../ui/Chip.astro';
+
+interface Stat {
+  value: string;
+  unit: string;
+  label: string;
+  isLabel?: boolean;
+}
+
+interface Props {
+  /** Текст бейджа над заголовком. */
+  eyebrow: string;
+  /** Хэштег-чипы под кнопками. */
+  chips?: string[];
+  /** Строка статистики под визуалом. */
+  stats?: Stat[];
+  /** Картинка визуала. Если не задана — рендерится слот visual. */
+  image?: { src: string; alt: string };
+}
+
+const { eyebrow, chips = [], stats = [], image } = Astro.props;
+---
+
+<section id="hero" class="hero">
+  <!-- Фоновое свечение -->
+  <div class="hero__bg" aria-hidden="true">
+    <span class="hero__bg-glow hero__bg-glow--1"></span>
+    <span class="hero__bg-glow hero__bg-glow--2"></span>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__eyebrow" aria-label="Продукт">
+      <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+      {eyebrow}
+    </div>
+
+    <h1 class="hero__title"><slot name="title" /></h1>
+
+    <p class="hero__desc"><slot name="desc" /></p>
+
+    <div class="hero__buttons"><slot name="buttons" /></div>
+
+    {
+      chips.length > 0 && (
+        <div class="hero__chips">
+          {chips.map((c) => (
+            <Chip>{c}</Chip>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__visual-inner">
+        <div class="hero__visual-circle hero__visual-circle--1"></div>
+        <div class="hero__visual-circle hero__visual-circle--2"></div>
+        <div class="hero__visual-circle hero__visual-circle--3"></div>
+        {
+          image ? (
+            <img
+              src={image.src}
+              alt={image.alt}
+              class="hero__visual-img"
+              decoding="async"
+            />
+          ) : (
+            <slot name="visual" />
+          )
+        }
+      </div>
+    </div>
+
+    {
+      stats.length > 0 && (
+        <ul class="hero__stats" role="list">
+          {stats.map((s) => (
+            <li class="hero__stat">
+              <span
+                class:list={[
+                  'hero__stat-value',
+                  s.isLabel && 'hero__stat-value--label',
+                ]}
+              >
+                {s.value}
+              </span>
+              <span class="hero__stat-unit">{s.unit}</span>
+              <span class="hero__stat-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-bg-primary);
+    padding-block: var(--section-v-padding);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- Фоновое свечение --- */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero__bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .hero__bg-glow--1 {
+    width: 560px;
+    height: 560px;
+    top: -280px;
+    left: 50%;
+    transform: translateX(-80%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-blue-bright) 14%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__bg-glow--2 {
+    width: 480px;
+    height: 480px;
+    top: -200px;
+    left: 50%;
+    transform: translateX(10%);
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-blue-dark) 12%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+
+  /* --- Eyebrow --- */
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-navbar);
+    background: var(--color-accent-soft);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+  }
+
+  .hero__eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.75);
+    }
+  }
+
+  /* --- Title --- */
+  .hero__title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    max-width: 20ch;
+    margin-bottom: calc(-1 * var(--space-3));
+  }
+
+  .hero__title :global(.hero__title-accent) {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* --- Description --- */
+  .hero__desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 52ch;
+  }
+
+  /* --- Buttons --- */
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  /* --- Chips --- */
+  .hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  /* --- Visual card --- */
+  .hero__visual {
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--radius-xl);
+    border: var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+
+  .hero__visual-inner {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__visual-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero__visual-circle--1 {
+    width: 60%;
+    aspect-ratio: 1;
+    top: -20%;
+    right: -10%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #00b3fd 40%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__visual-circle--2 {
+    width: 40%;
+    aspect-ratio: 1;
+    bottom: -15%;
+    left: 5%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #0021ba 30%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__visual-circle--3 {
+    width: 25%;
+    aspect-ratio: 1;
+    bottom: 10%;
+    right: 15%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-insolation-point) 20%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* --- Stats --- */
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 800px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .hero__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-6);
+  }
+
+  .hero__stat:not(:first-child) {
+    border-left: 1px solid var(--color-border);
+  }
+
+  .hero__stat-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--color-accent-primary);
+  }
+
+  .hero__stat-value--label {
+    color: var(--color-text-primary);
+  }
+
+  .hero__stat-unit {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .hero__stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: var(--line-height-normal);
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 640px) {
+    .hero__title {
+      max-width: 100%;
+    }
+
+    .hero__stats {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+    }
+
+    .hero__stat {
+      flex-direction: row;
+      gap: var(--space-3);
+      text-align: left;
+    }
+
+    /* В колонку рамка-разделитель между строками, а не слева */
+    .hero__stat:not(:first-child) {
+      border-left: 0;
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-3);
+      margin-top: var(--space-3);
+    }
+
+    .hero__stat-value {
+      font-size: var(--font-size-xl);
+    }
+
+    .hero__stat-label {
+      text-align: left;
+    }
+  }
+</style>

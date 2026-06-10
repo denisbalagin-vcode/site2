@@ -556,6 +556,14 @@ const stats = [
       text-align: left;
     }
 
+    /* В колонку рамка-разделитель между строками, а не слева */
+    .hero__stat:not(:first-child) {
+      border-left: 0;
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-3);
+      margin-top: var(--space-3);
+    }
+
     .hero__stat-value {
       font-size: var(--font-size-xl);
     }

@@ -3,11 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/ui/Button.astro';
-import Chip from '../components/ui/Chip.astro';
+import ProductHero from '../components/sections/ProductHero.astro';
 import FormSubmission from '../components/FormSubmission.tsx';
 import Contacts from '../components/sections/Contacts.astro';
 import { asset } from '../utils/asset';
-import { mailtoEmail } from '../data/contacts';
 
 const features = [
   {
@@ -57,8 +56,18 @@ const steps = [
 
 const stats = [
   { value: '1000', unit: 'проёмов', label: 'за минуту расчёта' },
-  { value: 'Revit', unit: 'модель', label: 'минимальная детализация', isLabel: true },
-  { value: 'быстро', unit: 'и точно', label: 'ещё на стадии концепции', isLabel: true },
+  {
+    value: 'Revit',
+    unit: 'модель',
+    label: 'минимальная детализация',
+    isLabel: true,
+  },
+  {
+    value: 'быстро',
+    unit: 'и точно',
+    label: 'ещё на стадии концепции',
+    isLabel: true,
+  },
 ];
 ---
 
@@ -69,77 +78,69 @@ const stats = [
   <Header currentProduct="conception" />
 
   <main>
-    <!-- Hero -->
-    <section id="hero" class="hero">
-      <div class="container hero__inner">
-        <div class="hero__eyebrow" aria-label="Продукт">
-          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
-          Formit Концепция
-        </div>
-
-        <h1 class="hero__title">
-          Инсоляция<br />
-          <span class="hero__title-accent">с первого наброска</span>
-        </h1>
-
-        <p class="hero__desc">
-          Проверяйте инсоляцию и&nbsp;КЕО ещё на&nbsp;стадии концепции —
-          достаточно стен и&nbsp;окон. Без полной детализации, без потраченных недель.
-        </p>
-
-        <div class="hero__buttons">
-          <Button variant="filled" size="normal" href={mailtoEmail}>
-            Попробовать сервис
-          </Button>
-          <Button variant="outlined" size="normal" href={mailtoEmail}>
-            Получить консультацию
-          </Button>
-        </div>
-
-        <div class="hero__chips">
-          <Chip>#Концептуальная стадия</Chip>
-          <Chip>#Минимальная модель</Chip>
-          <Chip>#Быстрая проверка</Chip>
-        </div>
-
-        <div class="hero__visual" aria-hidden="true">
-          <div class="hero__visual-inner">
-            <div class="hero__visual-circle hero__visual-circle--1"></div>
-            <div class="hero__visual-circle hero__visual-circle--2"></div>
-            <div class="hero__visual-circle hero__visual-circle--3"></div>
-            <img
-              src={asset('/images/insolatedBuilding.BsJLrvJH.webp')}
-              alt="Расчёт инсоляции на стадии концепции"
-              class="hero__visual-img"
-              decoding="async"
-            />
-          </div>
-        </div>
-
-        <ul class="hero__stats" role="list">
-          {stats.map(s => (
-            <li class="hero__stat">
-              <span class:list={['hero__stat-value', s.isLabel && 'hero__stat-value--label']}>{s.value}</span>
-              <span class="hero__stat-unit">{s.unit}</span>
-              <span class="hero__stat-label">{s.label}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <ProductHero
+      eyebrow="Formit Концепция"
+      chips={[
+        '#Концептуальная стадия',
+        '#Минимальная модель',
+        '#Быстрая проверка',
+      ]}
+      stats={stats}
+      image={{
+        src: asset('/images/insolatedBuilding.BsJLrvJH.webp'),
+        alt: 'Расчёт инсоляции на стадии концепции',
+      }}
+    >
+      <Fragment slot="title">
+        Инсоляция<br />
+        <span class="hero__title-accent">с первого наброска</span>
+      </Fragment>
+      <Fragment slot="desc">
+        Проверяйте инсоляцию и&nbsp;КЕО ещё на&nbsp;стадии концепции —
+        достаточно стен и&nbsp;окон. Без полной детализации, без потраченных
+        недель.
+      </Fragment>
+      <Fragment slot="buttons">
+        <FormSubmission
+          client:load
+          buttonText="Попробовать сервис"
+          variant="filled"
+          size="normal"
+        />
+        <Button variant="outlined" size="normal" href="#contacts">
+          Получить консультацию
+        </Button>
+      </Fragment>
+    </ProductHero>
 
     <!-- Возможности -->
-    <section id="features" class="section section--bg-secondary features fade-in">
+    <section
+      id="features"
+      class="section section--bg-secondary features fade-in"
+    >
       <div class="container">
-        <h2 class="section-title h2">Что даёт Formit Концепция</h2>
+        <div class="section-head">
+          <span class="section-eyebrow">Возможности</span>
+          <h2 class="section-title h2">Что даёт Formit Концепция</h2>
+          <p class="section-subtitle">
+            Инструмент для быстрой проверки гипотез на&nbsp;самой ранней стадии
+            проекта — когда менять решения ещё дёшево.
+          </p>
+        </div>
         <div class="features__grid">
-          {features.map(f => (
-            <div class="card card--soft card--interactive feature-card">
-              <div class="feature-card__icon" aria-hidden="true" set:html={f.icon} />
-              <h3 class="feature-card__title">{f.title}</h3>
-              <p class="feature-card__desc">{f.desc}</p>
-            </div>
-          ))}
+          {
+            features.map((f) => (
+              <div class="card card--soft card--interactive feature-card">
+                <div
+                  class="feature-card__icon"
+                  aria-hidden="true"
+                  set:html={f.icon}
+                />
+                <h3 class="feature-card__title">{f.title}</h3>
+                <p class="feature-card__desc">{f.desc}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -147,26 +148,36 @@ const stats = [
     <!-- Шаги -->
     <section id="stages" class="section section--bg-primary stages fade-in">
       <div class="container">
-        <h2 class="section-title h2">Как это работает</h2>
+        <div class="section-head">
+          <span class="section-eyebrow">Сценарий работы</span>
+          <h2 class="section-title h2">Как это работает</h2>
+        </div>
         <div class="steps__grid">
-          {steps.map((step, i) => (
-            <div class="card card--soft step-card">
-              <span class="step-card__num">{step.n}</span>
-              <h3 class="step-card__title">{step.title}</h3>
-              <p class="step-card__desc">{step.desc}</p>
-            </div>
-          ))}
+          {
+            steps.map((step) => (
+              <div class="card card--soft step-card">
+                <span class="step-card__num">{step.n}</span>
+                <h3 class="step-card__title">{step.title}</h3>
+                <p class="step-card__desc">{step.desc}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
 
     <!-- CTA / Pricing -->
-    <section id="pricing" class="section section--bg-secondary cta-section fade-in">
+    <section
+      id="pricing"
+      class="section section--bg-secondary cta-section fade-in"
+    >
       <div class="container cta-section__inner">
         <div class="card card--featured cta-card">
           <div class="cta-card__header">
             <h2 class="cta-card__name">Formit Концепция</h2>
-            <p class="cta-card__subtitle">Расчёт инсоляции на стадии концепции</p>
+            <p class="cta-card__subtitle">
+              Расчёт инсоляции на стадии концепции
+            </p>
           </div>
           <div class="cta-card__price">
             <span class="cta-card__price-year">150 000 ₽ / год</span>
@@ -180,7 +191,12 @@ const stats = [
             <li>Расчёт инсоляции массинга, отдельных точек и территорий</li>
             <li>10 доступных проектов</li>
           </ul>
-          <FormSubmission client:load buttonText="Оставить заявку" variant="filled" size="normal" />
+          <FormSubmission
+            client:load
+            buttonText="Оставить заявку"
+            variant="filled"
+            size="normal"
+          />
         </div>
       </div>
     </section>
@@ -192,117 +208,29 @@ const stats = [
 </Layout>
 
 <style>
-  /* ── Hero (переиспользует стили из Hero.astro через те же классы) ── */
-  .hero {
-    background: var(--color-bg-primary);
-    padding-block: var(--section-v-padding);
-  }
-  .hero__inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-8);
-  }
-  .hero__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border-navbar);
-    background: var(--color-accent-soft);
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-accent-primary);
-  }
-  .hero__eyebrow-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--color-accent-primary);
-    flex-shrink: 0;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.5; transform: scale(0.75); }
-  }
-  .hero__title {
-    font-size: var(--font-size-hero);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-tight);
-    color: var(--color-text-primary);
-    max-width: 18ch;
-    margin-bottom: calc(-1 * var(--space-3));
-  }
-  .hero__title-accent {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero__desc {
-    font-size: var(--font-size-md);
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-loose);
-    max-width: 52ch;
-  }
-  .hero__buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-3);
-  }
-  .hero__chips {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-2);
-  }
-  .hero__visual {
-    width: 100%;
-    max-width: 960px;
-    border-radius: var(--radius-xl);
-    border: var(--card-border);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    background: var(--color-bg-secondary);
-    aspect-ratio: 16 / 9;
-    position: relative;
-  }
-  .hero__visual-inner { position: absolute; inset: 0; }
-  .hero__visual-circle { position: absolute; border-radius: 50%; pointer-events: none; }
-  .hero__visual-circle--1 { width: 60%; aspect-ratio: 1; top: -20%; right: -10%; background: radial-gradient(circle, color-mix(in srgb, #00b3fd 40%, transparent) 0%, transparent 70%); }
-  .hero__visual-circle--2 { width: 40%; aspect-ratio: 1; bottom: -15%; left: 5%; background: radial-gradient(circle, color-mix(in srgb, #0021ba 30%, transparent) 0%, transparent 70%); }
-  .hero__visual-circle--3 { width: 25%; aspect-ratio: 1; bottom: 10%; right: 15%; background: radial-gradient(circle, color-mix(in srgb, #00dc1a 25%, transparent) 0%, transparent 70%); }
-  .hero__visual-img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
-  .hero__stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-    max-width: 800px;
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
-  }
-  .hero__stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: 0 var(--space-6); }
-  .hero__stat:not(:first-child) { border-left: 1px solid var(--color-border); }
-  .hero__stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: 1; color: var(--color-accent-primary); }
-  .hero__stat-value--label { color: var(--color-text-primary); }
-  .hero__stat-unit { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
-  .hero__stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-align: center; line-height: var(--line-height-normal); }
-
   /* ── Features ── */
   .features__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-6);
   }
-  .feature-card { display: flex; flex-direction: column; gap: var(--space-3); }
-  .feature-card__icon :global(svg) { display: block; }
-  .feature-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
-  .feature-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .feature-card__icon :global(svg) {
+    display: block;
+  }
+  .feature-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+  .feature-card__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
 
   /* ── Steps ── */
   .steps__grid {
@@ -310,13 +238,33 @@ const stats = [
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-6);
   }
-  .step-card { display: flex; flex-direction: column; gap: var(--space-3); }
-  .step-card__num { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); opacity: .25; line-height: 1; }
-  .step-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
-  .step-card__desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-loose); }
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .step-card__num {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-primary);
+    opacity: 0.25;
+    line-height: 1;
+  }
+  .step-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+  .step-card__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
 
   /* ── CTA Pricing ── */
-  .cta-section__inner { display: flex; justify-content: center; }
+  .cta-section__inner {
+    display: flex;
+    justify-content: center;
+  }
   .cta-card {
     max-width: 520px;
     width: 100%;
@@ -324,12 +272,33 @@ const stats = [
     flex-direction: column;
     gap: var(--space-6);
   }
-  .cta-card__header { display: flex; flex-direction: column; gap: var(--space-1); }
-  .cta-card__name { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
-  .cta-card__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-  .cta-card__price { display: flex; flex-direction: column; gap: var(--space-1); }
-  .cta-card__price-year { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary); }
-  .cta-card__price-month { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .cta-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .cta-card__name {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+  }
+  .cta-card__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .cta-card__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .cta-card__price-year {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-primary);
+  }
+  .cta-card__price-month {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
   .cta-card__features {
     display: flex;
     flex-direction: column;
@@ -354,15 +323,14 @@ const stats = [
   /* ── Responsive ── */
   @media (max-width: 960px) {
     .features__grid,
-    .steps__grid { grid-template-columns: repeat(2, 1fr); }
+    .steps__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (max-width: 640px) {
-    .hero__title { max-width: 100%; }
-    .hero__stats { grid-template-columns: 1fr; max-width: 320px; }
-    .hero__stat { flex-direction: row; gap: var(--space-3); text-align: left; }
-    .hero__stat-value { font-size: var(--font-size-xl); }
-    .hero__stat-label { text-align: left; }
     .features__grid,
-    .steps__grid { grid-template-columns: 1fr; }
+    .steps__grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

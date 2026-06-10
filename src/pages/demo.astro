@@ -54,8 +54,8 @@ const steps = [
         </h1>
 
         <p class="demo-hero__desc">
-          Пройдите весь путь расчёта инсоляции и&nbsp;КЕО на&nbsp;готовом примере —
-          прямо в&nbsp;браузере, без установки и&nbsp;регистрации.
+          Пройдите весь путь расчёта инсоляции и&nbsp;КЕО на&nbsp;готовом
+          примере — прямо в&nbsp;браузере, без установки и&nbsp;регистрации.
         </p>
 
         <div class="demo-hero__chips">
@@ -82,9 +82,15 @@ const steps = [
           <div class="demo-window__canvas">
             <!-- Индикатор прогресса по шагам -->
             <div class="demo-progress" data-demo-progress aria-hidden="true">
-              {steps.map((_, i) => (
-                <span class="demo-progress__bar" data-progress-bar data-index={i}></span>
-              ))}
+              {
+                steps.map((_, i) => (
+                  <span
+                    class="demo-progress__bar"
+                    data-progress-bar
+                    data-index={i}
+                  />
+                ))
+              }
             </div>
 
             <VideoPlayer
@@ -95,15 +101,22 @@ const steps = [
             />
 
             <!-- Подпись активного шага поверх окна -->
-            <div class="demo-window__caption" data-demo-caption aria-live="polite">
+            <div
+              class="demo-window__caption"
+              data-demo-caption
+              aria-live="polite"
+            >
               <span class="demo-window__caption-num" data-caption-num>01</span>
-              <span class="demo-window__caption-text" data-caption-text>{steps[0].title}</span>
+              <span class="demo-window__caption-text" data-caption-text
+                >{steps[0].title}</span
+              >
             </div>
           </div>
         </div>
 
         <p class="demo-stage__hint">
-          Нажмите ▶, чтобы запустить запись, или выбирайте шаги ниже, чтобы пройти сценарий.
+          Нажмите ▶, чтобы запустить запись, или выбирайте шаги ниже, чтобы
+          пройти сценарий.
         </p>
       </div>
     </section>
@@ -111,24 +124,38 @@ const steps = [
     <!-- Как это работает: интерактивные шаги -->
     <section class="section section--bg-secondary demo-steps fade-in">
       <div class="container">
-        <h2 class="section-title h2">Как пройти демо за 4 шага</h2>
+        <div class="section-head">
+          <span class="section-eyebrow">Интерактивные шаги</span>
+          <h2 class="section-title h2">Как пройти демо за 4 шага</h2>
+          <p class="section-subtitle">
+            Выбирайте шаг — подпись в&nbsp;окне демо подскажет, что происходит
+            на&nbsp;экране в&nbsp;этот момент.
+          </p>
+        </div>
 
-        <ol class="demo-steps__grid" role="tablist" aria-label="Шаги демо" data-demo-steps>
-          {steps.map((step, i) => (
-            <li role="presentation">
-              <button
-                type="button"
-                class="card card--interactive demo-step"
-                role="tab"
-                aria-selected={i === 0 ? 'true' : 'false'}
-                data-step-index={i}
-                data-step-number={step.n}
-              >
-                <h3 class="demo-step__title">{step.title}</h3>
-                <p class="demo-step__desc">{step.desc}</p>
-              </button>
-            </li>
-          ))}
+        <ol
+          class="demo-steps__grid"
+          role="tablist"
+          aria-label="Шаги демо"
+          data-demo-steps
+        >
+          {
+            steps.map((step, i) => (
+              <li role="presentation">
+                <button
+                  type="button"
+                  class="card card--interactive demo-step"
+                  role="tab"
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  data-step-index={i}
+                  data-step-number={step.n}
+                >
+                  <h3 class="demo-step__title">{step.title}</h3>
+                  <p class="demo-step__desc">{step.desc}</p>
+                </button>
+              </li>
+            ))
+          }
         </ol>
       </div>
     </section>
@@ -138,11 +165,16 @@ const steps = [
       <div class="container demo-final__inner">
         <h2 class="demo-final__title">Готовы попробовать на своём проекте?</h2>
         <p class="demo-final__desc">
-          Оставьте заявку — подберём тариф и&nbsp;поможем с&nbsp;первым расчётом.
-          Или сразу напишите нам.
+          Оставьте заявку — подберём тариф и&nbsp;поможем с&nbsp;первым
+          расчётом. Или сразу напишите нам.
         </p>
         <div class="demo-final__actions">
-          <FormSubmission client:load buttonText="Попробовать на своём проекте" variant="filled" size="normal" />
+          <FormSubmission
+            client:load
+            buttonText="Попробовать на своём проекте"
+            variant="filled"
+            size="normal"
+          />
           <Button variant="outlined" size="normal" href={mailtoEmail}>
             Получить консультацию
           </Button>
@@ -195,8 +227,15 @@ const steps = [
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.5; transform: scale(0.75); }
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.75);
+    }
   }
 
   .demo-hero__title {
@@ -259,9 +298,15 @@ const steps = [
     border-radius: 50%;
   }
 
-  .demo-window__dot--r { background: #ff5f57; }
-  .demo-window__dot--y { background: #febc2e; }
-  .demo-window__dot--g { background: #28c840; }
+  .demo-window__dot--r {
+    background: #ff5f57;
+  }
+  .demo-window__dot--y {
+    background: #febc2e;
+  }
+  .demo-window__dot--g {
+    background: #28c840;
+  }
 
   .demo-window__url {
     margin-left: var(--space-4);
@@ -470,21 +515,33 @@ const steps = [
     const list = document.querySelector<HTMLElement>('[data-demo-steps]');
     if (!list) return;
 
-    const steps = Array.from(list.querySelectorAll<HTMLButtonElement>('[data-step-index]'));
-    const bars = Array.from(document.querySelectorAll<HTMLElement>('[data-progress-bar]'));
-    const captionNum = document.querySelector<HTMLElement>('[data-caption-num]');
-    const captionText = document.querySelector<HTMLElement>('[data-caption-text]');
+    const steps = Array.from(
+      list.querySelectorAll<HTMLButtonElement>('[data-step-index]'),
+    );
+    const bars = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-progress-bar]'),
+    );
+    const captionNum =
+      document.querySelector<HTMLElement>('[data-caption-num]');
+    const captionText = document.querySelector<HTMLElement>(
+      '[data-caption-text]',
+    );
     if (!steps.length) return;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
     let active = 0;
 
     const render = (index: number) => {
       active = index;
-      steps.forEach((s, i) => s.setAttribute('aria-selected', String(i === index)));
+      steps.forEach((s, i) =>
+        s.setAttribute('aria-selected', String(i === index)),
+      );
       bars.forEach((b, i) => b.classList.toggle('is-active', i === index));
       const num = steps[index].dataset.stepNumber ?? '';
-      const title = steps[index].querySelector('.demo-step__title')?.textContent ?? '';
+      const title =
+        steps[index].querySelector('.demo-step__title')?.textContent ?? '';
       if (captionNum) captionNum.textContent = num;
       if (captionText) captionText.textContent = title;
     };
@@ -511,8 +568,9 @@ const steps = [
 
     // Останавливаем автопрокрутку, когда секция вне экрана — экономим ресурсы.
     demoIO = new IntersectionObserver(
-      (entries) => entries.forEach((e) => (e.isIntersecting ? startAuto() : stopAuto())),
-      { threshold: 0.25 }
+      (entries) =>
+        entries.forEach((e) => (e.isIntersecting ? startAuto() : stopAuto())),
+      { threshold: 0.25 },
     );
     demoIO.observe(list);
 
