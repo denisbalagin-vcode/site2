@@ -139,6 +139,29 @@ const plans = [
   .pricing-card__name {
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .pricing-card--featured .pricing-card__name::after {
+    content: 'Рекомендуем';
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-primary);
+    color: white;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .pricing-card--featured {
+    border-top-width: 3px;
+    border-top-color: var(--color-accent-primary);
   }
 
   .pricing-card__projects {
