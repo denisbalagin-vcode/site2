@@ -13,7 +13,7 @@ const tags = await getAllTags();
   title="Статьи Formit — инсоляция, КЕО и расчёты"
   description="Статьи команды Formit об инсоляции, КЕО, работе с Revit-моделями и прохождении экспертизы."
 >
-  <Header showSectionNav={false} showArticlesLink={false} showHomeLink={true} />
+  <Header showSectionNav={false} showArticlesLink={false} />
 
   <main>
     <section class="section articles-hero">
@@ -29,34 +29,47 @@ const tags = await getAllTags();
 
     <section class="section articles-list">
       <div class="container">
-        {tags.length > 0 && (
-          <div class="articles-filter" data-articles-filter>
-            <button
-              type="button"
-              class="articles-filter__chip is-active"
-              data-tag-filter="all"
-            >
-              Все
-            </button>
-            {tags.map((tag) => (
-              <button type="button" class="articles-filter__chip" data-tag-filter={tag}>
-                {tag}
+        {
+          tags.length > 0 && (
+            <div class="articles-filter" data-articles-filter>
+              <button
+                type="button"
+                class="articles-filter__chip is-active"
+                data-tag-filter="all"
+              >
+                Все
               </button>
-            ))}
-          </div>
-        )}
+              {tags.map((tag) => (
+                <button
+                  type="button"
+                  class="articles-filter__chip"
+                  data-tag-filter={tag}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )
+        }
 
-        {articles.length === 0 ? (
-          <p class="articles-empty">Пока нет опубликованных статей. Скоро здесь появятся материалы.</p>
-        ) : (
-          <div class="cards-grid cards-grid--3 fade-in" data-articles-grid>
-            {articles.map((article) => (
-              <div class="articles-grid__item" data-tags={article.tags.join('|')}>
-                <ArticleCard article={article} />
-              </div>
-            ))}
-          </div>
-        )}
+        {
+          articles.length === 0 ? (
+            <p class="articles-empty">
+              Пока нет опубликованных статей. Скоро здесь появятся материалы.
+            </p>
+          ) : (
+            <div class="cards-grid cards-grid--3 fade-in" data-articles-grid>
+              {articles.map((article) => (
+                <div
+                  class="articles-grid__item"
+                  data-tags={article.tags.join('|')}
+                >
+                  <ArticleCard article={article} />
+                </div>
+              ))}
+            </div>
+          )
+        }
 
         <p class="articles-empty" data-no-results hidden>
           Нет статей с выбранным тегом.
@@ -114,7 +127,10 @@ const tags = await getAllTags();
     color: var(--color-text-secondary);
     background: transparent;
     cursor: pointer;
-    transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast),
+      background-color var(--transition-fast);
   }
 
   .articles-filter__chip:hover {
@@ -144,8 +160,12 @@ const tags = await getAllTags();
 
 <script>
   function initArticlesFilter() {
-    const filter = document.querySelector<HTMLElement>('[data-articles-filter]');
-    const items = Array.from(document.querySelectorAll<HTMLElement>('.articles-grid__item'));
+    const filter = document.querySelector<HTMLElement>(
+      '[data-articles-filter]',
+    );
+    const items = Array.from(
+      document.querySelectorAll<HTMLElement>('.articles-grid__item'),
+    );
     const noResults = document.querySelector<HTMLElement>('[data-no-results]');
     if (!filter || !items.length) return;
     // На свежем DOM (initial load / после SPA-навигации) bound сброшен — биндим
@@ -153,7 +173,9 @@ const tags = await getAllTags();
     if (filter.dataset.bound === 'true') return;
     filter.dataset.bound = 'true';
 
-    const chips = Array.from(filter.querySelectorAll<HTMLButtonElement>('[data-tag-filter]'));
+    const chips = Array.from(
+      filter.querySelectorAll<HTMLButtonElement>('[data-tag-filter]'),
+    );
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {

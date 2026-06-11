@@ -392,7 +392,7 @@ const featureBgs = [
           }
         </div>
 
-        <div class="problem__bottom card">
+        <div class="problem__bottom card card--interactive">
           <div class="problem__col">
             <h4 class="problem__col-title">Как решают сейчас</h4>
             <ul class="dash-list">
@@ -444,7 +444,7 @@ const featureBgs = [
         <div class="steps__grid">
           {
             steps.map((step) => (
-              <div class="card card--soft step-card">
+              <div class="card card--soft card--interactive step-card">
                 <span class="step-card__num">{step.n}</span>
                 <h3 class="step-card__title">{step.title}</h3>
                 <p class="step-card__desc">{step.desc}</p>
@@ -521,7 +521,7 @@ const featureBgs = [
         <div class="metrics-grid">
           {
             businessMetrics.map((m) => (
-              <div class="card card--soft metric">
+              <div class="card card--soft card--interactive metric">
                 <span class="metric__value">{m.value}</span>
                 <span class="metric__label">{m.label}</span>
               </div>
@@ -534,7 +534,7 @@ const featureBgs = [
     <!-- Кейс: экономический эффект -->
     <section id="case" class="section section--bg-primary fade-in">
       <div class="container">
-        <div class="case-card card card--soft">
+        <div class="case-card card card--soft card--interactive">
           <div class="case-card__label">Кейс · Жилой комплекс</div>
           <div class="case-card__body">
             <div class="case-card__left">
@@ -567,7 +567,7 @@ const featureBgs = [
       class="section section--bg-primary cta-section fade-in"
     >
       <div class="container cta-section__inner">
-        <div class="card card--featured cta-card">
+        <div class="card card--featured card--interactive cta-card">
           <div class="cta-card__badge">B2B-платформа</div>
           <div class="cta-card__header">
             <h2 class="cta-card__name">FORMIT AI</h2>

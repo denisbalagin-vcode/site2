@@ -20,7 +20,9 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { Content } = await render(article.entry);
 
-const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : '';
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : '';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -39,42 +41,65 @@ const jsonLd = {
   description={article.description}
   ogImage={article.cover ?? '/images/insolatedBuilding.BsJLrvJH.webp'}
 >
-  <Header showSectionNav={false} showArticlesLink={false} showHomeLink={true} />
+  <Header showSectionNav={false} showArticlesLink={false} />
 
   <main>
     <article class="section article">
       <div class="container article__container">
         <a class="article__back" href={asset('/articles')}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 12H5M11 18l-6-6 6-6" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 12H5M11 18l-6-6 6-6"></path>
           </svg>
           <span>Все статьи</span>
         </a>
 
         <header class="article__header">
-          {article.tags.length > 0 && (
-            <div class="article__tags">
-              {article.tags.map((tag) => <Chip>{tag}</Chip>)}
-            </div>
-          )}
+          {
+            article.tags.length > 0 && (
+              <div class="article__tags">
+                {article.tags.map((tag) => (
+                  <Chip>{tag}</Chip>
+                ))}
+              </div>
+            )
+          }
 
           <h1 class="article__title h2">{article.title}</h1>
           <p class="article__lead">{article.description}</p>
 
           <div class="article__meta">
             <span class="article__author">{article.author}</span>
-            {article.authorRole && <span class="article__role">{article.authorRole}</span>}
-            <time class="article__date" datetime={article.publishedAt.toISOString()}>
+            {
+              article.authorRole && (
+                <span class="article__role">{article.authorRole}</span>
+              )
+            }
+            <time
+              class="article__date"
+              datetime={article.publishedAt.toISOString()}
+            >
               {formatDate(article.publishedAt)}
             </time>
           </div>
         </header>
 
-        {article.cover && (
-          <div class="article__cover">
-            <img src={asset(article.cover)} alt="" decoding="async" />
-          </div>
-        )}
+        {
+          article.cover && (
+            <div class="article__cover">
+              <img src={asset(article.cover)} alt="" decoding="async" />
+            </div>
+          )
+        }
 
         <div class="article__body prose">
           <Content />
@@ -82,13 +107,21 @@ const jsonLd = {
 
         <aside class="article__cta">
           <div class="article__cta-text">
-            <h2 class="article__cta-title">Попробуйте Formit на своём проекте</h2>
+            <h2 class="article__cta-title">
+              Попробуйте Formit на своём проекте
+            </h2>
             <p class="article__cta-desc">
-              Загрузите Revit-модель и&nbsp;получите готовый расчёт инсоляции и&nbsp;КЕО.
+              Загрузите Revit-модель и&nbsp;получите готовый расчёт инсоляции
+              и&nbsp;КЕО.
             </p>
           </div>
           <div class="article__cta-actions">
-            <Button variant="filled" href={accountUrl} target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="filled"
+              href={accountUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Войти в аккаунт
             </Button>
             <Button variant="outlined" href={asset('/demo')}>
@@ -102,7 +135,12 @@ const jsonLd = {
 
   <Footer />
 
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline slot="head" />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+    is:inline
+    slot="head"
+  />
 </Layout>
 
 <style>

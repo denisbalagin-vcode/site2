@@ -46,7 +46,13 @@ const Tag = href ? 'a' : 'button';
     font-size: var(--button-font-size);
     line-height: 1;
     white-space: nowrap;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      background var(--transition-fast),
+      color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      opacity var(--transition-fast),
+      transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
   }
@@ -74,6 +80,20 @@ const Tag = href ? 'a' : 'button';
     font-size: var(--font-size-md);
   }
 
+  /* На узких экранах длинные подписи не должны обрезаться:
+     уменьшаем отступы и разрешаем перенос строки. */
+  @media (max-width: 480px) {
+    .btn--large {
+      height: auto;
+      min-height: 3.25rem;
+      padding: var(--space-3) var(--space-6);
+      font-size: var(--font-size-base);
+      white-space: normal;
+      text-align: center;
+      max-width: 100%;
+    }
+  }
+
   /* Варианты */
   .btn--filled {
     background: var(--gradient-primary);
@@ -83,7 +103,8 @@ const Tag = href ? 'a' : 'button';
 
   .btn--filled:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent-primary) 50%, transparent);
+    box-shadow: 0 4px 16px
+      color-mix(in srgb, var(--color-accent-primary) 50%, transparent);
     opacity: 1;
   }
 
